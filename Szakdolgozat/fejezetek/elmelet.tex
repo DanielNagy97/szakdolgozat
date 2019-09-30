@@ -1,0 +1,79 @@
+\Chapter{Téma elméleti kifejtése}
+\label{Chap:tema}
+
+Ebben a fejezetben kell a szakdolgozatban felhasznált elméleti ismeretanyagot, szakirodalmat megadni ill. kifejteni. Lehet benne több alfejezet vagy al-alfejezet is. Ezek számozása és a tartalomjegyzékben való megjelenése rögzített (alfejezet címe a fejlécben középen, az oldalszám a láblécben jobbszélen jelenik meg). A fejezet címe, azaz a ,,Téma elméleti kifejtése'' megváltoztatható a téma szerint. Ezen fejezetben felhasználható oldalak mennyisége összefüggésben van a következõ fejezettel (lásd \aref{Chap:dokumen}. fejezet bevezetését).\\
+
+És most már gépelhetjük a szöveget\ldots
+
+\Section{Csináljunk mást is}
+Készítsünk még definíciót, tételt, bizonyítást, megjegyzést stb.! Figyeljük meg az egyes betûváltozatokat!
+\begin{definition}
+Ez egy definíció
+\end{definition}
+
+\begin{lemma}
+Ez egy lemma
+\end{lemma}
+
+\begin{theorem}
+Ez egy tétel
+\end{theorem}
+
+\begin{proof}
+Ez egy bizonyítás
+\end{proof}
+
+\begin{corollary}
+Ez egy tétel
+\end{corollary}
+
+\begin{remark}
+Ez egy megjegyzés
+\end{remark}
+
+\begin{example}
+Ez egy példa
+\end{example}
+És lássuk \myaref{Chap:bevezetes} fejezetben levõ egyenletrendszert most már egyenletszámozással:
+\begin{alignat}{4}
+  13x &+{} &  4y &    &     & ={} & 9\\
+   3x &-{} & 12y &+{} & 23z & ={} &14
+\end{alignat}
+
+\Section{Készítsünk színes táblázatokat}
+
+Legyen minden színes: A \verb|\columncolor|, \verb|\rowcolor|,
+\verb|cellcolor| parancsok használata:
+
+\begin{verbatim}
+\begin{tabular}{|>{\columncolor[gray]{0.5}}l|
+>{\columncolor[rgb]{0.5,0.5,0.7}}c|r|}
+\hline
+egy & kettõ& három\\
+\hline
+\rowcolor[cmyk]{0.1,0.3,0.5,0}három & négy& öt\\
+\hline
+\rowcolor[rgb]{0.8,0.8,0.2}három &
+\cellcolor[rgb]{1,0.1,0.1} négy& öt\\
+\hline
+\end{tabular}
+\end{verbatim}
+
+\begin{center}
+\begin{tabular}{|>{\columncolor[gray]{0.5}}l|>{\columncolor[rgb]{0.5,0.5,0.7}}c|r|}
+\hline
+egy & kettõ& három\\
+\hline
+\rowcolor[cmyk]{0.1,0.3,0.5,0}három & négy& öt\\
+\hline
+\rowcolor[rgb]{0.8,0.8,0.2}három & \cellcolor[rgb]{1,0.1,0.1} négy& öt\\
+\hline
+\end{tabular}
+\end{center}
+
+Többféle színmodell használható: pl. \verb|rgb|, mivel ezt a
+,,legkönnyebb'' kikeverni (red-green-blue) 3 valós számból,
+melyek mindegyike a $[0,1]$ intervallumból kerülnek ki. Viszont
+hátránya lehet, hogy a nyomtatási kép eltérhet a
+\verb|.dvi|-ban látott színtõl, ezért szokták használni a
+\verb|cmyk| nevû modellt, mely biztosan jól megy.
