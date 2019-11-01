@@ -40,6 +40,7 @@ while True:
 
         if pointSelected:
             #cv2.circle(frame, point, 5, (0, 0, 255), 2)
+
             newPoints, status, error = cv2.calcOpticalFlowPyrLK(oldGrayFrame, grayFrame, oldPoints, None, **lk_params)
             oldPoints = newPoints
             x, y = newPoints.ravel()
