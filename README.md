@@ -1,3 +1,7 @@
-Kiterjesztett valóság alapú prezentációs szoftver készítése
+# Kiterjesztett valÃ³sÃ¡g alapÃº prezentÃ¡ciÃ³s szoftver kÃ©szÃ­tÃ©se
 
-A prezentációk készítésének egy újszerû és látványos módját adják a kiterjesztett valóság alapú megoldások. Ezek segítségével a prezentáló személy virtuális vezérlõk használatával mutathatja be a témakört. A dolgozatban az elérhetõ képfeldolgozási módszerek segítségével egy olyan alkalmazás készítésére van szükség, amellyel a prezentációhoz elõkészített virtuális elemeket a prezentáló személy interaktív módon tudja irányítani. Az alkalmazás a bemenetként kapott videófolyamot kiegészíti a prezentációhoz tartozó elemek megjelenítésével. A feladat megoldása során definiálni kell a vezérlõket, azok mûködését példákkal illusztrálva be kell mutatni, illetve el kell készíteni a hozzájuk tartozó szoftveres implementációt.
+*szakdolgozat*
+
+## FeladatkiÃ­rÃ¡s
+
+A prezentÃ¡ciÃ³k kÃ©szÃ­tÃ©sÃ©nek egy ÃºjszerÅ± Ã©s lÃ¡tvÃ¡nyos mÃ³djÃ¡t adjÃ¡k a kiterjesztett valÃ³sÃ¡g alapÃº megoldÃ¡sok. Ezek segÃ­tsÃ©gÃ©vel a prezentÃ¡lÃ³ szemÃ©ly virtuÃ¡lis vezÃ©rlÅ‘k hasznÃ¡latÃ¡val mutathatja be a tÃ©makÃ¶rt. A dolgozatban az elÃ©rhetÅ‘ kÃ©pfeldolgozÃ¡si mÃ³dszerek segÃ­tsÃ©gÃ©vel egy olyan alkalmazÃ¡s kÃ©szÃ­tÃ©sÃ©re van szÃ¼ksÃ©g, amellyel a prezentÃ¡ciÃ³hoz elÅ‘kÃ©szÃ­tett virtuÃ¡lis elemeket a prezentÃ¡lÃ³ szemÃ©ly interaktÃ­v mÃ³don tudja irÃ¡nyÃ­tani. Az alkalmazÃ¡s a bemenetkÃ©nt kapott videÃ³folyamot kiegÃ©szÃ­ti a prezentÃ¡ciÃ³hoz tartozÃ³ elemek megjelenÃ­tÃ©sÃ©vel. A feladat megoldÃ¡sa sorÃ¡n definiÃ¡lni kell a vezÃ©rlÅ‘ket, azok mÅ±kÃ¶dÃ©sÃ©t pÃ©ldÃ¡kkal illusztrÃ¡lva be kell mutatni, illetve el kell kÃ©szÃ­teni a hozzÃ¡juk tartozÃ³ szoftveres implementÃ¡ciÃ³t.
