@@ -22,13 +22,14 @@ while True:
         ret, thresholdedFrame = cv2.threshold(blur,20,255,cv2.THRESH_BINARY)
 
         canvas = cv2.addWeighted(canvas,0.9,thresholdedFrame,1-0,0)
-    
+        
+        cv2.imshow('original', frame) 
         cv2.imshow('frame diff ',canvas)
-        cv2.imshow('original', frame)     
+    
         
         oldGrayFrame = grayFrame.copy()
 
-        k = cv2.waitKey(30) & 0xFF
+        k = cv2.waitKey(1) & 0xFF
         if k == 27:
             break
     else:
