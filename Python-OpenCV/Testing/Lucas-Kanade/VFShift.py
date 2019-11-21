@@ -9,15 +9,12 @@ cap.set(cv2.CAP_PROP_FRAME_WIDTH,640)
 capHeight = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
 capWidth = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
 
-
-cv2.namedWindow("test")
-cv2.namedWindow("vectorField")
+cv2.namedWindow("VFShift")
 
 # Parameters for lucas kanade optical flow
 lk_params = dict( winSize  = (50,50),
                   maxLevel = 2,
                   criteria = (cv2.TERM_CRITERIA_EPS | cv2.TERM_CRITERIA_COUNT, 10, 0.03))
-
 
 
 gridStep = int(capWidth/16/2)
@@ -35,18 +32,13 @@ _, oldFrame = cap.read()
 oldFrame = cv2.flip(oldFrame, 1)
 oldGrayFrame = cv2.cvtColor(oldFrame,cv2.COLOR_BGR2GRAY)
 
-whiteCanvas = numpy.zeros([capHeight,capWidth,1],dtype=numpy.uint8)
-whiteCanvas.fill(255)
-
 rectX = 200
 rectY = 150
-rectW = 50
-rectH = 50
+rectW = 100
+rectH = 100
 
-def findIntersection(x1,y1,x2,y2,x3,y3,x4,y4):
-    px= ( (x1*y2-y1*x2)*(x3-x4)-(x1-x2)*(x3*y4-y3*x4) ) / ( (x1-x2)*(y3-y4)-(y1-y2)*(x3-x4) ) 
-    py= ( (x1*y2-y1*x2)*(y3-y4)-(y1-y2)*(x3*y4-y3*x4) ) / ( (x1-x2)*(y3-y4)-(y1-y2)*(x3-x4) )
-    return int(px), int(py)
+rectXV = 0.0
+rectYV = 0.0
 
 while True:
     ret, frame = cap.read()
@@ -55,72 +47,48 @@ while True:
         frame = cv2.flip(frame, 1)
         grayFrame = cv2.cvtColor(frame,cv2.COLOR_BGR2GRAY)
 
-        
-
         newPoints, status, error = cv2.calcOpticalFlowPyrLK(oldGrayFrame, grayFrame, oldPoints, None, **lk_params)
 
-        whiteCanvas.fill(255)
+        localVectorSum = [[0.0, 0.0],[0.0, 0.0]]
+        localDirectionVector = [0.0, 0.0]
 
         for k in range(int(newPoints.size/2)):
             oldX, oldY = oldPoints[k].ravel()
             newX, newY = newPoints[k].ravel()
-            if abs(oldX-newX) >= 2 or abs(oldY-newY) >= 2:
-                cv2.arrowedLine(whiteCanvas, (oldX, oldY), (newX, newY), (0,0,255), 2)
-                
+            if abs(oldX-newX) >= 3 or abs(oldY-newY) >= 3:
                 if rectX < oldX < rectX+rectW and rectY < oldY < rectY+rectH:
-                    #print("a regi benne van")
-                    continue
-                else:
-                    if rectX < newX < rectX+rectW and rectY < newY < rectY+rectH:
-                        #print("benne")
+                    localVectorSum[0][0] += oldX
+                    localVectorSum[0][1] += oldY
+                    localVectorSum[1][0] += newX
+                    localVectorSum[1][1] += newY
 
-                        if oldX < rectX and rectY < oldY < rectY+rectH:
-                            #print("1")
-                            interx, intery = findIntersection(oldX,oldY,newX,newY,rectX,rectY,rectX,rectY+rectH)
-                        if rectX < oldX < rectX+rectW and oldY < rectY:
-                            #print("2")
-                            interx, intery = findIntersection(oldX,oldY,newX,newY,rectX,rectY,rectX+rectW,rectY)
-                        if  rectX < oldX < rectX+rectW and oldY > rectY+rectH:
-                            interx, intery = findIntersection(oldX,oldY,newX,newY,rectX,rectY+rectH,rectX+rectW,rectY+rectH)
-                            #print("3")
-                        if oldX > rectX+rectW and rectY < oldY < rectY+rectH:
-                            interx, intery = findIntersection(oldX,oldY,newX,newY,rectX+rectW,rectY,rectX+rectW,rectY+rectH)
-                            #print("4")
+        localDirectionVector[0] = localVectorSum[1][0]-localVectorSum[0][0]
+        localDirectionVector[1] = localVectorSum[1][1]-localVectorSum[0][1]
 
-                        if oldX < rectX and oldY < rectY:
-                            interx, intery = findIntersection(oldX,oldY,newX,newY,0,rectY,rectX,rectY)
-                            if interx < rectX:
-                                interx, intery = findIntersection(interx,intery,newX,newY,rectX,rectY,rectX,rectY+rectH)
-                        if oldX < rectX and oldY > rectY+rectH:
-                            interx, intery = findIntersection(oldX,oldY,newX,newY,0,rectY+rectH,rectX,rectY+rectH)
-                            if interx < rectX:
-                                interx, intery = findIntersection(interx,intery,newX,newY,rectX,rectY,rectX,rectY+rectH)
-                        if oldX > rectX+rectW and oldY < rectY:
-                            interx, intery = findIntersection(oldX,oldY,newX,newY,capWidth,rectY,rectX+rectW,rectY)
-                            if interx > rectX+rectW:
-                                interx, intery = findIntersection(interx,intery,newX,newY,rectX+rectW,rectY,rectX+rectW,rectY+rectY)
-                        if oldX > rectX+rectW and oldY > rectY+rectY:
-                            interx, intery = findIntersection(oldX,oldY,newX,newY,capWidth,rectY+rectY,rectX+rectW,rectY+rectY)
-                            if interx > rectX+rectW:
-                                interx, intery = findIntersection(interx,intery,newX,newY,rectX+rectW,rectY,rectX+rectW,rectY+rectY)
+        rectXV +=localDirectionVector[0]*0.1
+        rectYV +=localDirectionVector[1]*0.1
 
-                        try:
-                            dvX = newX-interx
-                            dvY = newY-intery
-                            rectX = rectX+dvX
-                            rectY = rectY+dvY
-                        except:
-                            pass
-                    else:
-                        #print("nincs benne")
-                        continue
+        rectX +=rectXV
+        rectY +=rectYV
+
+        rectXV *= 0.7
+        rectYV *= 0.7
+
+        if rectX+(rectW/2) >= capWidth:
+            rectX -= capWidth
+        if rectY+(rectH/2) >= capHeight:
+            rectY -= capHeight
+        if rectX+(rectW/2) < 0:
+            rectX += capWidth
+        if rectY+(rectH/2) < 0:
+            rectY += capHeight
 
         cv2.rectangle(frame,(int(rectX),int(rectY)),(int(rectX)+int(rectW),int(rectY)+rectH),(0,255,0),3)
+        #cv2.arrowedLine(frame, (0+125, 0+125), (int(localDirectionVector[0])+125, int(localDirectionVector[1])+125), (0,255,255), 2)
         oldPoints = originalPoints.copy()
         oldGrayFrame = grayFrame.copy()
 
-        cv2.imshow('test', frame)
-        cv2.imshow('vectorField',whiteCanvas)
+        cv2.imshow('VFShift', frame)
 
         k = cv2.waitKey(1) & 0xFF
         if k == 27:
