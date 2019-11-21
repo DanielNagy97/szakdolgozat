@@ -9,7 +9,7 @@ cv2.namedWindow("vectorField")
 cv2.namedWindow("frameDiff")
 
 #capture
-cap = cv2.VideoCapture("../output.avi")
+cap = cv2.VideoCapture(0)
 
 #setting capture device
 cap.set(cv2.CAP_PROP_FRAME_HEIGHT,360)
@@ -52,7 +52,7 @@ while True:
         cv2.imshow('test', frame)
         cv2.imshow('vectorField',vectorFieldCanvas)
         cv2.imshow('frameDiff',frameDiffCanvas)
-
+    
         k = cv2.waitKey(1) & 0xFF
         if k == 27:
             break
@@ -61,3 +61,4 @@ while True:
 
 cap.release()
 cv2.destroyAllWindows()
+vf.showResults()
