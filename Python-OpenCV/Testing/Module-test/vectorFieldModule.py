@@ -2,6 +2,8 @@ import cv2
 import numpy
 import math
 import matplotlib.pyplot as plt
+import matplotlib
+matplotlib.use('TkAgg')
 
 # Parameters for lucas kanade optical flow
 lk_params = dict( winSize  = (50,50),
@@ -44,6 +46,7 @@ def drawVectorField(canvas,oldPoints,newPoints):
     globalDirectionVector[0] = vectorSum[1][0]-vectorSum[0][0]
     globalDirectionVector[1] = vectorSum[1][1]-vectorSum[0][1]
     globalDirectionVectorLength = getVectorLength(globalDirectionVector)
+    GVLforFrames = GVLforFrames[-19:]
     GVLforFrames.append(int(globalDirectionVectorLength))
     cv2.arrowedLine(globalVectorCanvas, (0+125, 0+125), (int(globalDirectionVector[0]/8)+125, int(globalDirectionVector[1]/8)+125), (255,255,255), 2)
     cv2.imshow("GlobalMotionVector",globalVectorCanvas)
@@ -52,10 +55,37 @@ def drawVectorField(canvas,oldPoints,newPoints):
 def getVectorLength(vector):
     return  math.sqrt(math.pow(vector[0],2)+math.pow(vector[1],2))
 
+
+#showing the global directionvector lenght for the last 20 frames
+#the matplotlib plot converted to matrix in order to run in the same time with cv2.imshow()
+#-it is very slow
 def showResults():
+
+    fig = plt.figure()
+
+    fig.set_size_inches(4, 4)
+
     ys = GVLforFrames
     xs = list(range(len(ys)))
-    plt.plot(xs,ys)
+    
     plt.ylabel('Global motion vector length')
-    plt.xlabel('Frames')
-    plt.show()
+    plt.xlabel('20 frames')
+
+    line1, = plt.plot(xs,ys)
+
+    line1.set_ydata(ys)
+
+    fig.canvas.draw()
+
+    # convert canvas to image
+    img = numpy.fromstring(fig.canvas.tostring_rgb(), dtype=numpy.uint8,sep='')
+
+    img  = img.reshape(fig.canvas.get_width_height()[::-1] + (3,))
+
+    # img is rgb, convert to opencv's default bgr
+    img = cv2.cvtColor(img,cv2.COLOR_RGB2BGR)
+
+
+    # display image with opencv or any operation you like
+    cv2.imshow("plot",img)
+    #plt.show()

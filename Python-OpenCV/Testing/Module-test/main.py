@@ -52,13 +52,16 @@ while True:
         cv2.imshow('test', frame)
         cv2.imshow('vectorField',vectorFieldCanvas)
         cv2.imshow('frameDiff',frameDiffCanvas)
-    
+
         k = cv2.waitKey(1) & 0xFF
         if k == 27:
             break
+
+        #plotting the global motion vectors for the last 20 frames # very slow
+        #vf.showResults()
+
     else:
         break
 
 cap.release()
 cv2.destroyAllWindows()
-vf.showResults()

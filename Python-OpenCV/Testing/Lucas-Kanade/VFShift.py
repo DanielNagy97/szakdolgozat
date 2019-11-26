@@ -9,7 +9,9 @@ cap.set(cv2.CAP_PROP_FRAME_WIDTH,640)
 capHeight = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
 capWidth = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
 
-cv2.namedWindow("VFShift")
+#cv2.namedWindow("VFShift")
+cv2.namedWindow("VFShift", cv2.WND_PROP_FULLSCREEN)
+cv2.setWindowProperty("VFShift",cv2.WND_PROP_FULLSCREEN,cv2.WINDOW_FULLSCREEN)
 
 # Parameters for lucas kanade optical flow
 lk_params = dict( winSize  = (50,50),
@@ -55,12 +57,13 @@ while True:
         for k in range(int(newPoints.size/2)):
             oldX, oldY = oldPoints[k].ravel()
             newX, newY = newPoints[k].ravel()
-            if abs(oldX-newX) >= 3 or abs(oldY-newY) >= 3:
+            if abs(oldX-newX) >= 2 or abs(oldY-newY) >= 2:
                 if rectX < oldX < rectX+rectW and rectY < oldY < rectY+rectH:
                     localVectorSum[0][0] += oldX
                     localVectorSum[0][1] += oldY
                     localVectorSum[1][0] += newX
                     localVectorSum[1][1] += newY
+                    cv2.arrowedLine(frame, (oldX, oldY), (newX, newY), (0,0,255), 2)
 
         localDirectionVector[0] = localVectorSum[1][0]-localVectorSum[0][0]
         localDirectionVector[1] = localVectorSum[1][1]-localVectorSum[0][1]
@@ -84,7 +87,7 @@ while True:
             rectY += capHeight
 
         cv2.rectangle(frame,(int(rectX),int(rectY)),(int(rectX)+int(rectW),int(rectY)+rectH),(0,255,0),3)
-        #cv2.arrowedLine(frame, (0+125, 0+125), (int(localDirectionVector[0])+125, int(localDirectionVector[1])+125), (0,255,255), 2)
+        cv2.arrowedLine(frame, (int(rectX+rectW/2), int(rectY+rectH/2)), (int(localDirectionVector[0]+rectX+rectW/2), int(localDirectionVector[1]+rectY+rectH/2)), (0,255,255), 2)
         oldPoints = originalPoints.copy()
         oldGrayFrame = grayFrame.copy()
 
