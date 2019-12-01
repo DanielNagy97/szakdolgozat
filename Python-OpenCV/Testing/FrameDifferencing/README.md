@@ -9,5 +9,4 @@ Ezen egyszerű script az ún. *Frame Differencing* technika kipróbálására le
 frameDiff = cv2.absdiff(grayFrame,oldGrayFrame)
 blur = cv2.blur(frameDiff,(20,20))
 ret, thresholdedFrame = cv2.threshold(blur,20,255,cv2.THRESH_BINARY)
-}
 ```
