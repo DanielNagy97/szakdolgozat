@@ -21,5 +21,5 @@ A **Lucas-KanadeVectorField.py** script egy ún. *Vector Field*-et vagyis egy "*
 
 ## Vector Field Shift
 
-A **VFShift.py** scriptben a korábban megvalósított "*vektor mező*" által kapott értékeket felhasználva módosíthatjuk egy OpenCV `cv2.rectangle` primitívvel a webkamera képére rajzolt téglalap helyzetét. A program használata közben úgy érezhetjük, mintha a téglalapot, mondjuk a kezünk segítségével, tologatnánk.
+A **VFShift.py** scriptben a korábban megvalósított "*vektor mező*" által kapott értékeket felhasználva módosíthatjuk egy OpenCV `cv2.rectangle` primitívvel a webkamera képére rajzolt téglalap helyzetét. A program használata közben úgy érezhetjük, mintha a virtuális element, például a kezünk segítségével, tologatnánk.
 * A megvalósítás csupán annyi, hogy az új pontok meghatározása után a script az összes vizsgált ponton végigmenve megvizsgálja, hogy melyek azok a "régi" pontok, amelyek a téglalap belselyében helyezkednek el. Ezeket a pontokat és a hozzájuk tartozó új pontokból számol egy eredő vektort, majd a kapott vektor segítségével meghatározza a téglalap következő pozícióját.
