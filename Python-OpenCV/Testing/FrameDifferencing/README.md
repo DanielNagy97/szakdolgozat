@@ -10,3 +10,5 @@ frameDiff = cv2.absdiff(grayFrame,oldGrayFrame)
 blur = cv2.blur(frameDiff,(20,20))
 ret, thresholdedFrame = cv2.threshold(blur,20,255,cv2.THRESH_BINARY)
 ```
+
+![Frame Differencing Image](screenshots/framediff_screenshot_03.12.2019.png)
