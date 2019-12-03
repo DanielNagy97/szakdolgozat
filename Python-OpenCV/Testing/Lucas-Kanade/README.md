@@ -16,7 +16,9 @@ A **Lucas-KanadeTracking.py** script az **optcial flow** elven működő képpon
 A **Lucas-KanadeVectorField.py** script egy ún. *Vector Field*-et vagyis egy "*vektor mezőt*" valósít meg a korábbi scriptben használt Lucas-Kanade eljárás segítségével.
 * Az ötlet lényege az, hogy a vizsgálandó pontok egy rácsban helyezkednek el. Így a képtartományt egyenletesen lefedik a pontok. A mozgás detektálása így kevesebb számítást igényel, mintha minden egyes pixel elmozdulását vizsgálnánk.
 * A program minden iteráció végén visszaállítja a pontokat az eredeti helyükre, hogy a következő lépésben újra ezekkel a pontokkal vizsgálja meg a pontok eltéréseit az előző és az aktuális képkockán.
-* A kapott új pontokat és a régi pontokat az OpenCV `cv2.arrowedLine` primitívkirajzoló függvényével rajzolt nyilaival jelennek meg egy új ablakban.
+* A kapott új pontokat és a régi pontokat az OpenCV `cv2.arrowedLine` primitívkirajzoló függvényével rajzolt nyilaival ábrázolja a program.
+
+![Vector Field Image](screenshots/vectorField_screenshot_03.12.2019.png)
 
 
 ## Vector Field Shift
