@@ -2,17 +2,18 @@ import numpy as np
 import cv2
 
 cap = cv2.VideoCapture(0)
-cap.set(cv2.CAP_PROP_FRAME_HEIGHT,100)
-cap.set(cv2.CAP_PROP_FRAME_WIDTH,200)
 
-fgbg = cv2.createBackgroundSubtractorKNN()
+MOG2 = False
 
-while(1):
+if MOG2:
+    backSub = cv2.createBackgroundSubtractorMOG2(detectShadows = False)
+else:
+    backSub = cv2.createBackgroundSubtractorKNN()
+
+while(True):
     ret, frame = cap.read()
 
-    fgmask = fgbg.apply(frame)
-    fgmask = cv2.blur(fgmask,(1,1))
-    #ret, fgmask = cv2.threshold(fgmask,100,255,cv2.THRESH_BINARY)
+    fgmask = backSub.apply(frame)
 
     cv2.imshow('frame',fgmask)
     k = cv2.waitKey(1) & 0xff
