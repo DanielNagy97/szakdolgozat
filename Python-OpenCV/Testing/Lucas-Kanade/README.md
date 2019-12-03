@@ -10,6 +10,9 @@ A **Lucas-KanadeTracking.py** script az **optcial flow** elven működő képpon
 * A **Lucas-KanadeTracking.py** script egy egérrel kiválasztott pontot követ a fent említett Lucas-Kanade módszert felhasználva. A program fő ciklusán belül minden egyes képkockán megkeresi a módszer segítségével, hogy a kijelölt pont hova mozdult el. A követett pontot egy piros körrel jelöli a program.
 * A scriptben szerepel egy fontos függvény is, a `cv2.addWeighted` eljárás, amellyel képeket lehet egymásba "mosni". A script a *random.jpeg* képet a követett pont helyzetéhez képest helyezi rá a webkamera képére. Az eljárás dokumentációja [itt érhető el](https://docs.opencv.org/4.1.1/d2/de8/group__core__array.html#gafafb2513349db3bcff51f54ee5592a19).
 
+![Vector Field Image](screenshots/LKTracking_screenshot_03.12.2019)
+![Vector Field Image](screenshots/LKTracking2_screenshot_03.12.2019)
+
 
 ## Lucas-Kanade Vector Field
 
@@ -25,3 +28,5 @@ A **Lucas-KanadeVectorField.py** script egy ún. *Vector Field*-et vagyis egy "*
 
 A **VFShift.py** scriptben a korábban megvalósított "*vektor mező*" által kapott értékeket felhasználva módosíthatjuk egy OpenCV `cv2.rectangle` primitívvel a webkamera képére rajzolt téglalap helyzetét. A program használata közben úgy érezhetjük, mintha a virtuális element, például a kezünk segítségével, tologatnánk.
 * A megvalósítás csupán annyi, hogy az új pontok meghatározása után a script az összes vizsgált ponton végigmenve megvizsgálja, hogy melyek azok a "régi" pontok, amelyek a téglalap belselyében helyezkednek el. Ezeket a pontokat és a hozzájuk tartozó új pontokból számol egy eredő vektort, majd a kapott vektor segítségével meghatározza a téglalap következő pozícióját.
+
+![Vector Field Shift Image](screenshots/VFShift_screenshot_03.12.2019.png)
