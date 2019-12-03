@@ -5,4 +5,4 @@ A **Grab** funkció terveink szerint a [**Frame Differencing**](../FrameDifferen
 A jelenlegi próba verzió (2019.12.03) csupán szemléltetésre használható. Az "elkapás" pillanata a *space* billentyű lenyomásával jelezhető a programnak. Ekkor megkezdi a trackelést a Lucas-Kanade módszer segítségével.
 Felmerült az a gondolat is, hogy az elkapás utáni mozgatást, a vektormező segítségével, eredővektorok számításaival is meg lehetne valósítani. Ezt a gondolatot végül a [**Shift**](../Lucas-Kanade) funkció implementálásához használtam fel.
 
-A Lucas-Kanade módszerről [**itt**](https://github.com/DanielNagy97/szakdolgozat/tree/master/Python-OpenCV/Testing/Lucas-Kanade) található bővebb leírás és további script-ek.
+A Lucas-Kanade módszerről [**itt**](../Lucas-Kanade) található bővebb leírás és további script-ek.
