@@ -22,8 +22,8 @@ getVectorLength(vector)
 - Visszaadja a paraméterként megadott vektor hosszát.
 
 showResults(vectorLengths,globalDirection)
-- Futás közbeni grafikonok kirajzolása az OpenCV primitívkirajzoló függvényei segítségével. Bal oldalt a globális eredő vektorok hosszának változása figyelhető meg az elmúlt 30 képkockára nézve. Jobb oldalt pedig a globális eredővektorok iránya látható.
-- ![Plot Image](screenshots/plot_screenshot_04.12.2019.png)
+- Futás közbeni grafikonok kirajzolása az OpenCV primitívkirajzoló függvényei segítségével. Bal oldalt a globális eredő vektor hosszának változása figyelhető meg az elmúlt 30 képkockára nézve. Jobb oldalt pedig a globális eredővektor iránya látható.
+![Plot Image](screenshots/plot_screenshot_04.12.2019.png)
 - A *matplotlib* segítségével igényesebb ábrák készíthetők el. De a szépség a futásidő kárára megy. A program lesz nem képes valós időben működni. Szemléltetésnek a primitívek használata is megfelelő eredményt ad.
 
 ## framediffModule.py
