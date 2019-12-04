@@ -10,9 +10,9 @@ A **Lucas-KanadeTracking.py** script az **optcial flow** elven működő képpon
 * A **Lucas-KanadeTracking.py** script egy egérrel kiválasztott pontot követ a fent említett Lucas-Kanade módszert felhasználva. A program fő ciklusán belül minden egyes képkockán megkeresi a módszer segítségével, hogy a kijelölt pont hova mozdult el. A követett pontot egy piros körrel jelöli a program.
 * A scriptben szerepel egy fontos függvény is, a `cv2.addWeighted` eljárás, amellyel képeket lehet egymásba "mosni". A script a *random.jpeg* képet a követett pont helyzetéhez képest helyezi rá a webkamera képére. Az eljárás dokumentációja [itt érhető el](https://docs.opencv.org/4.1.1/d2/de8/group__core__array.html#gafafb2513349db3bcff51f54ee5592a19).
 
-![Vector Field Image](screenshots/LKTracking_screenshot_03.12.2019.png)
+![Tracking Image](screenshots/LKTracking_screenshot_03.12.2019.png)
 
-![Vector Field Image](screenshots/LKTracking2_screenshot_03.12.2019.png)
+![Tracking Image](screenshots/LKTracking2_screenshot_03.12.2019.png)
 
 
 ## Lucas-Kanade Vector Field
