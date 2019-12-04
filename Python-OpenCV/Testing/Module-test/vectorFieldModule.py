@@ -42,50 +42,39 @@ def drawVectorField(canvas,oldPoints,newPoints):
             
             cv2.arrowedLine(canvas, (oldX, oldY), (newX, newY), (0,0,255), 2)
 
-    globalVectorCanvas = numpy.zeros([250,250,1],dtype=numpy.uint8)
     globalDirectionVector[0] = vectorSum[1][0]-vectorSum[0][0]
     globalDirectionVector[1] = vectorSum[1][1]-vectorSum[0][1]
     globalDirectionVectorLength = getVectorLength(globalDirectionVector)
-    GVLforFrames = GVLforFrames[-19:]
+    GVLforFrames = GVLforFrames[-29:]
     GVLforFrames.append(int(globalDirectionVectorLength))
-    cv2.arrowedLine(globalVectorCanvas, (0+125, 0+125), (int(globalDirectionVector[0]/8)+125, int(globalDirectionVector[1]/8)+125), (255,255,255), 2)
-    cv2.imshow("GlobalMotionVector",globalVectorCanvas)
-
+    
+    showResults(GVLforFrames,globalDirectionVector)
 
 def getVectorLength(vector):
     return  math.sqrt(math.pow(vector[0],2)+math.pow(vector[1],2))
 
 
-#showing the global directionvector lenght for the last 20 frames
-#the matplotlib plot converted to matrix in order to run in the same time with cv2.imshow()
-#-it is very slow
-def showResults():
+def showResults(vectorLengths,globalDirection):
 
-    fig = plt.figure()
+    canvas = numpy.zeros([300,700,3],dtype=numpy.uint8)
+    canvas.fill(255)
+    cv2.line(canvas, (600, 250), (600, 50), (0,180,0), 1)
+    cv2.line(canvas, (500, 150), (700, 150), (0,180,0), 1)
+    cv2.line(canvas, (15, 285), (470, 285), (0,180,0), 1)
+    cv2.line(canvas, (15, 285), (15, 20), (0,180,0), 1)
+    cv2.putText(canvas, 'Global Resultant Vector', (250,15), cv2.FONT_HERSHEY_PLAIN , 1, (0,0,0), 1, cv2.LINE_AA)
+    cv2.putText(canvas, 'Lenght', (0,15), cv2.FONT_HERSHEY_PLAIN , 1, (0,0,0), 1, cv2.LINE_AA)
+    cv2.putText(canvas, 'Direction', (560,40), cv2.FONT_HERSHEY_PLAIN , 1, (0,0,0), 1, cv2.LINE_AA)
 
-    fig.set_size_inches(4, 4)
+    a = numpy.int32(numpy.add(numpy.multiply(numpy.divide(vectorLengths,3),-1),285))
 
-    ys = GVLforFrames
-    xs = list(range(len(ys)))
-    
-    plt.ylabel('Global motion vector length')
-    plt.xlabel('20 frames')
+    step = 15
+    i = 1
+    while(i<len(a)):
+        cv2.line(canvas, (step*i,a[i-1]), (step*i+step,a[i]), (0,0,255), 2)
+        i+=1
 
-    line1, = plt.plot(xs,ys)
-
-    line1.set_ydata(ys)
-
-    fig.canvas.draw()
-
-    # convert canvas to image
-    img = numpy.fromstring(fig.canvas.tostring_rgb(), dtype=numpy.uint8,sep='')
-
-    img  = img.reshape(fig.canvas.get_width_height()[::-1] + (3,))
-
-    # img is rgb, convert to opencv's default bgr
-    img = cv2.cvtColor(img,cv2.COLOR_RGB2BGR)
+    cv2.arrowedLine(canvas, (0+600, 0+150), (int(globalDirection[0]/8)+600, int(globalDirection[1]/8)+150), (0,0,0), 2)
 
 
-    # display image with opencv or any operation you like
-    cv2.imshow("plot",img)
-    #plt.show()
+    cv2.imshow("Test",canvas)

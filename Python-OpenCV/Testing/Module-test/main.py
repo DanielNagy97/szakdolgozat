@@ -57,9 +57,6 @@ while True:
         if k == 27:
             break
 
-        #plotting the global motion vectors for the last 20 frames # very slow
-        #vf.showResults()
-
     else:
         break
 
