@@ -1,0 +1,74 @@
+\documentclass[a4paper]{article}
+
+% Set margins
+\usepackage[hmargin=2cm, vmargin=2cm]{geometry}
+
+\frenchspacing
+
+% Language packages
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[magyar]{babel}
+
+% AMS
+\usepackage{amssymb,amsmath}
+
+% Graphic packages
+\usepackage{graphicx}
+
+% Colors
+\usepackage{color}
+\usepackage[usenames,dvipsnames]{xcolor}
+
+% Enumeration
+\usepackage{enumitem}
+
+\begin{document}
+
+\noindent \textbf{Szakdolgozat I. Féléves beszámoló}
+
+\vskip 8mm
+
+\noindent {\Large Nagy Dániel Zoltán: Kiterjesztett valóság alapú prezentációs szoftver készítése}
+
+\vskip 4mm
+
+\noindent Neptun kód: \texttt{JJ181J}
+
+\vskip 1cm
+
+\section*{Feladatkiírás}
+
+A prezentációk készítésének egy újszerű és látványos módját adják a kiterjesztett valóság alapú megoldások. Ezek segítségével a prezentáló személy virtuális vezérlők használatával mutathatja be a témakört. A dolgozatban az elérhető képfeldolgozási módszerek segítségével egy olyan alkalmazás készítésére van szükség, amellyel a prezentációhoz előkészített virtuális elemeket a prezentáló személy interaktív módon tudja irányítani. Az alkalmazás a bemenetként kapott videófolyamot kiegészíti a prezentációhoz tartozó elemek megjelenítésével. A feladat megoldása során definiálni kell a vezérlőket, azok működését példákkal illusztrálva be kell mutatni, illetve el kell készíteni a hozzájuk tartozó szoftveres implementációt.
+
+\section*{Féléves munka}
+
+A félév során a szakdolgozatomhoz elkészítendő programom tervezését és fejlesztésének megkezdését helyeztem előtérbe. A program elkészítéséhez a Python programozási nyelvet választottam. A Python egy általános célú, nagyon magas szintű programozási nyelv. Előnye, hogy megköveteli a programozótól az olvasható programkód készítést, valamint a nyelvi szerkezetei is közel állnak az emberi nyelvhez. Interpretált nyelv, tehát nincs elválasztva a forrás- és tárgykód, a megírt program egyből futtatható, ha rendelkezünk Python értelmezővel. Nincs szükség hosszas fordításra, a megírt változások egyből kipróbálhatók, ez gyors fejlesztést tesz lehetővé.
+
+A Pythonhoz számtalan kiegészítő csomag létezik. Az OpenCV képfeldolgozó és számítógépes látással foglalkozó függvénykönyvtár sok lehetőséget nyújt a szakdolgozatom programjának elkészítéséhez. Az OpenCV-hez alapértelmezetten a NumPy nevű csomag is jár. A NumPy nagy, többdimenziós tömbök kezelését segíti egy magas szintű matematikai függvénykönyvtárral. A képek gyors feldolgozásához elengedhetetlen ez a csomag.
+
+A programom egy kamerából kapott színes képfolyamot kell, hogy elemezzen valós időben. A videófolyamból kinyert információk befolyásolják/irányítják majd a program működését. A felhasználó elsősorban mozgások, gesztusok segítségével tud interakcióba lépni a virtuális elemekkel. Ehhez egy olyan rendszert kell megalkotni, ami képes érzékelni a mozgást, meg tudja adni a mozgás irányát, hosszát, helyzetét. Módszerek után kutatva arra a következtetésre jutottam, hogy az úgynevezett Optical Flow eljárás vektormezőbe szervezett formája a legmegfelelőbb erre a feladatra. A módszer alapgondolata videófolyamokra nézve az, hogy az aktuális és az előző képkockát vizsgálva, az előző képkockára egy rácsszerkezetben elhelyezkedő ponthalmazt illesztünk, az egyes pontokhoz pedig egy-egy pixelt/képablakot rendelünk. Majd meg kell határozni, hogy az előző képkockán elhelyezkedő vizsgálandó pontok az aktuális képkockán hol helyezkednek el. A kapott pontpárokból egy vektormezőt kapunk, amelyből a mozgásra vonatkozó információk ezután kinyerhetők. A rácsszerkezet sűrűségét állítva több pontot is vizsgálhatunk, így pontosabb képet kapunk a képfolyamon történő mozgásról. 
+Az Optical Flow megvalósítására az OpenCV 4.1.1 két metódust is ad. Ezek közül a Bruce D. Lucas és Takeo Kanade által kidolgozott munkáján alapuló \texttt{cv2.calcOpticalFlowPyrLK} függvényt választottam. A másik eljárás az ún Dense Optical Flow-t valósítja meg. Ez nagyon számításigényesnek bizonyult még alacsony felbontás mellett is, a valós idejű futás elképzelhetetlen egy gyengébb hardver esetében. A Lucas-Kanade implementáció ezzel szemben, tapasztalatom szerint, kielégítő futási idővel kecsegtet. Az eljárásnak megadható, hogy mely képpontokra számolja ki az optical flow vektorokat. Ezen paramétert, a vizsgálandó képpontokat, egy többdimenziós NumPy vektorral lehet megadni. Továbbá paraméterként vár két szürkeárnyalatos képet is és az eljárás további paramétereit, melyet dictionary formátumban kell átadni a metódusnak. A függvénynek három visszatérési értéke van. Az első visszadja a kiszámított új pontokat egy többdimenziós NumPy vektorban. A második egy státusz változó, ami egy n elemű tömböt ad vissza, amely olyan hosszú, mint a paraméterként beadott vektor pixel koordinátapárok száma. Az elemek 0 vagy 1 értéket vehet fel. Ha az eljárás sikeres volt a vizsgált pixelnél, akkor 1 értéket kap, egyébként 0-t. A harmadik visszatérési érték pedig az error, ami szintén egy n elemű tömböt ad vissza a hiba-mérték értékekkel. Az, hogy minek a hibáját vizsgálja az eljárás, paraméterezhető. Ezen metódus használatával egyszerűen megvalósítható az Optical Flow vektormezőn alapuló változata. A rácsszerkezetben elhelyezkedő vizsgálandó pontokat meghatározva paraméterezhető az eljárás. A program fő ciklusán belül minden iteráció végén visszaállítja a pontokat az eredeti helyükre, hogy a következő lépésben újra ezekkel a pontokkal vizsgálja meg a pontok eltéréseit az előző és az aktuális képkockán. A kapott új pontokat és a régi pontokat az OpenCV \texttt{cv2.arrowedLine} primitívkirajzoló függvényével rajzolt nyilaival szemlélteti a program.
+
+A kapott vektormezőből globális eredővektort számol a program. Ezzel meghatározható a képernyőn történő mozgás iránya, illetve mértéke. Ennek szemléltetésére a primitívkirajzoló függvények segítségével egy folyton frissülő grafikont is szerkesztettem, amelyen megtekinthető a vektor hosszának változása a legfrissebb 30 képkockára nézve és egy másik ábrán ezen vektor irányát figyelhetjük meg.
+
+A programhoz elképzeltünk egy úgynevezett Shift funkciót is, amelyek egy lehetséges implementációját a kapott vektormező felhasználásával készítettem el. A funkció lényege az, hogy a képfolyamra rajzolt bizonyos virtuális elemeket olyan tulajdonsággal látjuk el, hogy azok reagáljanak a rájuk vonatkozó mozgásokra helyzetváltoztatással. Vagyis a prezentáló ezen virtuális elemekkel közvetlenül tud majd érintkezni, a mozgás hatására ezek az elemek eltolódnak. A felhasználó úgy érezheti, mintha az adott virtuális elemet, például a kezei segítségével tolhatja el. Valójában minden mozgásra érzékenyek ezek az elemek, hiszen a vektormezőn elhelyezkedő helyzetéből és abból kapott értékek hatására mozdul el.
+Hasonló funkció az elképzelt Grab funkció is. Amelynek próbaverziója szintén a Lucas-Kanade módszer segítségével működik, de itt az elem követése egy dedikált pont követésével történik. A funkció a tervek szerint úgy fog működni, hogy ha a felhasználó elkapja a virtuális elemet a kezével, akkor azt tudja majd mozgatni és elengedés hatására az elem az új helyén marad majd. Az elkapás pillanatának vizsgálatára a következő bekezdésben leírt eljárás fog segítségünkre lenni. 
+A mozgás vizsgálatára további módszerek is rendelkezésre állnak. Ilyen például a Frame Differencing eljárás is, melynek célja hogy két képkocka abszolút különbségét számolja ki és ezt visszaadja egy harmadik képen. Ezzel a technikával elsősorban a videófolyamon történő mozgás helyzetét kívánjuk meghatározni. Továbbá információt kaphatunk a mozgás méretéről is, ugyanis a kapott képre küszöbölés képfeldolgozási technikát alkalmazva a kimeneti kép pixeleinek intenzitásai 0 és 255 értékeket vehetnek fel, és az így kapott egybefüggő pixelhalmazokból is kinyerhetők hasznos információk a mozgásra vonatkozólag. Például az adott mozdulatok így hasonló formákat fognak felölteni, a mozdulatokat kategorizálhatjuk a méretük és formájuk szerint. Továbbá ezek az információk is hasznos paraméterként beadhatók a mozgást felismerő neurális hálóba.
+
+A mozgásokat leíró adatokat, a tervek szerint, egy neurális hálónak adom majd be, amely eldönti, hogy a prezentáló az adott csúszóablakon belül milyen mozdulatot hajtott végre. Ehhez elsősorban rendelkezésre kell állnia az összes tervezett eljárásnak, amelyekből megkaphatók a paraméterek. Ilyen eljárások többek között a körkörös mozdulatok detektálása, vagy az ellenkező irányba tartó mozdulatok vizsgálata. Ezen kívül definiálni kell a dedikált mozdulatokat is, amelyeket a neurális háló fel tud majd ismeri. A háló betanításához sok tanítómintára lesz szükség.
+
+\vskip 3cm
+
+\noindent Javasolt érdemjegy:
+
+\vskip 1cm
+
+\noindent Miskolc, 2019.12.06.
+
+
+\hskip 11.3cm Piller Imre
+
+\hskip 11cm (Témavezető)
+
+\end{document}
