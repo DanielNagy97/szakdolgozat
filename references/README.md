@@ -16,6 +16,8 @@
 
 * [AddWeighted (Image Blending)](http://www.uni-miskolc.hu/~qgenagyd/references/OpenCVImageBlending/OpenCV%20%20Operations%20on%20arrays.html#gafafb2513349db3bcff51f54ee5592a19)
 
+* [Background Substraction](http://www.uni-miskolc.hu/~qgenagyd/references/OpenCVBackgroundSubstraction/Background%20Subtraction%20%e2%80%94%20OpenCV-Python%20Tutorials%201%20documentation.html)
+
 ## Similar Works
 
 * [Interactive Body-Driven Graphics for Augmented VideoPerformance](http://www.uni-miskolc.hu/~qgenagyd/references/Interactive%20Body-Driven%20Graphics%20for%20Augmented%20VideoPerformance.pdf)
