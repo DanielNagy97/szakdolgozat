@@ -12,6 +12,10 @@
 
 * [Thresholding](http://www.uni-miskolc.hu/~qgenagyd/references/OpenCVThresholding/OpenCV%20%20Image%20Thresholding.html)
 
+* [Object Tracking](http://www.uni-miskolc.hu/~qgenagyd/references/OpenCVObjectTracking/OpenCV%20%20Object%20Tracking.html)
+
+* [AddWeighted (Image Blending)](http://www.uni-miskolc.hu/~qgenagyd/references/OpenCVImageBlending/OpenCV%20%20Operations%20on%20arrays.html)
+
 ## Similar Works
 
 * [Interactive Body-Driven Graphics for Augmented VideoPerformance](http://www.uni-miskolc.hu/~qgenagyd/references/Interactive%20Body-Driven%20Graphics%20for%20Augmented%20VideoPerformance.pdf)
