@@ -30,7 +30,7 @@ showResults(vectorLengths,globalDirection)
 HeatMap
 * A vektormező egyes vektorainak a hossza ebben a mátrixban figyelhető meg. Minél hosszabb egy vektor, annál pirosabb színnel jelöli a program. Terveim szerint az így kapott képet vizsgálva, meghatározható, hogy mely vektorok tartoznak egybe. Ez az információ további funkciók megvalósításához szolgálhat segítségül. Ilyen funkció például az ellentétes irányú mozgások vizsgálata is.
 
-![HeatMap image](screenshots/HeatMap_screenshot_14.12.2019)
+![HeatMap image](screenshots/HeatMap_screenshot_14.12.2019.png)
 
 
 ## framediffModule.py
