@@ -20,7 +20,7 @@ capHeight = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
 capWidth = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
 
 #generating points for vector field
-gridStep = int(capWidth/16/2)
+gridStep = int(capWidth/16)
 oldPoints = vf.vectorFieldGrid(gridStep,capWidth,capHeight)
 originalPoints = oldPoints.copy()
 
