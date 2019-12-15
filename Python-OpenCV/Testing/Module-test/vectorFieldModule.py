@@ -75,8 +75,46 @@ def drawVectorField(canvas,oldPoints,newPoints):
     AVGVLforFrames = AVGVLforFrames[-30:]
 
     showResults(AVGVLforFrames,globalDirectionVector,vectorCount,plotCanvas)
-    resizedHeatMap = cv2.resize(HeatMapCanvas, dsize=(640, 320), interpolation=cv2.INTER_AREA)
+    
+    resizedHeatMap = cv2.resize(HeatMapCanvas, dsize=(600, 320), interpolation=cv2.INTER_AREA)
+
+    greyHeat = cv2.cvtColor(HeatMapCanvas,cv2.COLOR_BGR2GRAY)
+    ret, thresholdedHeat = cv2.threshold(greyHeat,40,255,cv2.ADAPTIVE_THRESH_MEAN_C)
+    contours, hierarchy = cv2.findContours(thresholdedHeat, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+
+    oldPoints3D = oldPoints.reshape(15,8,2)
+    newPoints3D = newPoints.reshape(15,8,2)
+
+    count = 0
+
+    for contour in contours:
+        (x,y,w,h) = cv2.boundingRect(contour)
+        rectArea = w*h
+        if rectArea < 2:
+            continue
+        else:
+            count += 1
+
+            localVectorSum = [[0.0, 0.0],[0.0, 0.0]]
+            localDirectionVector = [0.0, 0.0]
+
+            cv2.rectangle(resizedHeatMap, (x*40,y*40), (x*40+w*40, y*40+h*40), (255,255,255),2)
+
+            for i in range(h):
+                for j in range(w):
+                    localVectorSum[0][0] += oldPoints3D[j+x][i+y][0]
+                    localVectorSum[0][1] += oldPoints3D[j+x][i+y][1]
+                    localVectorSum[1][0] += newPoints3D[j+x][i+y][0]
+                    localVectorSum[1][1] += newPoints3D[j+x][i+y][1]
+            localDirectionVector[0] = localVectorSum[1][0]-localVectorSum[0][0]
+            localDirectionVector[1] = localVectorSum[1][1]-localVectorSum[0][1]
+
+            cv2.arrowedLine(resizedHeatMap, (int(x*40+(w*40)/2), int(y*40+(h*40)/2)), (int(localDirectionVector[0]+x*40+(w*40)/2), int(localDirectionVector[1]+y*40+(h*40)/2)), (0,255,255), 2)
+
+    cv2.putText(resizedHeatMap, str(count), (10,150), cv2.FONT_HERSHEY_SIMPLEX , 5, (0,0,0), 3, cv2.LINE_AA)
+
     cv2.imshow("HeatMap",resizedHeatMap)
+    cv2.imshow("HdeatMap",thresholdedHeat)
 
 def getVectorLength(vector):
     return  math.sqrt(math.pow(vector[0],2)+math.pow(vector[1],2))
