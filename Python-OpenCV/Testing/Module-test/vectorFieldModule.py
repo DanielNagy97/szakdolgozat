@@ -53,6 +53,7 @@ def drawVectorField(canvas,oldPoints,newPoints):
 
             cv2.arrowedLine(canvas, (oldX, oldY), (newX, newY), (0,0,255), 2)
         
+        
         currentLenght = int(getVectorLength([newX-oldX,newY-oldY])*10)
         if currentLenght > 255:
             currentLenght = 255

@@ -53,12 +53,14 @@ while True:
 
         localVectorSum = [[0.0, 0.0],[0.0, 0.0]]
         localDirectionVector = [0.0, 0.0]
+        vectorCount = 0
 
         for k in range(int(newPoints.size/2)):
             oldX, oldY = oldPoints[k].ravel()
             newX, newY = newPoints[k].ravel()
             if abs(oldX-newX) >= 2 or abs(oldY-newY) >= 2:
                 if rectX < oldX < rectX+rectW and rectY < oldY < rectY+rectH:
+                    vectorCount += 1
                     localVectorSum[0][0] += oldX
                     localVectorSum[0][1] += oldY
                     localVectorSum[1][0] += newX
@@ -68,8 +70,9 @@ while True:
         localDirectionVector[0] = localVectorSum[1][0]-localVectorSum[0][0]
         localDirectionVector[1] = localVectorSum[1][1]-localVectorSum[0][1]
 
-        rectXV +=localDirectionVector[0]*0.1
-        rectYV +=localDirectionVector[1]*0.1
+        if vectorCount > 0:
+            rectXV +=localDirectionVector[0]/vectorCount
+            rectYV +=localDirectionVector[1]/vectorCount
 
         rectX +=rectXV
         rectY +=rectYV

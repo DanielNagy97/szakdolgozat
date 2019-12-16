@@ -2,11 +2,10 @@ import cv2
 import numpy
 import vectorFieldModule as vf
 import framediffModule as fd
+import initModule as init
 
 #windows
-cv2.namedWindow("test")
-cv2.namedWindow("vectorField")
-cv2.namedWindow("frameDiff")
+init.init()
 
 #capture
 cap = cv2.VideoCapture(0)
