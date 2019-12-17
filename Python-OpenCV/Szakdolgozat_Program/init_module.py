@@ -49,5 +49,6 @@ def init_canvases(cap_height,cap_width):
 
     #if the grid_step is 16 and the aspect ratio is 16:9 then the vector field consists of 8*15 points
     heat_map_canvas = np.zeros([8,15,3],dtype=np.uint8)
+    #heat_map_canvas = np.zeros([17,32,3],dtype=np.uint8)
 
     return (vector_field_canvas,frame_diff_canvas,plot_canvas,heat_map_canvas)

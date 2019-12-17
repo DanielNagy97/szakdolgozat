@@ -12,12 +12,12 @@ def calc_optical_flow(old_gray_frame,gray_frame,old_points):
 
 
 def vector_field_grid(grid_step, cap_width, cap_height):
-    for i in range(grid_step, cap_width, grid_step):
-        for j in range(grid_step, cap_height, grid_step):
+    for i in range(grid_step, cap_height, grid_step):
+        for j in range(grid_step, cap_width, grid_step):
             if i == grid_step and j == grid_step:
-                old_points = np.array([[i, j]], dtype=np.float32)
+                old_points = np.array([[j, i]], dtype=np.float32)
             else:
-                old_points = np.concatenate((old_points, np.array([[i,j]], dtype=np.float32)))
+                old_points = np.concatenate((old_points, np.array([[j, i]], dtype=np.float32)))
     return old_points
 
 
@@ -26,25 +26,18 @@ def draw_vector_field(old_points,new_points,vector_field_canvas):
     for k in range(int(new_points.size/2)):
         current_vector = np.subtract(new_points[k],old_points[k])
         if abs(current_vector[0]) >= 2 or abs(current_vector[1]) >= 2:
-            cv2.arrowedLine(vector_field_canvas, tuple(old_points[k]), tuple(new_points[k]), (0,0,255), 2)
+            cv2.arrowedLine(vector_field_canvas, tuple(old_points[k]), tuple(new_points[k]), (0,0,0), 2)
 
 
 def heat_map(old_points, new_points, heat_map_canvas):
-    old_points_3D = old_points.reshape(15,8,2)
-    new_points_3D = new_points.reshape(15,8,2)
+    old_points_3D = old_points.reshape(8,15,2)
+    new_points_3D = new_points.reshape(8,15,2)
 
-    i = 0
-    j = 0
-    for k in range(int(new_points.size/2)):
-        current_vector = np.subtract(new_points[k],old_points[k])
-        current_vector_lenght = int(get_vector_lenght(current_vector)*10)
-        if current_vector_lenght > 255:
-            current_vector_lenght = 255
-        heat_map_canvas[i][j] = (255-current_vector_lenght,0,current_vector_lenght)
-        i += 1
-        if i == 8:
-            j += 1
-            i = 0
+    vector_lenghts = np.sqrt(np.sum(np.power(np.subtract(new_points,old_points),2),axis=1))
+    heat_values = np.int32(np.multiply(vector_lenghts,10))
+    heat_values = np.where(heat_values > 255,255,heat_values)
+
+    heat_map_canvas = np.uint8(np.dstack((np.subtract(255,heat_values),np.zeros(len(heat_values),dtype=np.uint8),heat_values)).reshape(8,15,3))
 
     resized_heat_map = cv2.resize(heat_map_canvas, dsize=(600, 320), interpolation=cv2.INTER_AREA)
 
@@ -54,6 +47,10 @@ def heat_map(old_points, new_points, heat_map_canvas):
 
     count = 0
 
+    different_direction = 0
+
+    motion_points = np.empty((0,2), dtype=np.float32)
+
     for contour in contours:
         (x,y,w,h) = cv2.boundingRect(contour)
         rectArea = w*h
@@ -61,15 +58,32 @@ def heat_map(old_points, new_points, heat_map_canvas):
             continue
         else:
             count += 1
-            local_vector_sum = np.array([old_points_3D[x:x+w,y:y+h].sum(axis=0),new_points_3D[x:x+w,y:y+h].sum(axis=0)], dtype=np.float32).sum(axis=1)
+            local_vector_sum = np.array([old_points_3D[y:y+h,x:x+w].sum(axis=0),new_points_3D[y:y+h,x:x+w].sum(axis=0)], dtype=np.float32).sum(axis=1)
             local_direction_vector = np.subtract(local_vector_sum[1],local_vector_sum[0])
 
-            cv2.rectangle(resized_heat_map, (x*40,y*40), (x*40+w*40, y*40+h*40), (255,255,255),2)
-            cv2.arrowedLine(resized_heat_map, (int(x*40+(w*40)/2), int(y*40+(h*40)/2)), (int(local_direction_vector[0]+x*40+(w*40)/2), int(local_direction_vector[1]+y*40+(h*40)/2)), (0,255,255), 2)
+            local_normalized_direction_vector = normalize_vector(local_direction_vector)
 
-    cv2.putText(resized_heat_map, str(count), (10,150), cv2.FONT_HERSHEY_SIMPLEX , 5, (0,0,0), 3, cv2.LINE_AA)
+            cv2.rectangle(resized_heat_map, (x*40,y*40), (x*40+w*40, y*40+h*40), (255,255,255),2)
+            cv2.arrowedLine(resized_heat_map, (int(x*40+(w*40)/2), int(y*40+(h*40)/2)), (int(local_normalized_direction_vector[0]*100+x*40+(w*40)/2), int(local_normalized_direction_vector[1]*100+y*40+(h*40)/2)), (0,255,255), 2)
+
+            motion_points = np.append(motion_points, np.array([local_normalized_direction_vector]), axis=0)
+
+    if len(motion_points) == 2:
+        motion_points_sum = np.abs(np.sum(motion_points,axis=0))
+        sum_of_a_sum = np.sum(motion_points_sum)
+
+        epsilon = 0.9
+
+        different_direction = (epsilon-sum_of_a_sum)*100
+
+        if different_direction < 0:
+            different_direction = 0
+    
+    cv2.putText(resized_heat_map, str(np.format_float_positional(different_direction,precision=2)), (10,50), cv2.FONT_HERSHEY_SIMPLEX , 2, (0,0,0), 3, cv2.LINE_AA)
+    #cv2.putText(resized_heat_map, str(count), (10,150), cv2.FONT_HERSHEY_SIMPLEX , 5, (0,0,0), 3, cv2.LINE_AA)
 
     cv2.imshow("HeatMap",resized_heat_map)
+    #cv2.imshow("HeatMap",heat_map_canvas)
     #cv2.imshow("ThresholdedHeatMap",thresholded_heat)
 
 
@@ -94,6 +108,8 @@ def global_resultant_vector(old_points,new_points,plot_canvas):
 def get_vector_lenght(vector):
     return np.sqrt(np.sum(np.power(vector,2)))
 
+def normalize_vector(vector):
+    return np.divide(vector, get_vector_lenght(vector)) 
 
 def show_global_results(avg_vector_lenghts,global_direction_vector,canvas):
     canvas.fill(255)
