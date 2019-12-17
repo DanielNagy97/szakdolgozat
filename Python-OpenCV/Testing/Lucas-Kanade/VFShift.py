@@ -1,5 +1,5 @@
 import cv2
-import numpy
+import numpy as np
 
 cap = cv2.VideoCapture(0)
 
@@ -18,15 +18,14 @@ lk_params = dict( winSize  = (50,50),
                   maxLevel = 2,
                   criteria = (cv2.TERM_CRITERIA_EPS | cv2.TERM_CRITERIA_COUNT, 10, 0.03))
 
+gridStep = int(capWidth/16)
 
-gridStep = int(capWidth/16/2)
-
-for i in range(gridStep, capWidth, gridStep):
-    for j in range(gridStep, capHeight, gridStep):
+for i in range(gridStep, capHeight, gridStep):
+    for j in range(gridStep, capWidth, gridStep):
         if i == gridStep and j == gridStep:
-            oldPoints = numpy.array([[i, j]], dtype=numpy.float32)
+            oldPoints = np.array([[j, i]], dtype=np.float32)
         else:
-            oldPoints= numpy.concatenate((oldPoints, numpy.array([[i,j]], dtype=numpy.float32)))
+            oldPoints= np.concatenate((oldPoints, np.array([[j,i]], dtype=np.float32)))
 
 originalPoints = oldPoints.copy()
 
@@ -42,6 +41,8 @@ rectH = 100
 rectXV = 0.0
 rectYV = 0.0
 
+oldPoints_3D = oldPoints.reshape(8,15,2)
+
 while True:
     ret, frame = cap.read()
 
@@ -51,43 +52,40 @@ while True:
 
         newPoints, status, error = cv2.calcOpticalFlowPyrLK(oldGrayFrame, grayFrame, oldPoints, None, **lk_params)
 
-        localVectorSum = [[0.0, 0.0],[0.0, 0.0]]
-        localDirectionVector = [0.0, 0.0]
-        vectorCount = 0
+        newPoints_3D = newPoints.reshape(8,15,2)
 
         for k in range(int(newPoints.size/2)):
-            oldX, oldY = oldPoints[k].ravel()
-            newX, newY = newPoints[k].ravel()
-            if abs(oldX-newX) >= 2 or abs(oldY-newY) >= 2:
-                if rectX < oldX < rectX+rectW and rectY < oldY < rectY+rectH:
-                    vectorCount += 1
-                    localVectorSum[0][0] += oldX
-                    localVectorSum[0][1] += oldY
-                    localVectorSum[1][0] += newX
-                    localVectorSum[1][1] += newY
-                    cv2.arrowedLine(frame, (oldX, oldY), (newX, newY), (0,0,255), 2)
+            current_vector = np.subtract(newPoints[k],oldPoints[k])
+            if abs(current_vector[0]) >= 2 or abs(current_vector[1]) >= 2:
+                cv2.arrowedLine(frame, tuple(oldPoints[k]), tuple(newPoints[k]), (0,0,255), 2)
 
-        localDirectionVector[0] = localVectorSum[1][0]-localVectorSum[0][0]
-        localDirectionVector[1] = localVectorSum[1][1]-localVectorSum[0][1]
+        x = np.uint8(np.floor(rectX/gridStep))
+        y = np.uint8(np.floor(rectY/gridStep))
+        w = np.uint8(np.floor(rectW/gridStep))
+        h = np.uint8(np.floor(rectH/gridStep))
 
-        if vectorCount > 0:
-            rectXV +=localDirectionVector[0]/vectorCount
-            rectYV +=localDirectionVector[1]/vectorCount
+        localVectorSum = np.array([oldPoints_3D[y:y+h,x:x+w].sum(axis=0),newPoints_3D[y:y+h,x:x+w].sum(axis=0)], dtype=np.float32).sum(axis=1)
+        localDirectionVector = np.subtract(localVectorSum[1],localVectorSum[0])
+
+        vectorCount = len(localVectorSum)
+
+        rectXV +=localDirectionVector[0]/vectorCount*0.5
+        rectYV +=localDirectionVector[1]/vectorCount*0.5
 
         rectX +=rectXV
         rectY +=rectYV
 
-        rectXV *= 0.7
-        rectYV *= 0.7
+        rectXV *= 0.8
+        rectYV *= 0.8
 
-        if rectX+(rectW/2) >= capWidth:
-            rectX -= capWidth
-        if rectY+(rectH/2) >= capHeight:
-            rectY -= capHeight
-        if rectX+(rectW/2) < 0:
-            rectX += capWidth
-        if rectY+(rectH/2) < 0:
-            rectY += capHeight
+        if rectX+rectW >= capWidth:
+            rectX = capWidth-rectW
+        if rectY+rectH >= capHeight:
+            rectY = capHeight-rectH
+        if rectX < 0:
+            rectX = 0
+        if rectY < 0:
+            rectY = 0
 
         cv2.rectangle(frame,(int(rectX),int(rectY)),(int(rectX)+int(rectW),int(rectY)+rectH),(0,255,0),3)
         cv2.arrowedLine(frame, (int(rectX+rectW/2), int(rectY+rectH/2)), (int(localDirectionVector[0]+rectX+rectW/2), int(localDirectionVector[1]+rectY+rectH/2)), (0,255,255), 2)
