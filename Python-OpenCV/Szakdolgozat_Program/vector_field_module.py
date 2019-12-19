@@ -1,25 +1,6 @@
 import cv2
 import numpy as np
 
-# Parameters for lucas kanade optical flow
-lk_params = dict( winSize  = (50,50),
-                  maxLevel = 2,
-                  criteria = (cv2.TERM_CRITERIA_EPS | cv2.TERM_CRITERIA_COUNT, 10, 0.03))
-
-
-def calc_optical_flow(old_gray_frame,gray_frame,old_points):
-    return cv2.calcOpticalFlowPyrLK(old_gray_frame, gray_frame, old_points, None, **lk_params)
-
-
-def vector_field_grid(grid_step, cap_width, cap_height):
-    for i in range(grid_step, cap_height, grid_step):
-        for j in range(grid_step, cap_width, grid_step):
-            if i == grid_step and j == grid_step:
-                old_points = np.array([[j, i]], dtype=np.float32)
-            else:
-                old_points = np.concatenate((old_points, np.array([[j, i]], dtype=np.float32)))
-    return old_points
-
 
 def draw_vector_field(old_points,new_points,vector_field_canvas):
     vector_field_canvas.fill(255)

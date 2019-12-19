@@ -3,40 +3,52 @@ import vector_field_module as vf
 import frame_diff_module as fd
 import init_module as init
 
+from arpt.grid import grid
+from arpt.cap_device import cap
+from arpt.video import video
+from arpt.view import view
+from arpt.frame_diff import frame_diff
+from arpt.canvas import canvas
+
+cap = cap(0,640,360)
+
+video = video(cap)
+
 init.init_windows()
-cap,cap_height,cap_width = init.init_capture_device()
-old_points = init.init_vector_field(cap_width,cap_height)
-old_gray_frame = init.init_first_frame(cap)
-vector_field_canvas,frame_diff_canvas,plot_canvas,heat_map_canvas = init.init_canvases(cap_height,cap_width)
 
-while True:
-    ret, frame = cap.read()
-    if ret:
-        frame = cv2.flip(frame, 1)
-        gray_frame = cv2.cvtColor(frame,cv2.COLOR_BGR2GRAY)
+frame_diff_canvas = canvas(cap.height,cap.width,1)
+vector_field_canvas = canvas(cap.height,cap.width,1,255)
+plot_canvas = canvas(300,700,3)
+heat_map_canvas = canvas(8,15,3)
 
-        new_points, status, error = vf.calc_optical_flow(old_gray_frame,gray_frame,old_points)
+grid = grid(16,cap.width,cap.height)
 
-        vf.draw_vector_field(old_points,new_points,vector_field_canvas)
-        vf.global_resultant_vector(old_points,new_points,plot_canvas)
-        vf.heat_map(old_points,new_points,heat_map_canvas)
+if __name__ == "__main__":
+    while True:
+        video.get_frame(cap)
 
-        frame_diff_canvas = fd.frame_differencing(gray_frame,old_gray_frame,frame_diff_canvas)
+        if video.ret:
+            
+            grid.calc_optical_flow(video._old_gray_frame, video._gray_frame)
 
-        old_gray_frame = gray_frame.copy()
+            vf.draw_vector_field(grid.old_points, grid.new_points,vector_field_canvas.canvas)
 
-        cv2.imshow('test', frame)
-        cv2.imshow('vectorField',vector_field_canvas)
-        cv2.imshow('frameDiff',frame_diff_canvas)
-        cv2.imshow('ResultsPlot',plot_canvas)
-        #cv2.imshow("HeatMap",heat_map_canvas)
+            vf.global_resultant_vector(grid.old_points, grid.new_points,plot_canvas.canvas)
+            vf.heat_map(grid.old_points,grid.new_points, heat_map_canvas.canvas)
 
-        k = cv2.waitKey(1) & 0xFF
-        if k == 27:
+            frame_diff_canvas.canvas = fd.frame_differencing(video._gray_frame, video._old_gray_frame, frame_diff_canvas.canvas)
+
+            cv2.imshow('test', video._frame)
+            cv2.imshow('vectorField',vector_field_canvas.canvas)
+            cv2.imshow('frameDiff',frame_diff_canvas.canvas)
+            cv2.imshow('ResultsPlot',plot_canvas.canvas)
+
+            k = cv2.waitKey(1) & 0xFF
+            if k == 27:
+                break
+
+        else:
             break
 
-    else:
-        break
-
-cap.release()
-cv2.destroyAllWindows()
+    cap.release()
+    cv2.destroyAllWindows()
