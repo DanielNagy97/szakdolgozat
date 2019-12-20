@@ -10,3 +10,6 @@ class canvas():
 
     def fill(self, value):
         self.canvas.fill(value)
+
+    def update(self, new_canvas):
+        self.canvas = new_canvas

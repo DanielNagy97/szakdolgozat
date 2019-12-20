@@ -43,7 +43,7 @@ def heat_map(old_points, new_points, heat_map_canvas):
             local_direction_vector = np.subtract(local_vector_sum[1],local_vector_sum[0])
 
             local_normalized_direction_vector = normalize_vector(local_direction_vector)
-
+            
             cv2.rectangle(resized_heat_map, (x*40,y*40), (x*40+w*40, y*40+h*40), (255,255,255),2)
             cv2.arrowedLine(resized_heat_map, (int(x*40+(w*40)/2), int(y*40+(h*40)/2)), (int(local_normalized_direction_vector[0]*100+x*40+(w*40)/2), int(local_normalized_direction_vector[1]*100+y*40+(h*40)/2)), (0,255,255), 2)
 
