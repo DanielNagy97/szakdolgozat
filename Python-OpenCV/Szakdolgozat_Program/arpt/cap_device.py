@@ -11,7 +11,8 @@ class cap():
         self.cam.set(cv2.CAP_PROP_FRAME_WIDTH,width)
 
     def get_frame_dimensions(self):
-        return int(self.cam.get(cv2.CAP_PROP_FRAME_WIDTH)), int(self.cam.get(cv2.CAP_PROP_FRAME_HEIGHT))
+        return  int(self.cam.get(cv2.CAP_PROP_FRAME_WIDTH)),
+                int(self.cam.get(cv2.CAP_PROP_FRAME_HEIGHT))
 
     def read(self):
         return self.cam.read()

@@ -55,8 +55,15 @@ class controller():
 
                 self.view.show_heat_map(self.heat_map_win, self.heat_map)
                 self.view.show_canvas(self.frame_diff_win, self.frame_diff_canvas)
-                self.view.show_vector_field(self.grid, self.vector_field_win, self.vector_field_canvas)
-                self.view.show_global_vector_results(self.grid, self.plot_win, self.plot_canvas)
+
+                self.view.show_vector_field(self.grid,
+                                            self.vector_field_win,
+                                            self.vector_field_canvas)
+
+                self.view.show_global_vector_results(   self.grid,
+                                                        self.plot_win,
+                                                        self.plot_canvas)
+                                                        
                 self.view.show_image(self.webcam_win, self.video._frame)
 
                 k = cv2.waitKey(1) & 0xFF

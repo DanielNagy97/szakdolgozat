@@ -28,16 +28,16 @@ class view():
     def show_heat_map(self, win, heat_map):
         resized_heat_map = cv2.resize(heat_map.map, dsize=(600, 320), interpolation=cv2.INTER_AREA)
 
-        for rect in heat_map.bounding_rects:
-            (x,y,w,h) = rect
+        for i in range(len(heat_map.bounding_rects)):
+            (x,y,w,h) = heat_map.bounding_rects[i]
             cv2.rectangle(resized_heat_map, (x*40,y*40), (x*40+w*40, y*40+h*40), (255,255,255),2)
-            #cv2.arrowedLine(   resized_heat_map,
-                                # (int(x*40+(w*40)/2),
-                                # int(y*40+(h*40)/2)),
-                                # (int(local_normalized_direction_vector[0]*100+x*40+(w*40)/2),
-                                # int(local_normalized_direction_vector[1]*100+y*40+(h*40)/2)),
-                                # (0,255,255),
-                                # 2)
+            cv2.arrowedLine(    resized_heat_map,
+                                (int(x*40+(w*40)/2),
+                                int(y*40+(h*40)/2)),
+                                (int(heat_map.motion_points_direction[i][0]*100+x*40+(w*40)/2),
+                                int(heat_map.motion_points_direction[i][1]*100+y*40+(h*40)/2)),
+                                (0,255,255),
+                                2)
         self.show_image(win,resized_heat_map)
 
 

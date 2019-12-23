@@ -1,22 +1,21 @@
-import numpy as np
 import cv2
+import numpy as np
 from arpt.vector import vector
 
 class grid():
-    def __init__(self,grid_density, cap_width, cap_height):
+    def __init__(self, grid_density, cap_width, cap_height):
         self.grid_step = int(cap_width/grid_density)
-        #self.old_points = np.empty((0,2),dtype=np.float32)
+        self.old_points = np.empty((0,2),dtype=np.float32)
+
         for i in range(self.grid_step, cap_height, self.grid_step):
             for j in range(self.grid_step, cap_width, self.grid_step):
-                if i == self.grid_step and j == self.grid_step:
-                    self.old_points = np.array([[j, i]], dtype=np.float32)
-                else:
-                    self.old_points = np.concatenate((self.old_points, np.array([[j, i]], dtype=np.float32)))
+                self.old_points = np.append(self.old_points,
+                                            np.array([[j,i]], dtype=np.float32),
+                                            axis=0)
+
         self.new_points = np.empty(self.old_points.shape)
         self.old_points_3D = self.old_points.reshape(8,15,2)
         self.avg_vector_lenghts = []
-
-
         self.lk_params = dict(  winSize  = (50,50),
                                 maxLevel = 2,
                                 criteria = (cv2.TERM_CRITERIA_EPS | cv2.TERM_CRITERIA_COUNT, 10, 0.03))
@@ -32,13 +31,14 @@ class grid():
         self.new_points_3D = self.new_points.reshape(8,15,2)
 
     def update_vector_lenghts(self):
-        self.vector_lenghts = np.sqrt(np.sum(np.power(np.subtract(self.new_points,self.old_points),2),axis=1))
+        direction_vectors = np.subtract(self.new_points, self.old_points)
+        self.vector_lenghts = np.sqrt(np.sum(np.power(direction_vectors, 2), axis=1))
 
     def calc_global_resultant_vector(self):
 
-        vector_sum = vector(np.array([ self.old_points.sum(axis=0),
-                                self.new_points.sum(axis=0)],
-                                dtype=np.float32))
+        vector_sum = vector(np.array(   [self.old_points.sum(axis=0),
+                                        self.new_points.sum(axis=0)],
+                                        dtype=np.float32))
                                 
         vector_count = len(self.old_points)
         self.global_direction_vector = vector_sum.dir_vector()
