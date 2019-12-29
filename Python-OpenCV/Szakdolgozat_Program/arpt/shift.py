@@ -1,7 +1,19 @@
 import numpy as np
 
-class shift():
+
+class Shift(object):
+    """
+    Shift vector field representation
+    """
+
     def __init__(self, pos_x, pos_y, width, height):
+        """
+        Initialize new shift vector field.
+        :param pos_x:
+        :param pos_y:
+        :param width:
+        :param height:
+        """
         self.pos_x = pos_x
         self.pos_y = pos_y
         self.width = width
@@ -10,6 +22,12 @@ class shift():
         self.velocity_y = 0.0
 
     def calc_shift(self, grid, cap):
+        """
+        Calculate the shift vectors.
+        :param grid: grid object
+        :param cap: capture device
+        :return: None
+        """
         x = np.uint8(np.floor(self.pos_x / grid.grid_step))
         y = np.uint8(np.floor(self.pos_y / grid.grid_step))
         w = np.uint8(np.floor(self.width / grid.grid_step))
@@ -43,3 +61,4 @@ class shift():
 
         if self.pos_y < 0:
             self.pos_y = 0
+
