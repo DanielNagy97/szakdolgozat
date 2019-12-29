@@ -36,42 +36,46 @@ class controller():
 
         self.view = view()
 
-
     def resize_window(self, win, width, heigth):
         win.resize(width,heigth)
 
+    def frame_diff_control(self):
+        self.frame_diff.frame_differencing(self.video, self.frame_diff_canvas)
+
+    def grid_control(self):
+        self.grid.calc_optical_flow(self.video)
+        self.grid.calc_global_resultant_vector()
+
+    def heat_map_control(self):
+        self.heat_map.calc_heat_map(self.grid)
+        self.heat_map.get_motion_points(self.grid)
+        self.heat_map.analyse_two_largest_points()
+
+    def shift_control(self):
+        self.shift.calc_shift(self.grid, self.cap)
+
+    def view_control(self):
+        self.view.show_heat_map(self.heat_map_win, self.heat_map)
+        self.view.show_canvas(self.frame_diff_win, self.frame_diff_canvas)
+        self.view.show_shift(self.shift, self.video)                     
+        self.view.show_image(self.webcam_win, self.video.frame)
+        self.view.show_vector_field(self.grid,
+                                    self.vector_field_win,
+                                    self.vector_field_canvas)
+        self.view.show_global_vector_results(self.grid,
+                                            self.plot_win,
+                                            self.plot_canvas)
 
     def main_loop(self):
         while True:
             self.video.get_frame(self.cap)
-
             if self.video.ret:
-                
-                self.frame_diff.frame_differencing(self.video, self.frame_diff_canvas)
 
-                self.grid.calc_optical_flow(self.video)
-                self.grid.calc_global_resultant_vector()
-
-                self.heat_map.calc_heat_map(self.grid)
-                self.heat_map.get_motion_points(self.grid)
-                self.heat_map.analyse_two_largest_points()
-
-                self.shift.calc_shift(self.grid, self.cap)
-
-                self.view.show_heat_map(self.heat_map_win, self.heat_map)
-                self.view.show_canvas(self.frame_diff_win, self.frame_diff_canvas)
-
-                self.view.show_vector_field(self.grid,
-                                            self.vector_field_win,
-                                            self.vector_field_canvas)
-
-                self.view.show_global_vector_results(   self.grid,
-                                                        self.plot_win,
-                                                        self.plot_canvas)
-
-                self.view.show_shift(self.shift, self.video)
-                                                        
-                self.view.show_image(self.webcam_win, self.video.frame)
+                self.frame_diff_control()
+                self.grid_control()
+                self.heat_map_control()
+                self.shift_control()
+                self.view_control()
 
                 k = cv2.waitKey(1) & 0xFF
                 if k == 27:
