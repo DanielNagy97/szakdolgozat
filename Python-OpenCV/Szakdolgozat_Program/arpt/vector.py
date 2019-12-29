@@ -1,6 +1,12 @@
 import numpy as np
 
-class vector():
+
+class Vector(object):
+    """
+    Vector representation
+    """
+    # QUEST: Does the np array not enought to represent vectors?
+
     def __init__(self, vector):
         self.vector = vector
 
@@ -12,3 +18,4 @@ class vector():
 
     def dir_vector(self):
         return vector(np.subtract(self.vector[1], self.vector[0]))
+

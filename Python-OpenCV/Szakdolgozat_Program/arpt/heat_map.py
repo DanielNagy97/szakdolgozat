@@ -2,11 +2,20 @@ import numpy as np
 import cv2
 from arpt.vector import vector
 
-class heat_map():
-    def __init__(self):
-        pass
+from arpt.vector import vector
+
+
+class HeatMap(object):
+    """
+    Heatmap class
+    """
 
     def calc_heat_map(self, grid):
+        """
+        Calculate the heatmap from the grid.
+        :param grid: the grid object
+        :return: None
+        """
         grid.update_new_points_3D()
         grid.update_vector_lenghts()
 
@@ -20,6 +29,11 @@ class heat_map():
         self.map = np.uint8(self.map)
 
     def get_motion_points(self, grid):
+        """
+        Get the motion points.
+        :param grid: the grid object
+        :return: None
+        """
         gray_map = cv2.cvtColor(self.map, cv2.COLOR_BGR2GRAY)
         ret, thresholded_heat = cv2.threshold(gray_map, 40, 255, cv2.ADAPTIVE_THRESH_MEAN_C)
         contours, hierarchy = cv2.findContours(thresholded_heat, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
@@ -52,8 +66,12 @@ class heat_map():
                                                 np.array([(x, y, w, h)],dtype=np.uint8),
                                                 axis=0)
 
-#For now this method is working for two points only...
     def analyse_two_largest_points(self):
+        """
+        Find the two largest points.
+        :return: None
+        NOTE: For now this method is working for two points only...
+        """
         self.different_direction = 0.0
         if len(self.motion_points_direction) == 2:
             motion_points_sum = np.abs(np.sum(self.motion_points_direction, axis=0))
@@ -61,7 +79,8 @@ class heat_map():
 
             epsilon = 1
 
-            self.different_direction = (epsilon-sum_of_a_sum)*100
+            self.different_direction = (epsilon - sum_of_a_sum) * 100
 
             if self.different_direction < 0:
                 self.different_direction = 0
+

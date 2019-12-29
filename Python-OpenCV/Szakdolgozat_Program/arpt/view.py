@@ -1,17 +1,28 @@
 import cv2
 import numpy as np
 
-class view():
-    def __init__(self):
-        pass
+
+class View(object):
+    """
+    Class for showing the values and results of other objects
+    """
 
     def show_canvas(self, win, canvas):
+        """
+        Show canvas.
+        """
         self.show_image(win, canvas.canvas)
 
     def show_image(self, win, image):
+        """
+        Show image.
+        """
         cv2.imshow(win.name, image)
 
     def show_vector_field(self, grid, win, canvas):
+        """
+        Show the vector field.
+        """
         canvas.fill(255)
         for k in range(len(grid.new_points)):
             current_vector = np.subtract(grid.new_points[k], grid.old_points[k])
@@ -26,6 +37,9 @@ class view():
 
 
     def show_heat_map(self, win, heat_map):
+        """
+        Show the heatmap.
+        """
         resized_heat_map = cv2.resize(heat_map.map, dsize=(600, 320), interpolation=cv2.INTER_AREA)
 
         for i in range(len(heat_map.bounding_rects)):
@@ -42,6 +56,9 @@ class view():
 
 
     def show_global_vector_results(self, grid, win, canvas):
+        """
+        Show the global vector results.
+        """
         canvas.fill(255)
 
         cv2.putText(    canvas.canvas,
@@ -96,13 +113,9 @@ class view():
     
         step = 15
         i = 1
-        while(i<len(avg_leghts)):
-            cv2.line(   canvas.canvas,
-                        (step*i, avg_leghts[i-1]),
-                        (step*i+step, avg_leghts[i]),
-                        (0, 0, 255),
-                        2)
-            i+=1
+        while i < len(avg_leghts):
+            cv2.line(canvas.canvas, (step*i, avg_leghts[i-1]), (step*i+step, avg_leghts[i]), (0, 0, 255), 2)
+            i += 1
 
         cv2.line(canvas.canvas, (15, avg_leghts[-1]), (i*step, avg_leghts[-1]), (0, 120, 0), 1)
 
@@ -116,8 +129,12 @@ class view():
         self.show_canvas(win, canvas)
 
     def show_shift(self, shift, video):
+        """
+        Show the shift vectors.
+        """
         cv2.rectangle(  video.frame,
                         (int(shift.pos_x), int(shift.pos_y)),
                         (int(shift.pos_x) + int(shift.width), int(shift.pos_y) + shift.height),
                         (0, 255, 0),
                         3)
+
