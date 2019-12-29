@@ -1,7 +1,7 @@
 import cv2
 
 class window():
-    def __init__(self,win_name, mode,pos_x=0,pos_y=0):
+    def __init__(self, win_name, mode, pos_x=0, pos_y=0):
         self.named_window = cv2.namedWindow(win_name, mode)
         self.name = win_name
         self.mode = mode

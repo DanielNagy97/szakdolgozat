@@ -20,14 +20,14 @@ lk_params = dict( winSize  = (50,50),
 
 gridStep = int(capWidth/16)
 
+oldPoints = np.empty((0,2),dtype=np.float32)
+
 for i in range(gridStep, capHeight, gridStep):
     for j in range(gridStep, capWidth, gridStep):
-        if i == gridStep and j == gridStep:
-            oldPoints = np.array([[j, i]], dtype=np.float32)
-        else:
-            oldPoints= np.concatenate((oldPoints, np.array([[j,i]], dtype=np.float32)))
+        oldPoints = np.append(oldPoints,
+                            np.array([[j,i]], dtype=np.float32),
+                            axis=0)
 
-originalPoints = oldPoints.copy()
 
 _, oldFrame = cap.read()
 oldFrame = cv2.flip(oldFrame, 1)
@@ -54,26 +54,24 @@ while True:
 
         newPoints_3D = newPoints.reshape(8,15,2)
 
-        for k in range(int(newPoints.size/2)):
-            current_vector = np.subtract(newPoints[k],oldPoints[k])
-            if abs(current_vector[0]) >= 2 or abs(current_vector[1]) >= 2:
-                cv2.arrowedLine(frame, tuple(oldPoints[k]), tuple(newPoints[k]), (0,0,255), 2)
-
         x = np.uint8(np.floor(rectX/gridStep))
         y = np.uint8(np.floor(rectY/gridStep))
         w = np.uint8(np.floor(rectW/gridStep))
         h = np.uint8(np.floor(rectH/gridStep))
 
-        localVectorSum = np.array([oldPoints_3D[y:y+h,x:x+w].sum(axis=0),newPoints_3D[y:y+h,x:x+w].sum(axis=0)], dtype=np.float32).sum(axis=1)
-        localDirectionVector = np.subtract(localVectorSum[1],localVectorSum[0])
+        localVectorSum = np.array([ oldPoints_3D[y:y+h,x:x+w].sum(axis=0),
+                                    newPoints_3D[y:y+h,x:x+w].sum(axis=0)],
+                                    dtype=np.float32).sum(axis=1)
+
+        localDirectionVector = np.subtract(localVectorSum[1], localVectorSum[0])
 
         vectorCount = len(localVectorSum)
 
-        rectXV +=localDirectionVector[0]/vectorCount*0.5
-        rectYV +=localDirectionVector[1]/vectorCount*0.5
+        rectXV += localDirectionVector[0]/vectorCount*0.5
+        rectYV += localDirectionVector[1]/vectorCount*0.5
 
-        rectX +=rectXV
-        rectY +=rectYV
+        rectX += rectXV
+        rectY += rectYV
 
         rectXV *= 0.8
         rectYV *= 0.8
@@ -89,7 +87,8 @@ while True:
 
         cv2.rectangle(frame,(int(rectX),int(rectY)),(int(rectX)+int(rectW),int(rectY)+rectH),(0,255,0),3)
         cv2.arrowedLine(frame, (int(rectX+rectW/2), int(rectY+rectH/2)), (int(localDirectionVector[0]+rectX+rectW/2), int(localDirectionVector[1]+rectY+rectH/2)), (0,255,255), 2)
-        oldPoints = originalPoints.copy()
+
+
         oldGrayFrame = grayFrame.copy()
 
         cv2.imshow('VFShift', frame)
