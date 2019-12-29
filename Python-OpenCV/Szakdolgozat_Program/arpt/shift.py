@@ -1,5 +1,5 @@
 import numpy as np
-from arpt.vector import vector
+from arpt.vector import Vector as vector
 
 
 class Shift(object):

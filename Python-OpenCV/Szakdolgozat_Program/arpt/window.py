@@ -14,7 +14,7 @@ class Window(object):
         :param pos_x: X position
         :param pos_y: Y position
         """
-        self.named_window = cv2.namedWindow(window_name, mode)
+        self.named_window = cv2.namedWindow(name, mode)
         self._name = name
         self.move(position)
 

@@ -11,13 +11,13 @@ class View(object):
         """
         Show canvas.
         """
-        self.show_image(win, canvas.canvas)
+        self.show_image(win, canvas._canvas)
 
     def show_image(self, win, image):
         """
         Show image.
         """
-        cv2.imshow(win.name, image)
+        cv2.imshow(win._name, image)
 
     def show_vector_field(self, grid, win, canvas):
         """
@@ -25,11 +25,11 @@ class View(object):
         """
         canvas.fill(255)
         for k in range(len(grid.new_points)):
-            current_vector = np.subtract(grid.new_points[k], grid.old_points[k])
+            current_vector = np.subtract(grid.new_points[k], grid._old_points[k])
             if abs(current_vector[0]) >= 2 or abs(current_vector[1]) >= 2:
 
-                cv2.arrowedLine(    canvas.canvas,
-                                    tuple(grid.old_points[k]),
+                cv2.arrowedLine(    canvas._canvas,
+                                    tuple(grid._old_points[k]),
                                     tuple(grid.new_points[k]),
                                     (0,0,0),
                                     2)
@@ -61,7 +61,7 @@ class View(object):
         """
         canvas.fill(255)
 
-        cv2.putText(    canvas.canvas,
+        cv2.putText(    canvas._canvas,
                         'Global Resultant Vector',
                         (250, 15),
                         cv2.FONT_HERSHEY_PLAIN,
@@ -70,7 +70,7 @@ class View(object):
                         1,
                         cv2.LINE_AA)
 
-        cv2.putText(    canvas.canvas,
+        cv2.putText(    canvas._canvas,
                         'AVG Vector Lenght',
                         (0, 15),
                         cv2.FONT_HERSHEY_PLAIN, 
@@ -79,10 +79,10 @@ class View(object):
                         1,
                         cv2.LINE_AA)
 
-        cv2.line(canvas.canvas, (15, 285), (470, 285), (0, 180, 0), 1)
-        cv2.line(canvas.canvas, (15, 285), (15, 20), (0, 180, 0), 1)
+        cv2.line(canvas._canvas, (15, 285), (470, 285), (0, 180, 0), 1)
+        cv2.line(canvas._canvas, (15, 285), (15, 20), (0, 180, 0), 1)
 
-        cv2.putText(    canvas.canvas,
+        cv2.putText(    canvas._canvas,
                         'Direction',
                         (560, 40),
                         cv2.FONT_HERSHEY_PLAIN,
@@ -91,8 +91,8 @@ class View(object):
                         1,
                         cv2.LINE_AA)
 
-        cv2.line(canvas.canvas, (600, 250), (600, 50), (0, 180, 0), 1)
-        cv2.line(canvas.canvas, (500, 150), (700, 150), (0, 180, 0), 1)
+        cv2.line(canvas._canvas, (600, 250), (600, 50), (0, 180, 0), 1)
+        cv2.line(canvas._canvas, (500, 150), (700, 150), (0, 180, 0), 1)
 
         avg_leghts = np.int32(np.add(np.multiply(grid.avg_vector_lenghts, -20), 285))
         
@@ -100,9 +100,9 @@ class View(object):
 
         for dot in dots:
             position = np.int32(np.add(np.multiply(dot, -20), 285))
-            cv2.circle(canvas.canvas, (15, position), 1, (0, 180, 0), 3)
+            cv2.circle(canvas._canvas, (15, position), 1, (0, 180, 0), 3)
 
-            cv2.putText(    canvas.canvas,
+            cv2.putText(    canvas._canvas,
                             str(dot),
                             (0,position),
                             cv2.FONT_HERSHEY_PLAIN,
@@ -114,12 +114,12 @@ class View(object):
         step = 15
         i = 1
         while i < len(avg_leghts):
-            cv2.line(canvas.canvas, (step*i, avg_leghts[i-1]), (step*i+step, avg_leghts[i]), (0, 0, 255), 2)
+            cv2.line(canvas._canvas, (step*i, avg_leghts[i-1]), (step*i+step, avg_leghts[i]), (0, 0, 255), 2)
             i += 1
 
-        cv2.line(canvas.canvas, (15, avg_leghts[-1]), (i*step, avg_leghts[-1]), (0, 120, 0), 1)
+        cv2.line(canvas._canvas, (15, avg_leghts[-1]), (i*step, avg_leghts[-1]), (0, 120, 0), 1)
 
-        cv2.arrowedLine(    canvas.canvas,
+        cv2.arrowedLine(    canvas._canvas,
                             (0+600, 0+150),
                             (int(grid.global_direction_vector.vector[0]/8) + 600,
                             int(grid.global_direction_vector.vector[1]/8) + 150),

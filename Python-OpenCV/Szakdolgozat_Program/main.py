@@ -1,7 +1,5 @@
-from arpt.controller import controller
-
+from arpt.controller import Controller
 
 if __name__ == "__main__":
-    controller = controller()
+    controller = Controller()
     controller.main_loop()
-

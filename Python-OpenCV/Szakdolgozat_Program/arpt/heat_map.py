@@ -1,9 +1,6 @@
 import numpy as np
 import cv2
-from arpt.vector import vector
-
-from arpt.vector import vector
-
+from arpt.vector import Vector as vector
 
 class HeatMap(object):
     """
@@ -17,7 +14,7 @@ class HeatMap(object):
         :return: None
         """
         grid.update_new_points_3D()
-        grid.update_vector_lenghts()
+        grid.update_vector_lengths()
 
         self.heat_values = np.int32(np.multiply(grid.vector_lenghts, 10))
         self.heat_values = np.where(self.heat_values > 255, 255, self.heat_values)

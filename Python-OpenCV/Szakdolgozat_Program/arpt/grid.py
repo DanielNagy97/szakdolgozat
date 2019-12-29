@@ -1,7 +1,7 @@
 import cv2
 import numpy as np
 
-from arpt.vector import vector
+from arpt.vector import Vector as vector
 
 
 class Grid(object):
@@ -9,7 +9,7 @@ class Grid(object):
     Grid class
     """
     
-    def __init__(self, grid_density, cap_width, cap_height):
+    def __init__(self, grid_density, capture_width, capture_height):
         """
         Initialize the grid.
         :param grid_density: count of equidistant sections
@@ -18,9 +18,9 @@ class Grid(object):
         """
         self._old_points = np.empty((0, 2), dtype=np.float32)
         
-        grid_step = int(capture_width / grid_density)
-        for i in range(grid_step, capture_height, grid_step):
-            for j in range(grid_step, capture_width, grid_step):
+        self.grid_step = int(capture_width / grid_density)
+        for i in range(self.grid_step, capture_height, self.grid_step):
+            for j in range(self.grid_step, capture_width, self.grid_step):
                 self._old_points = np.append(self._old_points,
                                             np.array([[j, i]], dtype=np.float32),
                                             axis=0)

@@ -4,7 +4,7 @@ from arpt.grid import Grid
 from arpt.capture_device import CaptureDevice
 from arpt.video import Video
 from arpt.view import View
-from arpt.frame_diff import FrameDifference
+from arpt.frame_difference import FrameDifference
 from arpt.canvas import Canvas
 from arpt.window import Window
 from arpt.heat_map import HeatMap
@@ -25,19 +25,19 @@ class Controller(object):
         self._video = Video(self._capture)
 
         # NOTE: It is not necessarily a web camera.
-        self.webcam_win = Window("test", cv2.WINDOW_NORMAL, 0, 0)
-        self.vector_field_win = Window("vectorField", cv2.WINDOW_NORMAL, 840, 0)
-        self.frame_diff_win = Window("frameDiff", cv2.WINDOW_NORMAL, 420, 0)
-        self.heat_map_win = Window("HeatMap", cv2.WINDOW_NORMAL, 840, 350)
-        self.plot_win = Window("ResultsPlot", cv2.WINDOW_NORMAL, 0, 350)
+        self.webcam_win = Window("test", cv2.WINDOW_NORMAL, (0, 0))
+        self.vector_field_win = Window("vectorField", cv2.WINDOW_NORMAL, (840, 0))
+        self.frame_diff_win = Window("frameDiff", cv2.WINDOW_NORMAL, (420, 0))
+        self.heat_map_win = Window("HeatMap", cv2.WINDOW_NORMAL, (840, 350))
+        self.plot_win = Window("ResultsPlot", cv2.WINDOW_NORMAL, (0, 350))
 
         self.resize_window(self.plot_win, 576, 331)
         
-        self.frame_diff_canvas = Canvas(self.cap.height, self.cap.width, 1)
-        self.vector_field_canvas = Canvas(self.cap.height, self.cap.width, 1, 255)
+        self.frame_diff_canvas = Canvas(self._capture.height, self._capture.width, 1)
+        self.vector_field_canvas = Canvas(self._capture.height, self._capture.width, 1, 255)
         self.plot_canvas = Canvas(300, 700, 3)
 
-        self.grid = grid(16, self.cap.width, self.cap.height)
+        self.grid = Grid(16, self._capture.width, self._capture.height)
 
         self.frame_diff = FrameDifference()
         self.heat_map = HeatMap()
@@ -54,13 +54,56 @@ class Controller(object):
         # QUEST: Is method is necessary?
         win.resize(width, height)
 
+
+    def frame_diff_control(self):
+        """
+        Controlling the frame differencing function.
+        """
+        self.frame_diff.apply_frame_difference(self._video, self.frame_diff_canvas)
+
+    def grid_control(self):
+        """
+        Controlling vector field grid.
+        """
+        self.grid.calc_optical_flow(self._video)
+        self.grid.calc_global_resultant_vector()
+
+    def heat_map_control(self):
+        """
+        Controlling the motion heat-map function.
+        """
+        self.heat_map.calc_heat_map(self.grid)
+        self.heat_map.get_motion_points(self.grid)
+        self.heat_map.analyse_two_largest_points()
+
+    def shift_control(self):
+        """
+        Controlling the shift function.
+        """
+        self.shift.calc_shift(self.grid, self._capture)
+
+    def view_control(self):
+        """
+        Controlling the View.
+        """
+        self.view.show_heat_map(self.heat_map_win, self.heat_map)
+        self.view.show_canvas(self.frame_diff_win, self.frame_diff_canvas)
+        self.view.show_shift(self.shift, self._video)                     
+        self.view.show_image(self.webcam_win, self._video.frame)
+        self.view.show_vector_field(self.grid,
+                                    self.vector_field_win,
+                                    self.vector_field_canvas)
+        self.view.show_global_vector_results(self.grid,
+                                            self.plot_win,
+                                            self.plot_canvas)
+
     def main_loop(self):
         """
         The main event loop
         """
         while True:
-            self.video.get_frame(self.cap)
-            if self.video.ret:
+            self._video.get_frame(self._capture)
+            if self._video.ret:
 
                 self.frame_diff_control()
                 self.grid_control()
@@ -74,6 +117,6 @@ class Controller(object):
             else:
                 break
 
-        self.cap.release()
+        self._capture.release()
         cv2.destroyAllWindows()
 
