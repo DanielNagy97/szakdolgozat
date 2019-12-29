@@ -34,7 +34,7 @@ class view():
             cv2.arrowedLine(    resized_heat_map,
                                 (int(x*40 + (w*40) / 2),
                                 int(y*40 + (h*40) / 2)),
-                                (int(heat_map.motion_points_direction[i][0]*100 + x*40 + (w*40) / 2),
+                                (int(heat_map.motion_points_direction[i][0] * 100 + x*40 + (w*40) / 2),
                                 int(heat_map.motion_points_direction[i][1] * 100 + y*40 + (h*40) / 2)),
                                 (0, 255, 255),
                                 2)
@@ -97,7 +97,11 @@ class view():
         step = 15
         i = 1
         while(i<len(avg_leghts)):
-            cv2.line(canvas.canvas, (step*i, avg_leghts[i-1]), (step*i+step, avg_leghts[i]), (0, 0, 255), 2)
+            cv2.line(   canvas.canvas,
+                        (step*i, avg_leghts[i-1]),
+                        (step*i+step, avg_leghts[i]),
+                        (0, 0, 255),
+                        2)
             i+=1
 
         cv2.line(canvas.canvas, (15, avg_leghts[-1]), (i*step, avg_leghts[-1]), (0, 120, 0), 1)

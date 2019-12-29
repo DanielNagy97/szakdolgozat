@@ -1,6 +1,6 @@
-from arpt.vector import vector
 import numpy as np
 import cv2
+from arpt.vector import vector
 
 class heat_map():
     def __init__(self):

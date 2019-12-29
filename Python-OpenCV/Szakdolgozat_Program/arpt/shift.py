@@ -1,4 +1,5 @@
 import numpy as np
+from arpt.vector import vector
 
 class shift():
     def __init__(self, pos_x, pos_y, width, height):
@@ -10,21 +11,22 @@ class shift():
         self.velocity_y = 0.0
 
     def calc_shift(self, grid, cap):
-        x = np.uint8(np.floor(self.pos_x / grid.grid_step))
-        y = np.uint8(np.floor(self.pos_y / grid.grid_step))
-        w = np.uint8(np.floor(self.width / grid.grid_step))
-        h = np.uint8(np.floor(self.height / grid.grid_step))
+        x,y,w,h = np.uint8(np.floor(np.divide((self.pos_x,
+                                                self.pos_y,
+                                                self.width,
+                                                self.height), grid.grid_step)))
 
-        localVectorSum = np.array([ grid.old_points_3D[y:y+h, x:x+w].sum(axis=0),
-                                    grid.new_points_3D[y:y+h, x:x+w].sum(axis=0)],
-                                    dtype=np.float32).sum(axis=1)
 
-        localDirectionVector = np.subtract(localVectorSum[1], localVectorSum[0])
+        local_vector_sum = vector(np.array([grid.old_points_3D[y:y+h, x:x+w].sum(axis=0),
+                                            grid.new_points_3D[y:y+h, x:x+w].sum(axis=0)],
+                                            dtype=np.float32).sum(axis=1))
 
-        vectorCount = len(localVectorSum)
+        local_direction_vector = local_vector_sum.dir_vector()
 
-        self.velocity_x += localDirectionVector[0] / vectorCount*0.5
-        self.velocity_y += localDirectionVector[1] / vectorCount*0.5
+        vector_count = len(local_vector_sum.vector)
+
+        self.velocity_x += local_direction_vector.vector[0] / vector_count*0.5
+        self.velocity_y += local_direction_vector.vector[1] / vector_count*0.5
 
         self.pos_x += self.velocity_x
         self.pos_y += self.velocity_y
