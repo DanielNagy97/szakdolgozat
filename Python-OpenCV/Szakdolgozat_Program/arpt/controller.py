@@ -1,16 +1,6 @@
 import cv2
-
-from arpt.grid import Grid
-from arpt.capture_device import CaptureDevice
-from arpt.video import Video
-from arpt.view import View
-from arpt.frame_difference import FrameDifference
-from arpt.canvas import Canvas
-from arpt.window import Window
-from arpt.heat_map import HeatMap
-from arpt.shift import Shift
+from arpt import *
 # NOTE: Probably it is enought to import only the arpt package.
-
 
 class Controller(object):
     """
@@ -21,7 +11,7 @@ class Controller(object):
         """
         Initialize the controller.
         """
-        self._capture = CaptureDevice(0, 640, 360)
+        self._capture = CaptureDevice(0, 0, 0)
         self._video = Video(self._capture)
 
         # NOTE: It is not necessarily a web camera.
@@ -31,11 +21,11 @@ class Controller(object):
         self.heat_map_win = Window("HeatMap", cv2.WINDOW_NORMAL, (840, 350))
         self.plot_win = Window("ResultsPlot", cv2.WINDOW_NORMAL, (0, 350))
 
-        self.resize_window(self.plot_win, 576, 331)
+        self.plot_win.resize(576, 331)
         
-        self.frame_diff_canvas = Canvas(self._capture.height, self._capture.width, 1)
-        self.vector_field_canvas = Canvas(self._capture.height, self._capture.width, 1, 255)
-        self.plot_canvas = Canvas(300, 700, 3)
+        self.frame_diff_canvas = Canvas(self._capture.width, self._capture.height, 1)
+        self.vector_field_canvas = Canvas(self._capture.width, self._capture.height, 1, 255)
+        self.plot_canvas = Canvas(700, 300, 3)
 
         self.grid = Grid(16, self._capture.width, self._capture.height)
 
@@ -43,16 +33,6 @@ class Controller(object):
         self.heat_map = HeatMap()
         self.shift = Shift(200, 150, 100, 100)
         self.view = View()
-
-    def resize_window(self, win, width, height):
-        """
-        Resize the window.
-        :param win:
-        :param width:
-        :param height:
-        """
-        # QUEST: Is method is necessary?
-        win.resize(width, height)
 
 
     def frame_diff_control(self):
@@ -67,13 +47,15 @@ class Controller(object):
         """
         self.grid.calc_optical_flow(self._video)
         self.grid.calc_global_resultant_vector()
+        self.grid.update_new_points_3D()
+        self.grid.update_vector_lengths()
 
     def heat_map_control(self):
         """
         Controlling the motion heat-map function.
         """
-        self.heat_map.calc_heat_map(self.grid)
-        self.heat_map.get_motion_points(self.grid)
+        self.heat_map.calc_heat_map(self.grid, 10)
+        self.heat_map.get_motion_points(self.grid, 10)
         self.heat_map.analyse_two_largest_points()
 
     def shift_control(self):

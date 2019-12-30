@@ -18,7 +18,10 @@ lk_params = dict( winSize  = (50,50),
                   maxLevel = 2,
                   criteria = (cv2.TERM_CRITERIA_EPS | cv2.TERM_CRITERIA_COUNT, 10, 0.03))
 
-gridStep = int(capWidth/16)
+gridDensity = int(8)
+
+gridStep = int(capWidth/gridDensity)
+
 
 oldPoints = np.empty((0,2),dtype=np.float32)
 
@@ -41,7 +44,11 @@ rectH = 100
 rectXV = 0.0
 rectYV = 0.0
 
-oldPoints_3D = oldPoints.reshape(8,15,2)
+eze = int(gridDensity-1)
+aza = int(len(oldPoints)/eze)
+#aza = int(gridDensity/(16/9)-1)
+
+oldPoints_3D = oldPoints.reshape(aza,eze,2)
 
 while True:
     ret, frame = cap.read()
@@ -52,7 +59,20 @@ while True:
 
         newPoints, status, error = cv2.calcOpticalFlowPyrLK(oldGrayFrame, grayFrame, oldPoints, None, **lk_params)
 
-        newPoints_3D = newPoints.reshape(8,15,2)
+
+        for k in range(len(newPoints)):
+            #current_vector = np.subtract(newPoints[k],oldPoints[k])
+            #if abs(current_vector[0]) >= 2 or abs(current_vector[1]) >= 2:
+
+            cv2.arrowedLine(        frame,
+                                    tuple(oldPoints[k]),
+                                    tuple(newPoints[k]),
+                                    (0,0,0),
+                                    2)
+
+
+
+        newPoints_3D = newPoints.reshape(aza,eze,2)
 
         x = np.uint8(np.floor(rectX/gridStep))
         y = np.uint8(np.floor(rectY/gridStep))

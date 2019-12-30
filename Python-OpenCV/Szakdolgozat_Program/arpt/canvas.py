@@ -6,23 +6,24 @@ class Canvas(object):
     Canvas representation
     """
 
-    def __init__(self, height, width, channels, fill_value=0):
+    def __init__(self, width, height, channels, fill_value=0):
         """
         Initialize the canvas
-        :param height: height of the canvas in pixels
         :param width: width of the canvas in pixels
+        :param height: height of the canvas in pixels
         :param channels: number of the channels
         :param fill_value: initial values of the pixels
         """
         # TODO: Unify the order of parameters!
-        self._canvas = np.zeros([height, width, channels], dtype=np.uint8)
+        # Parameters unified: width is always before height
+        self.make_canvas(width, height, channels)
         self._canvas.fill(fill_value)
 
-    def make_canvas(self, height, width, channels):
+    def make_canvas(self, width, height, channels):
         """
         Create a new canvas.
-        :param height: height of the canvas in pixels
         :param width: width of the canvas in pixels
+        :param height: height of the canvas in pixels
         :param channels: number of the channels
         :return: None
         """

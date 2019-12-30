@@ -1,12 +1,11 @@
 import cv2
 
-
 class FrameDifference(object):
     """
     Difference of two sequent frame
     """
-
-    def apply_frame_difference(self, video, canvas):
+    @staticmethod
+    def apply_frame_difference(video, canvas):
         """
         Update the image of the canvas by the thresholded absolute difference.
         :param video: video capture device
@@ -18,4 +17,3 @@ class FrameDifference(object):
         blurred = cv2.blur(difference, (20, 20))
         _, thresholded = cv2.threshold(blurred, 20, 255, cv2.THRESH_BINARY)
         canvas.update(cv2.addWeighted(canvas._canvas, 0.9, thresholded, 1-0, 0))
-

@@ -1,6 +1,5 @@
 import cv2
 
-
 class CaptureDevice(object):
     """
     Capture device representation
@@ -10,14 +9,20 @@ class CaptureDevice(object):
         """
         Initialize a new capture device.
         :param index: index of the device
-        :param width: width of the frame in pixels
-        :param height: height of the frame in pixels
+        :param width: the desired width of the frame in pixels
+        :param height: the desired height of the frame in pixels
         """
         # TODO: It should be clarified the purpose of width and height!
+        # The width and height in params are desired values only, the final values depends on the device itself
         self._camera = cv2.VideoCapture(index)
         self.configure_device(width, height)
         self.width, self.height = self.get_frame_dimensions()
 
+        if self.width != width or self.height != height:
+            print("""[CaptureDevice]: The desired resolution (%d, %d) is NOT available,
+                 the device will run with (%d, %d) resolution!""" %(width, height, self.width, self.height))
+
+            
     def configure_device(self, width, height):
         """
         Configure the device.

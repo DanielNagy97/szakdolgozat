@@ -40,18 +40,30 @@ class View(object):
         """
         Show the heatmap.
         """
-        resized_heat_map = cv2.resize(heat_map.map, dsize=(600, 320), interpolation=cv2.INTER_AREA)
+        magnification = 20
+        wi, he, aas = heat_map.map.shape
+        resized_heat_map = cv2.resize(heat_map.map, dsize=(he*magnification, wi*magnification), interpolation=cv2.INTER_AREA)
 
         for i in range(len(heat_map.bounding_rects)):
             (x,y,w,h) = heat_map.bounding_rects[i]
-            cv2.rectangle(resized_heat_map, (x*40, y*40), (x*40+w*40, y*40+h*40), (255, 255, 255), 2)
+            cv2.rectangle(resized_heat_map, (x*magnification, y*magnification), (x*magnification+w*magnification, y*magnification+h*magnification), (255, 255, 255), 1)
             cv2.arrowedLine(    resized_heat_map,
-                                (int(x*40 + (w*40) / 2),
-                                int(y*40 + (h*40) / 2)),
-                                (int(heat_map.motion_points_direction[i][0] * 100 + x*40 + (w*40) / 2),
-                                int(heat_map.motion_points_direction[i][1] * 100 + y*40 + (h*40) / 2)),
+                                (int(x*magnification + (w*magnification) / 2),
+                                int(y*magnification + (h*magnification) / 2)),
+                                (int(heat_map.motion_points_direction[i][0] * magnification*2 + x*magnification + (w*magnification) / 2),
+                                int(heat_map.motion_points_direction[i][1] * magnification*2 + y*magnification + (h*magnification) / 2)),
                                 (0, 255, 255),
-                                2)
+                                1)
+        formatted_diff_dir_percentage = float("{0:.2f}".format(heat_map.different_direction))
+
+        if formatted_diff_dir_percentage == 0:
+            formatted_diff_dir_percentage = "00.00"
+        else:
+            if formatted_diff_dir_percentage < 10:
+                formatted_diff_dir_percentage = "0" + str(formatted_diff_dir_percentage)
+
+                                
+        cv2.putText(resized_heat_map, str(formatted_diff_dir_percentage), (10, 25), cv2.FONT_HERSHEY_SIMPLEX , 1, (0, 0, 0), 1, cv2.LINE_AA)
         self.show_image(win,resized_heat_map)
 
 

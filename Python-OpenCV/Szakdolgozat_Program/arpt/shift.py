@@ -29,11 +29,10 @@ class Shift(object):
         :param cap: capture device
         :return: None
         """
-        x = np.uint8(np.floor(self.pos_x / grid.grid_step))
-        y = np.uint8(np.floor(self.pos_y / grid.grid_step))
-        w = np.uint8(np.floor(self.width / grid.grid_step))
-        h = np.uint8(np.floor(self.height / grid.grid_step))
-
+        x,y,w,h = np.uint8(np.floor(np.divide((self.pos_x,
+                                                self.pos_y,
+                                                self.width,
+                                                self.height), grid.grid_step)))
 
         local_vector_sum = vector(np.array([grid.old_points_3D[y:y+h, x:x+w].sum(axis=0),
                                             grid.new_points_3D[y:y+h, x:x+w].sum(axis=0)],

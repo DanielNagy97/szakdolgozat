@@ -27,8 +27,11 @@ class Grid(object):
 
         self.new_points = np.empty(self._old_points.shape)
         
+        rows = grid_density-1
+        cols = int(len(self._old_points)/rows)
+
         # QUEST: Where has it used?
-        self.old_points_3D = self._old_points.reshape(8, 15, 2)
+        self.old_points_3D = self._old_points.reshape(cols, rows, 2)
         self.avg_vector_lenghts = []
         self.lk_params = dict(  winSize  = (50, 50),
                                 maxLevel = 2,
@@ -48,7 +51,7 @@ class Grid(object):
         """
         Update the new points.
         """
-        self.new_points_3D = self.new_points.reshape(8, 15, 2)
+        self.new_points_3D = self.new_points.reshape(self.old_points_3D.shape)
 
     def update_vector_lengths(self):
         """

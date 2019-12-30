@@ -7,28 +7,31 @@ class HeatMap(object):
     Heatmap class
     """
 
-    def calc_heat_map(self, grid):
+    def calc_heat_map(self, grid, sensitivity = 10):
         """
         Calculate the heatmap from the grid.
         :param grid: the grid object
+        :param sensitivity: sensitivity value for displaying motion vector lenghts
         :return: None
         """
-        grid.update_new_points_3D()
-        grid.update_vector_lengths()
 
-        self.heat_values = np.int32(np.multiply(grid.vector_lenghts, 10))
+        self.heat_values = np.int32(np.multiply(grid.vector_lenghts, sensitivity))
         self.heat_values = np.where(self.heat_values > 255, 255, self.heat_values)
         self.map = np.zeros(len(self.heat_values), dtype=np.uint8)
         self.map = np.dstack((  np.subtract(255, self.heat_values),
                                 self.map,
                                 self.heat_values))
-        self.map = self.map.reshape(8, 15, 3)
+        heat_map_shape = list(grid.old_points_3D.shape)
+        heat_map_shape[-1] = 3
+        heat_map_shape = tuple(heat_map_shape)
+        self.map = self.map.reshape(heat_map_shape)
         self.map = np.uint8(self.map)
 
-    def get_motion_points(self, grid):
+    def get_motion_points(self, grid, min_area = 2):
         """
         Get the motion points.
         :param grid: the grid object
+        :param min_area: below this value all detected blobs with smaller area will be ignored
         :return: None
         """
         gray_map = cv2.cvtColor(self.map, cv2.COLOR_BGR2GRAY)
@@ -43,7 +46,7 @@ class HeatMap(object):
         for contour in contours:
             (x, y, w, h) = cv2.boundingRect(contour)
             rect_area = w * h
-            if rect_area < 2:
+            if rect_area < min_area:
                 continue
             else:
                 count += 1
