@@ -1,6 +1,8 @@
 import cv2
+
 from arpt import *
 # NOTE: Probably it is enought to import only the arpt package.
+
 
 class Controller(object):
     """
@@ -11,7 +13,7 @@ class Controller(object):
         """
         Initialize the controller.
         """
-        self._capture = CaptureDevice(0, 0, 0)
+        self._capture = CaptureDevice(0, (0, 0))
         self._video = Video(self._capture)
 
         # NOTE: It is not necessarily a web camera.
@@ -23,11 +25,11 @@ class Controller(object):
 
         self.plot_win.resize(576, 331)
         
-        self.frame_diff_canvas = Canvas(self._capture.width, self._capture.height, 1)
-        self.vector_field_canvas = Canvas(self._capture.width, self._capture.height, 1, 255)
-        self.plot_canvas = Canvas(700, 300, 3)
+        self.frame_diff_canvas = Canvas(self._capture.dimension, 1)
+        self.vector_field_canvas = Canvas(self._capture.dimension, 1, 255)
+        self.plot_canvas = Canvas((700, 300), 3)
 
-        self.grid = Grid(16, self._capture.width, self._capture.height)
+        self.grid = Grid(16, self._capture.dimension)
 
         self.frame_diff = FrameDifference()
         self.heat_map = HeatMap()
@@ -62,7 +64,7 @@ class Controller(object):
         """
         Controlling the shift function.
         """
-        self.shift.calc_shift(self.grid, self._capture)
+        self.shift.calc_shift(self.grid, self._capture.dimension)
 
     def view_control(self):
         """
@@ -101,4 +103,3 @@ class Controller(object):
 
         self._capture.release()
         cv2.destroyAllWindows()
-

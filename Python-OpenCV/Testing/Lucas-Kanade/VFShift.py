@@ -3,8 +3,8 @@ import numpy as np
 
 cap = cv2.VideoCapture(0)
 
-cap.set(cv2.CAP_PROP_FRAME_HEIGHT,360)
-cap.set(cv2.CAP_PROP_FRAME_WIDTH,640)
+cap.set(cv2.CAP_PROP_FRAME_HEIGHT,0)
+cap.set(cv2.CAP_PROP_FRAME_WIDTH,0)
 
 capHeight = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
 capWidth = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
@@ -18,7 +18,7 @@ lk_params = dict( winSize  = (50,50),
                   maxLevel = 2,
                   criteria = (cv2.TERM_CRITERIA_EPS | cv2.TERM_CRITERIA_COUNT, 10, 0.03))
 
-gridDensity = int(8)
+gridDensity = int(16)
 
 gridStep = int(capWidth/gridDensity)
 
@@ -44,11 +44,10 @@ rectH = 100
 rectXV = 0.0
 rectYV = 0.0
 
-eze = int(gridDensity-1)
-aza = int(len(oldPoints)/eze)
-#aza = int(gridDensity/(16/9)-1)
+rows = gridDensity-1
+cols = int(len(oldPoints)/rows)
 
-oldPoints_3D = oldPoints.reshape(aza,eze,2)
+oldPoints_3D = oldPoints.reshape(cols,rows,2)
 
 while True:
     ret, frame = cap.read()
@@ -59,20 +58,7 @@ while True:
 
         newPoints, status, error = cv2.calcOpticalFlowPyrLK(oldGrayFrame, grayFrame, oldPoints, None, **lk_params)
 
-
-        for k in range(len(newPoints)):
-            #current_vector = np.subtract(newPoints[k],oldPoints[k])
-            #if abs(current_vector[0]) >= 2 or abs(current_vector[1]) >= 2:
-
-            cv2.arrowedLine(        frame,
-                                    tuple(oldPoints[k]),
-                                    tuple(newPoints[k]),
-                                    (0,0,0),
-                                    2)
-
-
-
-        newPoints_3D = newPoints.reshape(aza,eze,2)
+        newPoints_3D = newPoints.reshape(cols,rows,2)
 
         x = np.uint8(np.floor(rectX/gridStep))
         y = np.uint8(np.floor(rectY/gridStep))

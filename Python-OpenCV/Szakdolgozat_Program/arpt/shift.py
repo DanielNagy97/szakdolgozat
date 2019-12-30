@@ -22,11 +22,11 @@ class Shift(object):
         self.velocity_x = 0.0
         self.velocity_y = 0.0
 
-    def calc_shift(self, grid, cap):
+    def calc_shift(self, grid, dimensions_of_frame):
         """
         Calculate the shift vectors.
         :param grid: grid object
-        :param cap: capture device
+        :param dimensions_of_frame: dimension of frame as a tuple of (width, height)
         :return: None
         """
         x,y,w,h = np.uint8(np.floor(np.divide((self.pos_x,
@@ -51,15 +51,16 @@ class Shift(object):
         self.velocity_x *= 0.8
         self.velocity_y *= 0.8
 
-        if self.pos_x + self.width >= cap.width:
-            self.pos_x = cap.width - self.width
+        cap_width, cap_height = dimensions_of_frame
 
-        if self.pos_y + self.height >= cap.height:
-            self.pos_y = cap.height - self.height
+        if self.pos_x + self.width >= cap_width:
+            self.pos_x = cap_width - self.width
+
+        if self.pos_y + self.height >= cap_height:
+            self.pos_y = cap_height - self.height
 
         if self.pos_x < 0:
             self.pos_x = 0
 
         if self.pos_y < 0:
             self.pos_y = 0
-

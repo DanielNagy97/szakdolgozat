@@ -8,14 +8,13 @@ class Grid(object):
     """
     Grid class
     """
-    
-    def __init__(self, grid_density, capture_width, capture_height):
+    def __init__(self, grid_density, dimension):
         """
         Initialize the grid.
         :param grid_density: count of equidistant sections
-        :param capture_width: width of the capture device in pixels
-        :param capture_height: height of the capture device in pixels
+        :param dimension: capture device dimension as a tuple of (width, height) in pixels
         """
+        capture_width, capture_height = dimension
         self._old_points = np.empty((0, 2), dtype=np.float32)
         
         self.grid_step = int(capture_width / grid_density)
@@ -73,4 +72,3 @@ class Grid(object):
         average_vector_lenght = self.global_direction_vector.lenght() / vector_count
         self.avg_vector_lenghts.append(average_vector_lenght)
         self.avg_vector_lenghts = self.avg_vector_lenghts[-30:]
-
