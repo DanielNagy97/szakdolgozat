@@ -1,6 +1,7 @@
 import numpy as np
 import cv2
-from arpt.vector import Vector as vector
+
+from arpt import vector as v
 
 class HeatMap(object):
     """
@@ -40,6 +41,7 @@ class HeatMap(object):
 
         self.bounding_rects = np.empty((0, 4), dtype=np.uint8)
         self.motion_points_direction = np.empty((0, 2), dtype=np.float32)
+        self.motion_points_roots = np.empty((0, 2), dtype=np.float32)
 
         count = 0
 
@@ -51,15 +53,20 @@ class HeatMap(object):
             else:
                 count += 1
 
-                local_vector_sum = vector(np.array([grid.old_points_3D[y:y+h, x:x+w].sum(axis=0),
-                                                    grid.new_points_3D[y:y+h, x:x+w].sum(axis=0)],
-                                                    dtype=np.float32).sum(axis=1))
+                local_vector_sum = np.array([grid.old_points_3D[y:y+h, x:x+w].sum(axis=0),
+                                            grid.new_points_3D[y:y+h, x:x+w].sum(axis=0)],
+                                            dtype=np.float32).sum(axis=1)
 
-                local_direction_vector = local_vector_sum.dir_vector()
-                local_normalized_direction_vector = local_direction_vector.normalize()
+                local_vector_sum = np.divide(local_vector_sum, rect_area)
+
+                local_direction_vector = v.get_direction_vector(local_vector_sum)
+                local_normalized_direction_vector = v.get_normalized_vector(local_direction_vector)
+                
+                self.motion_points_roots = np.append(self.motion_points_roots,np.array([local_vector_sum[0]]),axis=0)
+
 
                 self.motion_points_direction = np.append(   self.motion_points_direction,
-                                                            np.array([local_normalized_direction_vector.vector]),
+                                                            np.array([local_normalized_direction_vector]),
                                                             axis=0)
 
                 self.bounding_rects = np.append(self.bounding_rects,
@@ -74,6 +81,7 @@ class HeatMap(object):
         """
         self.different_direction = 0.0
         if len(self.motion_points_direction) == 2:
+            #normal_vectors = np.multiply(np.flip(self.motion_points_direction,axis=1), [1,-1])
             motion_points_sum = np.abs(np.sum(self.motion_points_direction, axis=0))
             sum_of_a_sum = np.sum(motion_points_sum)
 

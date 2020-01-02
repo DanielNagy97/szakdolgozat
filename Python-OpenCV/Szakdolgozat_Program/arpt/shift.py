@@ -1,6 +1,6 @@
 import numpy as np
-from arpt.vector import Vector as vector
 
+from arpt import vector as v
 
 class Shift(object):
     """
@@ -34,16 +34,16 @@ class Shift(object):
                                                 self.width,
                                                 self.height), grid.grid_step)))
 
-        local_vector_sum = vector(np.array([grid.old_points_3D[y:y+h, x:x+w].sum(axis=0),
-                                            grid.new_points_3D[y:y+h, x:x+w].sum(axis=0)],
-                                            dtype=np.float32).sum(axis=1))
+        local_vector_sum = np.array([grid.old_points_3D[y:y+h, x:x+w].sum(axis=0),
+                                    grid.new_points_3D[y:y+h, x:x+w].sum(axis=0)],
+                                    dtype=np.float32).sum(axis=1)
 
-        local_direction_vector = local_vector_sum.dir_vector()
+        local_direction_vector = v.get_direction_vector(local_vector_sum)
 
-        vector_count = len(local_vector_sum.vector)
+        vector_count = len(local_vector_sum)
 
-        self.velocity_x += local_direction_vector.vector[0] / vector_count*0.5
-        self.velocity_y += local_direction_vector.vector[1] / vector_count*0.5
+        self.velocity_x += local_direction_vector[0] / vector_count*0.5
+        self.velocity_y += local_direction_vector[1] / vector_count*0.5
 
         self.pos_x += self.velocity_x
         self.pos_y += self.velocity_y

@@ -13,7 +13,7 @@ class Controller(object):
         """
         Initialize the controller.
         """
-        self._capture = CaptureDevice(0, (0, 0))
+        self._capture = CaptureDevice(-1, (0, 0))
         self._video = Video(self._capture)
 
         # NOTE: It is not necessarily a web camera.

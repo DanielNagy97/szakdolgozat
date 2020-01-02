@@ -1,21 +1,25 @@
 import numpy as np
 
-
-class Vector(object):
+def get_vector_lenght(vector):
     """
-    Vector representation
+    Get the lenght of the vector.
+    :param vector: np nd.array
+    :return: Number, the lenght of the vector
     """
-    # QUEST: Does the np array not enought to represent vectors?
+    return np.sqrt(np.sum(np.power(vector, 2)))
 
-    def __init__(self, vector):
-        self.vector = vector
+def get_normalized_vector(vector):
+    """
+    Get the normalized form of the vector.
+    :param vector: np array with two elements
+    :return: np array with two elements, normalized vector
+    """
+    return np.divide(vector, get_vector_lenght(vector))
 
-    def lenght(self):
-        return np.sqrt(np.sum(np.power(self.vector, 2)))
-
-    def normalize(self):
-        return Vector(np.divide(self.vector, self.lenght()))
-
-    def dir_vector(self):
-        return Vector(np.subtract(self.vector[1], self.vector[0]))
-
+def get_direction_vector(vector):
+    """
+    Get direction vector from the vector.
+    :param vector: np nd.array
+    :return: np array with two elements, direction vector
+    """
+    return np.subtract(vector[1], vector[0])

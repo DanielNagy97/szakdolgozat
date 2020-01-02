@@ -1,7 +1,9 @@
 import cv2
 import numpy as np
 
-from arpt.vector import Vector as vector
+#from arpt.vector import Vector as vector
+
+from arpt import vector as v
 
 
 class Grid(object):
@@ -63,12 +65,12 @@ class Grid(object):
         """
         Calculate the global resultant vector.
         """
-        vector_sum = vector(np.array(   [self._old_points.sum(axis=0),
-                                        self.new_points.sum(axis=0)],
-                                        dtype=np.float32))
+        vector_sum = np.array(  [self._old_points.sum(axis=0),
+                                self.new_points.sum(axis=0)],
+                                dtype=np.float32)
                                 
         vector_count = len(self._old_points)
-        self.global_direction_vector = vector_sum.dir_vector()
-        average_vector_lenght = self.global_direction_vector.lenght() / vector_count
+        self.global_direction_vector = v.get_direction_vector(vector_sum)
+        average_vector_lenght = v.get_vector_lenght(self.global_direction_vector) / vector_count
         self.avg_vector_lenghts.append(average_vector_lenght)
         self.avg_vector_lenghts = self.avg_vector_lenghts[-30:]

@@ -19,14 +19,14 @@ class View(object):
         """
         cv2.imshow(win._name, image)
 
-    def show_vector_field(self, grid, win, canvas):
+    def show_vector_field(self, grid, win, canvas, eps=2):
         """
         Show the vector field.
         """
         canvas.fill(255)
         for k in range(len(grid.new_points)):
             current_vector = np.subtract(grid.new_points[k], grid._old_points[k])
-            if abs(current_vector[0]) >= 2 or abs(current_vector[1]) >= 2:
+            if abs(current_vector[0]) >= eps or abs(current_vector[1]) >= eps:
 
                 cv2.arrowedLine(    canvas.canvas,
                                     tuple(grid._old_points[k]),
@@ -133,8 +133,8 @@ class View(object):
 
         cv2.arrowedLine(    canvas.canvas,
                             (0+600, 0+150),
-                            (int(grid.global_direction_vector.vector[0]/8) + 600,
-                            int(grid.global_direction_vector.vector[1]/8) + 150),
+                            (int(grid.global_direction_vector[0]/8) + 600,
+                            int(grid.global_direction_vector[1]/8) + 150),
                             (0, 0, 0),
                             2)
 
