@@ -16,17 +16,17 @@ class HeatMap(object):
         :return: None
         """
 
-        self.heat_values = np.int32(np.multiply(grid.vector_lenghts, sensitivity))
-        self.heat_values = np.where(self.heat_values > 255, 255, self.heat_values)
-        self.map = np.zeros(len(self.heat_values), dtype=np.uint8)
-        self.map = np.dstack((  np.subtract(255, self.heat_values),
-                                self.map,
-                                self.heat_values))
+        heat_values = np.int32(np.multiply(grid.vector_lenghts, sensitivity))
+        heat_values = np.where(heat_values > 255, 255, heat_values)
+        self._map = np.zeros(len(heat_values), dtype=np.uint8)
+        self._map = np.dstack((  np.subtract(255, heat_values),
+                                self._map,
+                                heat_values))
         heat_map_shape = list(grid.old_points_3D.shape)
         heat_map_shape[-1] = 3
         heat_map_shape = tuple(heat_map_shape)
-        self.map = self.map.reshape(heat_map_shape)
-        self.map = np.uint8(self.map)
+        self._map = self._map.reshape(heat_map_shape)
+        self._map = np.uint8(self._map)
 
     def get_motion_points(self, grid, min_area = 2):
         """
@@ -35,12 +35,12 @@ class HeatMap(object):
         :param min_area: below this value all detected blobs with smaller area will be ignored
         :return: None
         """
-        gray_map = cv2.cvtColor(self.map, cv2.COLOR_BGR2GRAY)
+        gray_map = cv2.cvtColor(self._map, cv2.COLOR_BGR2GRAY)
         ret, thresholded_heat = cv2.threshold(gray_map, 40, 255, cv2.ADAPTIVE_THRESH_MEAN_C)
         contours, hierarchy = cv2.findContours(thresholded_heat, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
 
-        self.bounding_rects = np.empty((0, 4), dtype=np.uint8)
-        self.motion_points_direction = np.empty((0, 2), dtype=np.float32)
+        self._bounding_rects = np.empty((0, 4), dtype=np.uint8)
+        self._motion_points_direction = np.empty((0, 2), dtype=np.float32)
         self.motion_points_roots = np.empty((0, 2), dtype=np.float32)
 
         count = 0
@@ -65,11 +65,11 @@ class HeatMap(object):
                 self.motion_points_roots = np.append(self.motion_points_roots,np.array([local_vector_sum[0]]),axis=0)
 
 
-                self.motion_points_direction = np.append(   self.motion_points_direction,
+                self._motion_points_direction = np.append(   self._motion_points_direction,
                                                             np.array([local_normalized_direction_vector]),
                                                             axis=0)
 
-                self.bounding_rects = np.append(self.bounding_rects,
+                self._bounding_rects = np.append(self._bounding_rects,
                                                 np.array([(x, y, w, h)],dtype=np.uint8),
                                                 axis=0)
 
@@ -79,16 +79,47 @@ class HeatMap(object):
         :return: None
         NOTE: For now this method is working for two points only...
         """
-        self.different_direction = 0.0
-        if len(self.motion_points_direction) == 2:
-            #normal_vectors = np.multiply(np.flip(self.motion_points_direction,axis=1), [1,-1])
-            motion_points_sum = np.abs(np.sum(self.motion_points_direction, axis=0))
+        self._different_direction = 0.0
+        if len(self._motion_points_direction) == 2:
+            #normal_vectors = np.multiply(np.flip(self._motion_points_direction,axis=1), [1,-1])
+            motion_points_sum = np.abs(np.sum(self._motion_points_direction, axis=0))
             sum_of_a_sum = np.sum(motion_points_sum)
 
             epsilon = 1
 
-            self.different_direction = (epsilon - sum_of_a_sum) * 100
+            self._different_direction = (epsilon - sum_of_a_sum) * 100
 
-            if self.different_direction < 0:
-                self.different_direction = 0
+            if self._different_direction < 0:
+                self._different_direction = 0
 
+    @property
+    def map(self):
+        """
+        Get the map.
+        :return: np ndarray with int values from 0-255 representing colors and shape (columns, rows, 3)
+        """
+        return self._map
+
+    @property
+    def bounding_rects(self):
+        """
+        Get the bounding rects of the heat map blobs.
+        :return: np ndarray with shape (n, 4), each element is representing a rect in (x,y,w,h) format
+        """
+        return self._bounding_rects
+
+    @property
+    def motion_points_direction(self):
+        """
+        Get the direction of motion points.
+        :return: np ndarray with shape (n, 2), each element is representing a direction vector
+        """
+        return self._motion_points_direction
+
+    @property
+    def different_direction(self):
+        """
+        Get the difference of the two largest motion point's direction in percentage.
+        :return: float
+        """
+        return self._different_direction

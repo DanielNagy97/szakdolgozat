@@ -15,10 +15,10 @@ class Shift(object):
         :param width:
         :param height:
         """
-        self.pos_x = pos_x
-        self.pos_y = pos_y
-        self.width = width
-        self.height = height
+        self._pos_x = pos_x
+        self._pos_y = pos_y
+        self._width = width
+        self._height = height
         self.velocity_x = 0.0
         self.velocity_y = 0.0
 
@@ -29,10 +29,10 @@ class Shift(object):
         :param dimensions_of_frame: dimension of frame as a tuple of (width, height)
         :return: None
         """
-        x,y,w,h = np.uint8(np.floor(np.divide((self.pos_x,
-                                                self.pos_y,
-                                                self.width,
-                                                self.height), grid.grid_step)))
+        x,y,w,h = np.uint8(np.floor(np.divide(( self._pos_x,
+                                                self._pos_y,
+                                                self._width,
+                                                self._height), grid.grid_step)))
 
         local_vector_sum = np.array([grid.old_points_3D[y:y+h, x:x+w].sum(axis=0),
                                     grid.new_points_3D[y:y+h, x:x+w].sum(axis=0)],
@@ -45,22 +45,54 @@ class Shift(object):
         self.velocity_x += local_direction_vector[0] / vector_count*0.5
         self.velocity_y += local_direction_vector[1] / vector_count*0.5
 
-        self.pos_x += self.velocity_x
-        self.pos_y += self.velocity_y
+        self._pos_x += self.velocity_x
+        self._pos_y += self.velocity_y
 
         self.velocity_x *= 0.8
         self.velocity_y *= 0.8
 
         cap_width, cap_height = dimensions_of_frame
 
-        if self.pos_x + self.width >= cap_width:
-            self.pos_x = cap_width - self.width
+        if self._pos_x + self._width >= cap_width:
+            self._pos_x = cap_width - self._width
 
-        if self.pos_y + self.height >= cap_height:
-            self.pos_y = cap_height - self.height
+        if self._pos_y + self._height >= cap_height:
+            self._pos_y = cap_height - self._height
 
-        if self.pos_x < 0:
-            self.pos_x = 0
+        if self._pos_x < 0:
+            self._pos_x = 0
 
-        if self.pos_y < 0:
-            self.pos_y = 0
+        if self._pos_y < 0:
+            self._pos_y = 0
+
+    @property
+    def pos_x(self):
+        return self._pos_x
+
+    @pos_x.setter 
+    def pos_x(self, new_x_position):
+        self._pos_x = new_x_position
+
+    @property
+    def pos_y(self):
+        return self._pos_y
+
+    @pos_y.setter 
+    def pos_y(self, new_y_position):
+        self._pos_y = new_y_position
+
+    @property
+    def height(self):
+        return self._height
+
+    @height.setter 
+    def height(self, new_height):
+        self._height = new_height
+
+    @property
+    def width(self):
+        return self._width
+
+    @width.setter 
+    def width(self, new_width):
+        self._width = new_width

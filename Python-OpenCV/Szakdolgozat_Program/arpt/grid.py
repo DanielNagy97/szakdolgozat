@@ -1,8 +1,6 @@
 import cv2
 import numpy as np
 
-#from arpt.vector import Vector as vector
-
 from arpt import vector as v
 
 
@@ -19,21 +17,21 @@ class Grid(object):
         capture_width, capture_height = dimension
         self._old_points = np.empty((0, 2), dtype=np.float32)
         
-        self.grid_step = int(capture_width / grid_density)
-        for i in range(self.grid_step, capture_height, self.grid_step):
-            for j in range(self.grid_step, capture_width, self.grid_step):
+        self._grid_step = int(capture_width / grid_density)
+        for i in range(self._grid_step, capture_height, self._grid_step):
+            for j in range(self._grid_step, capture_width, self._grid_step):
                 self._old_points = np.append(self._old_points,
                                             np.array([[j, i]], dtype=np.float32),
                                             axis=0)
 
-        self.new_points = np.empty(self._old_points.shape)
+        self._new_points = np.empty(self._old_points.shape)
         
         rows = grid_density-1
         cols = int(len(self._old_points)/rows)
 
         # QUEST: Where has it used?
-        self.old_points_3D = self._old_points.reshape(cols, rows, 2)
-        self.avg_vector_lenghts = []
+        self._old_points_3D = self._old_points.reshape(cols, rows, 2)
+        self._avg_vector_lenghts = []
         self.lk_params = dict(  winSize  = (50, 50),
                                 maxLevel = 2,
                                 criteria = (cv2.TERM_CRITERIA_EPS | cv2.TERM_CRITERIA_COUNT, 10, 0.03))
@@ -42,7 +40,7 @@ class Grid(object):
         """
         Calculate the optical flow.
         """
-        self.new_points, status, error = cv2.calcOpticalFlowPyrLK(  video.old_gray_frame,
+        self._new_points, status, error = cv2.calcOpticalFlowPyrLK( video.old_gray_frame,
                                                                     video.gray_frame,
                                                                     self._old_points,
                                                                     None,
@@ -52,25 +50,89 @@ class Grid(object):
         """
         Update the new points.
         """
-        self.new_points_3D = self.new_points.reshape(self.old_points_3D.shape)
+        self._new_points_3D = self._new_points.reshape(self.old_points_3D.shape)
 
     def update_vector_lengths(self):
         """
         Update the vector lengths.
         """
-        direction_vectors = np.subtract(self.new_points, self._old_points)
-        self.vector_lenghts = np.sqrt(np.sum(np.power(direction_vectors, 2), axis=1))
+        direction_vectors = np.subtract(self._new_points, self._old_points)
+        self._vector_lenghts = np.sqrt(np.sum(np.power(direction_vectors, 2), axis=1))
 
     def calc_global_resultant_vector(self):
         """
         Calculate the global resultant vector.
         """
         vector_sum = np.array(  [self._old_points.sum(axis=0),
-                                self.new_points.sum(axis=0)],
+                                self._new_points.sum(axis=0)],
                                 dtype=np.float32)
                                 
         vector_count = len(self._old_points)
-        self.global_direction_vector = v.get_direction_vector(vector_sum)
-        average_vector_lenght = v.get_vector_lenght(self.global_direction_vector) / vector_count
-        self.avg_vector_lenghts.append(average_vector_lenght)
-        self.avg_vector_lenghts = self.avg_vector_lenghts[-30:]
+        self._global_direction_vector = v.get_direction_vector(vector_sum)
+        average_vector_lenght = v.get_vector_lenght(self._global_direction_vector) / vector_count
+        self._avg_vector_lenghts.append(average_vector_lenght)
+        self._avg_vector_lenghts = self._avg_vector_lenghts[-30:]
+    
+    @property
+    def old_points(self):
+        """
+        Get the old points of the vector field.
+        :return: np ndarray with float values and shape (n, 2), where n is the number of points
+        """
+        return self._old_points
+
+    @property
+    def new_points(self):
+        """
+        Get the new points of the vector filed.
+        :return: np ndarray with float values and shape (n, 2), where n is the number of points
+        """
+        return self._new_points
+
+    @property
+    def old_points_3D(self):
+        """
+        Get the old points of the vector field, in 3D array.
+        :return: np ndarray with float values and shape (columns, rows, 2)
+        """
+        return self._old_points_3D
+
+    @property
+    def new_points_3D(self):
+        """
+        Get the new points of the vector filed, in 3D array.
+        :return: np ndarray with float values and shape (columns, rows, 2)
+        """
+        return self._new_points_3D
+
+    @property
+    def grid_step(self):
+        """
+        Get the grid step in pixels.
+        :return: number
+        """
+        return self._grid_step
+
+    @property
+    def vector_lenghts(self):
+        """
+        Get the lenghts of the vector field's vectors.
+        :return: np ndarray with float values
+        """
+        return self._vector_lenghts
+
+    @property
+    def avg_vector_lenghts(self):
+        """
+        Get the average lenghts of the vector field's vectors for the last 30 frames
+        :return: np ndarray with float values
+        """
+        return self._avg_vector_lenghts
+
+    @property
+    def global_direction_vector(self):
+        """
+        Get the global direction vector from the vector field
+        :return: np ndarray with two elements
+        """
+        return self._global_direction_vector

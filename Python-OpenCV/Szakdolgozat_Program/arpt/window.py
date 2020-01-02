@@ -35,3 +35,6 @@ class Window(object):
         """
         cv2.moveWindow(self._name, *position)
 
+    @property
+    def name(self):
+        return self._name
