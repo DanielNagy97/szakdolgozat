@@ -7,3 +7,4 @@ from arpt.canvas import Canvas
 from arpt.window import Window
 from arpt.heat_map import HeatMap
 from arpt.shift import Shift
+from arpt.swirl import Swirl

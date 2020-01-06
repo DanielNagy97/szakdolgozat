@@ -13,7 +13,7 @@ class Controller(object):
         """
         Initialize the controller.
         """
-        self._capture = CaptureDevice(-1, (0, 0))
+        self._capture = CaptureDevice(-1, (640, 360))
         self._video = Video(self._capture)
 
         # NOTE: It is not necessarily a web camera.
@@ -35,6 +35,8 @@ class Controller(object):
         self.heat_map = HeatMap()
         self.shift = Shift(200, 150, 100, 100)
         self.view = View()
+
+        self.swirl = Swirl()
 
 
     def frame_diff_control(self):
@@ -64,7 +66,13 @@ class Controller(object):
         """
         Controlling the shift function.
         """
-        self.shift.calc_shift(self.grid, self._capture.dimension)
+        self.shift.calc_shift(self.grid, self._capture.dimension, 0.5, 0.8)
+
+    def swirl_control(self):
+        """
+        Controlling the swirl function.
+        """
+        self.swirl.calc_swirl(self.grid)
 
     def view_control(self):
         """
@@ -74,7 +82,7 @@ class Controller(object):
         self.view.show_canvas(self.frame_diff_win, self.frame_diff_canvas)
         self.view.show_shift(self.shift, self._video)                     
         self.view.show_image(self.webcam_win, self._video.frame)
-        self.view.show_vector_field(self.grid,
+        self.view.show_vector_field(self.grid, self.swirl,
                                     self.vector_field_win,
                                     self.vector_field_canvas)
         self.view.show_global_vector_results(self.grid,
@@ -93,6 +101,7 @@ class Controller(object):
                 self.grid_control()
                 self.heat_map_control()
                 self.shift_control()
+                self.swirl_control()
                 self.view_control()
 
                 k = cv2.waitKey(1) & 0xFF

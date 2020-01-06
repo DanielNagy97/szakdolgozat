@@ -8,7 +8,7 @@ import initModule as init
 init.init()
 
 #capture
-cap = cv2.VideoCapture(0)
+cap = cv2.VideoCapture("vtest.avi")
 
 #setting capture device
 cap.set(cv2.CAP_PROP_FRAME_HEIGHT,360)

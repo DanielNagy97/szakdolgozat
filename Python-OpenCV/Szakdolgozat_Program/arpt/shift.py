@@ -22,11 +22,13 @@ class Shift(object):
         self.velocity_x = 0.0
         self.velocity_y = 0.0
 
-    def calc_shift(self, grid, dimensions_of_frame):
+    def calc_shift(self, grid, dimensions_of_frame, speed, attenuation):
         """
         Calculate the shift vectors.
         :param grid: grid object
         :param dimensions_of_frame: dimension of frame as a tuple of (width, height)
+        :param speed: the speed of the element. Value bellow 1 means slower speed.
+        :param attenuation: attenuation of the element. The value should be smaller than 1 and not negative.
         :return: None
         """
         x,y,w,h = np.uint8(np.floor(np.divide(( self._pos_x,
@@ -42,14 +44,14 @@ class Shift(object):
 
         vector_count = len(local_vector_sum)
 
-        self.velocity_x += local_direction_vector[0] / vector_count*0.5
-        self.velocity_y += local_direction_vector[1] / vector_count*0.5
+        self.velocity_x += local_direction_vector[0] / vector_count*speed
+        self.velocity_y += local_direction_vector[1] / vector_count*speed
 
         self._pos_x += self.velocity_x
         self._pos_y += self.velocity_y
 
-        self.velocity_x *= 0.8
-        self.velocity_y *= 0.8
+        self.velocity_x *= attenuation
+        self.velocity_y *= attenuation
 
         cap_width, cap_height = dimensions_of_frame
 

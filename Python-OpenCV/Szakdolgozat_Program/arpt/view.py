@@ -1,6 +1,6 @@
 import cv2
 import numpy as np
-
+import arpt.vector as v
 
 class View(object):
     """
@@ -19,20 +19,24 @@ class View(object):
         """
         cv2.imshow(win.name, image)
 
-    def show_vector_field(self, grid, win, canvas, eps=2):
+    def show_vector_field(self, grid,swirl, win, canvas, eps=2):
         """
         Show the vector field.
         """
         canvas.fill(255)
         for k in range(len(grid.new_points)):
             current_vector = np.subtract(grid.new_points[k], grid.old_points[k])
-            if abs(current_vector[0]) >= eps or abs(current_vector[1]) >= eps:
+            if v.get_vector_lenght(current_vector) >= eps:
 
                 cv2.arrowedLine(    canvas.canvas,
                                     tuple(grid.old_points[k]),
                                     tuple(grid.new_points[k]),
                                     (0,0,0),
                                     2)
+        #NOTE: The intersection points here is for testing only!
+        for a in swirl.points:
+            cv2.circle(canvas.canvas,tuple(a),1,(0,0,255),5)
+
         self.show_canvas(win, canvas)
 
 
