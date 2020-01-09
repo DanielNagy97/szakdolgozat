@@ -2,6 +2,7 @@ import numpy as np
 
 from arpt import vector as v
 
+
 class Shift(object):
     """
     Shift vector field representation
@@ -26,19 +27,24 @@ class Shift(object):
         """
         Calculate the shift vectors.
         :param grid: grid object
-        :param dimensions_of_frame: dimension of frame as a tuple of (width, height)
-        :param speed: the speed of the element. Value bellow 1 means slower speed.
-        :param attenuation: attenuation of the element. The value should be smaller than 1 and not negative.
+        :param dimensions_of_frame: dimension of frame \
+            a tuple of (width, height)
+        :param speed: the speed of the element. \
+            Value bellow 1 means slower speed.
+        :param attenuation: attenuation of the element. \
+            The value should be smaller than 1 and not negative.
         :return: None
         """
-        x,y,w,h = np.uint8(np.floor(np.divide(( self._pos_x,
-                                                self._pos_y,
-                                                self._width,
-                                                self._height), grid.grid_step)))
+        x, y, w, h = np.uint8(np.floor(np.divide((self._pos_x,
+                                                  self._pos_y,
+                                                  self._width,
+                                                  self._height),
+                                                 grid.grid_step)))
 
-        local_vector_sum = np.array([grid.old_points_3D[y:y+h, x:x+w].sum(axis=0),
-                                    grid.new_points_3D[y:y+h, x:x+w].sum(axis=0)],
-                                    dtype=np.float32).sum(axis=1)
+        local_vector_sum = \
+            np.array([grid.old_points_3D[y:y+h, x:x+w].sum(axis=0),
+                      grid.new_points_3D[y:y+h, x:x+w].sum(axis=0)],
+                     dtype=np.float32).sum(axis=1)
 
         local_direction_vector = v.get_direction_vector(local_vector_sum)
 
@@ -71,7 +77,7 @@ class Shift(object):
     def pos_x(self):
         return self._pos_x
 
-    @pos_x.setter 
+    @pos_x.setter
     def pos_x(self, new_x_position):
         self._pos_x = new_x_position
 
@@ -79,7 +85,7 @@ class Shift(object):
     def pos_y(self):
         return self._pos_y
 
-    @pos_y.setter 
+    @pos_y.setter
     def pos_y(self, new_y_position):
         self._pos_y = new_y_position
 
@@ -87,7 +93,7 @@ class Shift(object):
     def height(self):
         return self._height
 
-    @height.setter 
+    @height.setter
     def height(self, new_height):
         self._height = new_height
 
@@ -95,6 +101,6 @@ class Shift(object):
     def width(self):
         return self._width
 
-    @width.setter 
+    @width.setter
     def width(self, new_width):
         self._width = new_width

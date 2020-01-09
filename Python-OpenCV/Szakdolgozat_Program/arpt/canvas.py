@@ -16,7 +16,7 @@ class Canvas(object):
         # TODO: Unify the order of parameters!
         # Parameters unified: width is always before height
 
-        self._canvas = np.zeros([*dimension[::-1] , channels], dtype=np.uint8)
+        self._canvas = np.zeros([*dimension[::-1], channels], dtype=np.uint8)
         self._canvas.fill(fill_value)
 
     def fill(self, value):
@@ -34,12 +34,13 @@ class Canvas(object):
         :return: np array [height, width, channels]
         """
         return self._canvas
-        
-    @canvas.setter 
+
+    @canvas.setter
     def canvas(self, new_canvas):
         """
         Update the managed canvas.
-        :param new_canvas: the new managed canvas as np array [height, width, channels]
+        :param new_canvas: the new managed canvas
+        np array [height, width, channels]
         :return: None
         """
         self._canvas = new_canvas

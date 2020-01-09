@@ -37,4 +37,3 @@ class Video(object):
         self.ret, self.frame = cap.read()
         self.frame = self.flip_frame(self.frame)
         self.gray_frame = self.get_gray_frame(self.frame)
-

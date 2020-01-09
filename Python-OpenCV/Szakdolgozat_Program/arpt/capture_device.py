@@ -10,14 +10,11 @@ class CaptureDevice(object):
         """
         Initialize a new capture device.
         :param index: index of the device
-        :param desired_dimension: the desired dimension of the frame in pixels, a tuple of (width, height)
+        :param desired_dimension: the desired dimension of the frame in pixels,
+        tuple of (width, height)
         """
         self._camera = cv2.VideoCapture(index)
         self.dimension = desired_dimension
-
-        #if self.width != desired_dimension[0] or self.height != desired_dimension[1]:
-        #    print("""[CaptureDevice]: The desired resolution (%d, %d) is NOT available,
-        #         the device will run with (%d, %d) resolution!""" %(*desired_dimension, self.width, self.height))
 
     @property
     def dimension(self):
@@ -26,19 +23,21 @@ class CaptureDevice(object):
         :return: tuple of (width, height)
         """
         return self._dimension
-        
-    @dimension.setter 
+
+    @dimension.setter
     def dimension(self, desired_dimension):
         """
         Configure the device.
-        Set the dimension depending on the capture device's available resolutions
+        Set the dimension depending on the available resolutions
         :param desired_dimension: tuple of (width, height) in pixels
         :return: None
         """
         width, height = desired_dimension
         self._camera.set(cv2.CAP_PROP_FRAME_WIDTH, width)
         self._camera.set(cv2.CAP_PROP_FRAME_HEIGHT, height)
-        self._dimension = int(self._camera.get(cv2.CAP_PROP_FRAME_WIDTH)), int(self._camera.get(cv2.CAP_PROP_FRAME_HEIGHT))
+        cap_width = int(self._camera.get(cv2.CAP_PROP_FRAME_WIDTH))
+        cap_height = int(self._camera.get(cv2.CAP_PROP_FRAME_HEIGHT))
+        self._dimension = cap_width, cap_height
 
     def read(self):
         """
