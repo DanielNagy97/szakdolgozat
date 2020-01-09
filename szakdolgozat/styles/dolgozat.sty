@@ -1,35 +1,35 @@
-%A szükséges csomagok
-%méretek: margó, lap, fej~ és lábléc stb. NE MÓDOSÍTSUK!
+%A szÃ¼ksÃ©ges csomagok
+%mÃ©retek: margÃ³, lap, fej~ Ã©s lÃ¡blÃ©c stb. NE MÃ“DOSÃTSUK!
 \usepackage[paperwidth=210mm,paperheight=297mm,headheight=15.2pt,headsep=7.1mm,top=25mm,bottom=25mm,inner=30mm,outer=25mm,dvips]{geometry}
-%fejléc kezelõ csomag
+%fejlÃ©c kezelÃµ csomag
 \usepackage{fancyhdr}
-%ams matematikai makrócsomag
+%ams matematikai makrÃ³csomag
 \usepackage{amsmath}
-%ams matematikai szimbólumcsomag
+%ams matematikai szimbÃ³lumcsomag
 \usepackage{amssymb}
-%színkezelés
+%szÃ­nkezelÃ©s
 \usepackage{color}
-%eps ábrák beszúrása
+%eps Ã¡brÃ¡k beszÃºrÃ¡sa
 \usepackage{epsfig}
 %grafikai csomag
 \usepackage{graphicx}
-%vezérlési szerkezetek
+%vezÃ©rlÃ©si szerkezetek
 \usepackage{ifthen}
-%array csomag a táblázatokhoz
+%array csomag a tÃ¡blÃ¡zatokhoz
 \usepackage{array}
-%saját tételszerû környezetekhez
+%sajÃ¡t tÃ©telszerÃ» kÃ¶rnyezetekhez
 \usepackage{ntheorem}
-%multirow csomag: összevont sorokhoz
+%multirow csomag: Ã¶sszevont sorokhoz
 \usepackage{multirow}
 %szines tablazatok
 \usepackage{colortbl}
-%ábrakészítés a Tex-kel
+%Ã¡brakÃ©szÃ­tÃ©s a Tex-kel
 \usepackage[metapost]{mfpic}
-%latin2 kódolás - a magyar ékezetes betûk miatt
-\usepackage[latin2]{inputenc}
-%a magyar elválasztáshoz szükséges
+%latin2 kÃ³dolÃ¡s - a magyar Ã©kezetes betÃ»k miatt
+\usepackage[utf8]{inputenc}
+%a magyar elvÃ¡lasztÃ¡shoz szÃ¼ksÃ©ges
 \usepackage[T1]{fontenc}
-%elválasztást végzõ csomag
+%elvÃ¡lasztÃ¡st vÃ©gzÃµ csomag
 \usepackage[magyar]{babel}
 
 % \newcommand{\myinclude}[1]{%
@@ -38,31 +38,31 @@
 % 
 % \include{#1}}
 
-%myheadings beállítása
+%myheadings beÃ¡llÃ­tÃ¡sa
 \def\ps@myheadings{%
      \def\@oddfoot{\hfil\thepage}
      \def\@oddhead{}
       }
 
-%fancyhdr beállítása
+%fancyhdr beÃ¡llÃ­tÃ¡sa
 \fancyhead[L]{}
 \fancyhead[R]{}
 \fancyfoot[C]{}
 \fancyfoot[R]{\thepage}
 
-%chapter átdefiniálása
+%chapter Ã¡tdefiniÃ¡lÃ¡sa
 \renewcommand\chapter{\if@openright\cleardoublepage\else\clearpage\fi
                     \thispagestyle{myheadings}%
                     \global\@topnum\z@
                     \@afterindentfalse
                     \secdef\@chapter\@schapter}
 
-%Saját fejezet parancs: \Chapter
+%SajÃ¡t fejezet parancs: \Chapter
 \newcommand{\Chapter}[1]{\chapter{#1}
 \chead{}
 }
 
-%Saját fejezet parancs, rövidítést használhatunk a tartalomjegyzékben: \SChapter
+%SajÃ¡t fejezet parancs, rÃ¶vidÃ­tÃ©st hasznÃ¡lhatunk a tartalomjegyzÃ©kben: \SChapter
 \newcommand{\SChapter}[2]{\chapter[#2]{#1}}
 
 %Alfejezet parancs: \Section
@@ -70,7 +70,7 @@
 \chead{\textsl{\thesection. #1}}
 }
 
-%Alfejezet parancs, rövidítést használhatunk a fejlécben  és a tartalomjegyzékben is: \SSection
+%Alfejezet parancs, rÃ¶vidÃ­tÃ©st hasznÃ¡lhatunk a fejlÃ©cben  Ã©s a tartalomjegyzÃ©kben is: \SSection
 \newcommand{\SSection}[3]{\section[#3]{#1}
 \chead{\textsl{\thesection. #2}}}
 
@@ -78,29 +78,29 @@
 \newcommand{\SubSection}[1]{\subsection{#1}
 }
 
-%Al-alfejezet parancs, rövidítést használhatunk a tartalomjegyzékben: \SSubSection
+%Al-alfejezet parancs, rÃ¶vidÃ­tÃ©st hasznÃ¡lhatunk a tartalomjegyzÃ©kben: \SSubSection
 \newcommand{\SSubSection}[2]{\subsection[#2]{#1}
 }
 
-%Saját referencia - nem teszi hozzá a névelõt, de a pontot igen!
+%SajÃ¡t referencia - nem teszi hozzÃ¡ a nÃ©velÃµt, de a pontot igen!
 \newcommand{\myref}[1]{\ref{#1}.}
 
-%Saját magyar referencia - hozzáteszi a névelõt és a pontot!
+%SajÃ¡t magyar referencia - hozzÃ¡teszi a nÃ©velÃµt Ã©s a pontot!
 \newcommand{\myaref}[1]{\aref{#1}.}
 
-%táblázatok beállítása
-\renewcommand{\arraystretch}{1.3}  %default: 1 Sorok közötti távolság nagyítása
+%tÃ¡blÃ¡zatok beÃ¡llÃ­tÃ¡sa
+\renewcommand{\arraystretch}{1.3}  %default: 1 Sorok kÃ¶zÃ¶tti tÃ¡volsÃ¡g nagyÃ­tÃ¡sa
 
-\setlength{\arrayrulewidth}{0.6pt} %default: 0.6pt A vonalak vastagsága
+\setlength{\arrayrulewidth}{0.6pt} %default: 0.6pt A vonalak vastagsÃ¡ga
 
-%A túlcsordulási hibák jelzése a nyomtatási képben vastag, telített téglalappal
+%A tÃºlcsordulÃ¡si hibÃ¡k jelzÃ©se a nyomtatÃ¡si kÃ©pben vastag, telÃ­tett tÃ©glalappal
 \overfullrule10pt
 
-%pont után nem nagyobb a szóköz
+%pont utÃ¡n nem nagyobb a szÃ³kÃ¶z
 \frenchspacing
 
 
-%Új tételkörnyezetek
+%Ãšj tÃ©telkÃ¶rnyezetek
 \newtheoremstyle{MYhun}%
 {\item[\hskip\labelsep\theorem@headerfont ##2.\ ##1.]}%
 {\item[\hskip\labelsep\theorem@headerfont ##2.\ ##1\ \textnormal{(##3).}]}
@@ -111,14 +111,14 @@
 
 \theoremstyle{MYhun}
 \theorembodyfont{\it}
-\newtheorem{theorem}{tétel}[chapter]
-\theorembodyfont{\rm}\newtheorem{definition}[theorem]{definíció}
+\newtheorem{theorem}{tÃ©tel}[chapter]
+\theorembodyfont{\rm}\newtheorem{definition}[theorem]{definÃ­ciÃ³}
 \theorembodyfont{\it}\newtheorem{lemma}[theorem]{lemma}
-\theorembodyfont{\it}\newtheorem{corollary}[theorem]{következmény}
-\theorembodyfont{\rm}\newtheorem{remark}[theorem]{megjegyzés}
-\theorembodyfont{\rm}\newtheorem{example}[theorem]{példa}
+\theorembodyfont{\it}\newtheorem{corollary}[theorem]{kÃ¶vetkezmÃ©ny}
+\theorembodyfont{\rm}\newtheorem{remark}[theorem]{megjegyzÃ©s}
+\theorembodyfont{\rm}\newtheorem{example}[theorem]{pÃ©lda}
 \theoremstyle{MYwithoutnumber}
-\theorembodyfont{\rm}\newtheorem{prooF}{Bizonyítás}
+\theorembodyfont{\rm}\newtheorem{prooF}{BizonyÃ­tÃ¡s}
 
 \def\QEDsign{\hfill$\Box$}
 \newenvironment{proof}{\begin{prooF}}{\QEDsign\end{prooF}}
