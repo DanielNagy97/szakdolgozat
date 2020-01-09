@@ -1,0 +1,15 @@
+\select@language {magyar} \contentsline {chapter}{\numberline {1}Bevezet\'es}{6}
+\select@language {magyar} \contentsline {section}{\numberline {1.1}Egyenletek}{6}
+\select@language {magyar} \contentsline {section}{\numberline {1.2}\'Abr\'ak}{6}
+\select@language {magyar} \contentsline {section}{\numberline {1.3}T\'abl\'azatok}{7}
+\select@language {magyar} \contentsline {section}{\numberline {1.4}Ismerkedj\"unk meg a professzion\'alis sz\"ovegszerkeszt\'essel}{8}
+\select@language {magyar} \contentsline {subsection}{\numberline {1.4.1}Ha m\'ar ez is megy\ldots }{8}
+\select@language {magyar} \contentsline {subsection}{\numberline {1.4.2}F\"uggv\'enyek \'abr\'azol\'asa a \LaTeX -ben}{8}
+\select@language {magyar} \contentsline {chapter}{\numberline {2}T\'ema elm\'eleti kifejt\'ese}{9}
+\select@language {magyar} \contentsline {section}{\numberline {2.1}Csin\'aljunk m\'ast is}{9}
+\select@language {magyar} \contentsline {section}{\numberline {2.2}K\'esz\IeC {\'\i }ts\"unk sz\IeC {\'\i }nes t\'abl\'azatokat}{10}
+\select@language {magyar} \contentsline {chapter}{\numberline {3}Fejleszt\H oi dokument\'aci\'o}{11}
+\select@language {magyar} \contentsline {section}{\numberline {3.1}Programk\'od}{11}
+\select@language {magyar} \contentsline {chapter}{\numberline {4}\"Osszefoglal\'as}{12}
+\select@language {magyar} \contentsline {chapter}{Irodalomjegyz\'ek}{13}
+\select@language {magyar} \contentsline {chapter}{Adathordoz\'o haszn\'alati \'utmutat\'o}{14}
