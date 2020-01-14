@@ -34,7 +34,7 @@ class Grid(object):
 
         # QUEST: Where has it used?
         self._old_points_3D = self._old_points.reshape(cols, rows, 2)
-        self._avg_vector_lenghts = []
+        self._avg_vector_lengths = []
         self.lk_params = dict(winSize=(50, 50),
                               maxLevel=2,
                               criteria=(cv2.TERM_CRITERIA_EPS |
@@ -64,7 +64,7 @@ class Grid(object):
         Update the vector lengths.
         """
         direction_vectors = np.subtract(self._new_points, self._old_points)
-        self._vector_lenghts = np.sqrt(np.sum(np.power(direction_vectors, 2),
+        self._vector_lengths = np.sqrt(np.sum(np.power(direction_vectors, 2),
                                               axis=1))
 
     def calc_global_resultant_vector(self):
@@ -77,10 +77,10 @@ class Grid(object):
 
         vector_count = len(self._old_points)
         self._global_direction_vector = v.get_direction_vector(vector_sum)
-        average_vector_lenght = \
-            v.get_vector_lenght(self._global_direction_vector) / vector_count
-        self._avg_vector_lenghts.append(average_vector_lenght)
-        self._avg_vector_lenghts = self._avg_vector_lenghts[-30:]
+        average_vector_length = \
+            v.get_vector_length(self._global_direction_vector) / vector_count
+        self._avg_vector_lengths.append(average_vector_length)
+        self._avg_vector_lengths = self._avg_vector_lengths[-30:]
 
     @property
     def old_points(self):
@@ -125,21 +125,21 @@ class Grid(object):
         return self._grid_step
 
     @property
-    def vector_lenghts(self):
+    def vector_lengths(self):
         """
-        Get the lenghts of the vector field's vectors.
+        Get the lengths of the vector field's vectors.
         :return: np ndarray with float values
         """
-        return self._vector_lenghts
+        return self._vector_lengths
 
     @property
-    def avg_vector_lenghts(self):
+    def avg_vector_lengths(self):
         """
-        Get the average lenghts of the vector field's vectors \
+        Get the average lengths of the vector field's vectors \
             for the last 30 frames
         :return: np ndarray with float values
         """
-        return self._avg_vector_lenghts
+        return self._avg_vector_lengths
 
     @property
     def global_direction_vector(self):

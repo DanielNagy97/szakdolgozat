@@ -29,7 +29,7 @@ class View(object):
             current_vector = np.subtract(grid.new_points[k],
                                          grid.old_points[k])
 
-            if v.get_vector_lenght(current_vector) >= eps:
+            if v.get_vector_length(current_vector) >= eps:
                 cv2.arrowedLine(canvas.canvas,
                                 tuple(grid.old_points[k]),
                                 tuple(grid.new_points[k]),
@@ -37,7 +37,8 @@ class View(object):
                                 2)
         # NOTE: The intersection points here is for testing only!
         if swirl.points.any():
-            cv2.circle(canvas.canvas, tuple(swirl.points), 10, (0, 0, 255), 5)
+            for point in swirl._points:
+                cv2.circle(canvas.canvas, tuple(point), 10, (0, 0, 255), 5)
 
         self.show_canvas(win, canvas)
 
@@ -105,7 +106,7 @@ class View(object):
                     cv2.LINE_AA)
 
         cv2.putText(canvas.canvas,
-                    'AVG Vector Lenght',
+                    'AVG Vector length',
                     (0, 15),
                     cv2.FONT_HERSHEY_PLAIN,
                     1,
@@ -128,7 +129,7 @@ class View(object):
         cv2.line(canvas.canvas, (600, 250), (600, 50), (0, 180, 0), 1)
         cv2.line(canvas.canvas, (500, 150), (700, 150), (0, 180, 0), 1)
 
-        avg_leghts = np.int32(np.add(np.multiply(grid.avg_vector_lenghts,
+        avg_leghts = np.int32(np.add(np.multiply(grid.avg_vector_lengths,
                                                  -20),
                                      285))
 

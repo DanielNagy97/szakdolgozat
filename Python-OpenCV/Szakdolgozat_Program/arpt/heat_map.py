@@ -14,11 +14,11 @@ class HeatMap(object):
         Calculate the heatmap from the grid.
         :param grid: the grid object
         :param sensitivity: sensitivity value \
-            for displaying motion vector lenghts
+            for displaying motion vector lengths
         :return: None
         """
 
-        heat_values = np.int32(np.multiply(grid.vector_lenghts, sensitivity))
+        heat_values = np.int32(np.multiply(grid.vector_lengths, sensitivity))
         heat_values = np.where(heat_values > 255, 255, heat_values)
         self._map = np.zeros(len(heat_values), dtype=np.uint8)
         self._map = np.dstack((np.subtract(255, heat_values),
@@ -53,9 +53,7 @@ class HeatMap(object):
         for contour in contours:
             (x, y, w, h) = cv2.boundingRect(contour)
             rect_area = w * h
-            if rect_area < min_area:
-                continue
-            else:
+            if rect_area > min_area:
                 count += 1
 
                 local_vector_sum = \

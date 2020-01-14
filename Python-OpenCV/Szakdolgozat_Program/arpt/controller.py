@@ -91,7 +91,7 @@ class Controller(object):
         """
         Controlling the swirl function.
         """
-        self.swirl.calc_swirl(self.grid)
+        self.swirl.calc_swirl(self.grid, self.heat_map.bounding_rects)
 
     def view_control(self):
         """
