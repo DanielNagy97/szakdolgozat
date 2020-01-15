@@ -8,7 +8,7 @@ class Swirl(object):
     def __init__(self):
         self._points = np.empty((0, 2), dtype=np.int32)
 
-    def calc_swirl(self, grid, motion_blobs, eps=3):
+    def calc_swirl(self, grid, motion_blobs, eps=2):
         """
         Calculate the intersections of the vector field.
         :param grid: the grid object
@@ -23,8 +23,22 @@ class Swirl(object):
                 np.subtract(grid.new_points_3D[y:y+h, x:x+w].reshape(-1, 2),
                             grid.old_points_3D[y:y+h, x:x+w].reshape(-1, 2))
 
+            vector_lenghts = np.sqrt(np.sum(np.power(direction_vectors, 2),
+                                            axis=1))
+
+            indexes = np.where(vector_lenghts > eps)
+
+            direction_vectors = np.take(direction_vectors,
+                                        indexes,
+                                        axis=0).reshape(-1, 2)
+
+            selected_old_points = \
+                np.take(grid.old_points_3D[y:y+h, x:x+w].reshape(-1, 2),
+                        indexes,
+                        axis=0).reshape(-1, 2)
+
             b = np.multiply(direction_vectors,
-                            grid.old_points_3D[y:y+h, x:x+w].reshape(-1, 2))
+                            selected_old_points)
             b = b.sum(axis=1)
 
             intersections = np.empty((0, 2), dtype=np.int32)
@@ -37,9 +51,9 @@ class Swirl(object):
                                           axis=0)
 
             if len(intersections) > 0:
-                se = np.array([np.mean(intersections, axis=0)],
-                              dtype=np.uint16)
-                self._points = np.append(self._points, se, axis=0)
+                mean_point = np.array([np.mean(intersections, axis=0)],
+                                      dtype=np.uint16)
+                self._points = np.append(self._points, mean_point, axis=0)
 
     @property
     def points(self):
