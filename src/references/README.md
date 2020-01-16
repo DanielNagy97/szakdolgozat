@@ -21,7 +21,9 @@
 
 * [Learn Python the Hard Way](http://www.uni-miskolc.hu/~qgenagyd/references/Learn_Python_the_Hard_Way(2014).pdf)
 
-* [Learning Python (3rd Edition)](http://www.uni-miskolc.hu/~qgenagyd/references/OReilly%20Learning%20Python%20(3rd%20Edition).pdf)
+* [Learning Python (5th Edition)](http://www.uni-miskolc.hu/~qgenagyd/references/OReilly%20Learning%20Python%20(5th%20Edition).pdf)
+
+* [Programming Python (4th Edition)](http://www.uni-miskolc.hu/~qgenagyd/references/OReilly%20Programming%20Python%20(4th%20Edition).pdf)
 
 * [Python Cookbook (3rd Edition)](http://www.uni-miskolc.hu/~qgenagyd/references/Python_Cookbook_3rd_Edition.pdf)
 
