@@ -58,3 +58,5 @@
 ## Books
 
 * [Clean Code - A Handbook of Agile Software Craftsmanship](http://www.uni-miskolc.hu/~qgenagyd/references/Clean_Code.pdf)
+
+* [How to Think Like a Computer Scientist (magyarul)](http://www.uni-miskolc.hu/~qgenagyd/references/thinkcspy3.pdf)
