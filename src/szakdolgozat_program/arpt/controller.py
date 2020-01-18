@@ -23,44 +23,35 @@ class Controller(object):
         """
         self._video = Video(-1, (640, 360), True)
 
-        # NOTE: It is not necessarily a web camera.
-        self.webcam_win = Window("test",
-                                 cv2.WINDOW_NORMAL,
-                                 (0, 0))
-        self.vector_field_win = Window("vectorField",
-                                       cv2.WINDOW_NORMAL,
-                                       (840, 0))
-        self.frame_diff_win = Window("frameDiff",
-                                     cv2.WINDOW_NORMAL,
-                                     (420, 0))
-        self.heat_map_win = Window("HeatMap",
-                                   cv2.WINDOW_NORMAL,
-                                   (840, 350))
-        self.plot_win = Window("ResultsPlot",
-                               cv2.WINDOW_NORMAL,
-                               (0, 350))
+        self._windows = {
+            'webcam':      Window("test", cv2.WINDOW_NORMAL, (0, 0)),
+            'vectorfield': Window("vectorField", cv2.WINDOW_NORMAL, (840, 0)),
+            'framediff':   Window("frameDiff", cv2.WINDOW_NORMAL, (420, 0)),
+            'heatmap':     Window("HeatMap", cv2.WINDOW_NORMAL, (840, 350)),
+            'resultplot':  Window("ResultsPlot", cv2.WINDOW_NORMAL, (0, 350))
+        }
+        self._windows['resultplot'].resize(576, 331)
 
-        self.plot_win.resize(576, 331)
-
-        self.frame_diff_canvas = Canvas(self._video.dimension, 1)
-        self.vector_field_canvas = Canvas(self._video.dimension, 1, 255)
-        self.plot_canvas = Canvas((700, 300), 3)
+        self._canvasses = {
+            'framediff':   Canvas(self._video.dimension, 1),
+            'vectorfield': Canvas(self._video.dimension, 1, 255),
+            'resultplot':  Canvas((700, 300), 3)
+        }
 
         self.grid = Grid(16, self._video.dimension)
-
         self.frame_diff = FrameDifference()
         self.heat_map = HeatMap()
         self.shift = Shift(200, 150, 100, 100)
-        self.view = View()
-
         self.swirl = Swirl()
+
+        self.view = View()
 
     def frame_diff_control(self):
         """
         Controlling the frame differencing function.
         """
         self.frame_diff.apply_frame_difference(self._video,
-                                               self.frame_diff_canvas)
+                                               self._canvasses['framediff'])
 
     def grid_control(self):
         """
@@ -91,20 +82,26 @@ class Controller(object):
         """
         self.swirl.calc_swirl(self.grid, self.heat_map.bounding_rects)
 
+    def composing_output_video(self):
+        """
+        Controlling the composition of the video.
+        """
+        self.view.show_shift(self.shift, self._video)
+
     def view_control(self):
         """
         Controlling the View.
         """
-        self.view.show_heat_map(self.heat_map_win, self.heat_map)
-        self.view.show_canvas(self.frame_diff_win, self.frame_diff_canvas)
-        self.view.show_shift(self.shift, self._video)
-        self.view.show_image(self.webcam_win, self._video.frame)
+        self.view.show_heat_map(self._windows['heatmap'], self.heat_map)
+        self.view.show_canvas(self._windows['framediff'],
+                              self._canvasses['framediff'])
+        self.view.show_image(self._windows['webcam'], self._video.frame)
         self.view.show_vector_field(self.grid, self.swirl,
-                                    self.vector_field_win,
-                                    self.vector_field_canvas)
+                                    self._windows['vectorfield'],
+                                    self._canvasses['vectorfield'])
         self.view.show_global_vector_results(self.grid,
-                                             self.plot_win,
-                                             self.plot_canvas)
+                                             self._windows['resultplot'],
+                                             self._canvasses['resultplot'])
 
     def main_loop(self):
         """
@@ -119,6 +116,8 @@ class Controller(object):
                 self.heat_map_control()
                 self.shift_control()
                 self.swirl_control()
+                self.composing_output_video()
+
                 self.view_control()
 
                 k = cv2.waitKey(1) & 0xFF
