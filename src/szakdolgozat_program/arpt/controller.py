@@ -1,6 +1,5 @@
 import cv2
 from arpt.grid import Grid
-from arpt.capture_device import CaptureDevice
 from arpt.video import Video
 from arpt.view import View
 from arpt.frame_difference import FrameDifference
@@ -22,8 +21,7 @@ class Controller(object):
         """
         Initialize the controller.
         """
-        self._capture = CaptureDevice(-1, (640, 360))
-        self._video = Video(self._capture)
+        self._video = Video(-1, (640, 360), True)
 
         # NOTE: It is not necessarily a web camera.
         self.webcam_win = Window("test",
@@ -44,11 +42,11 @@ class Controller(object):
 
         self.plot_win.resize(576, 331)
 
-        self.frame_diff_canvas = Canvas(self._capture.dimension, 1)
-        self.vector_field_canvas = Canvas(self._capture.dimension, 1, 255)
+        self.frame_diff_canvas = Canvas(self._video.dimension, 1)
+        self.vector_field_canvas = Canvas(self._video.dimension, 1, 255)
         self.plot_canvas = Canvas((700, 300), 3)
 
-        self.grid = Grid(16, self._capture.dimension)
+        self.grid = Grid(16, self._video.dimension)
 
         self.frame_diff = FrameDifference()
         self.heat_map = HeatMap()
@@ -85,7 +83,7 @@ class Controller(object):
         """
         Controlling the shift function.
         """
-        self.shift.calc_shift(self.grid, self._capture.dimension, 0.5, 0.8)
+        self.shift.calc_shift(self.grid, self._video.dimension, 0.5, 0.8)
 
     def swirl_control(self):
         """
@@ -113,7 +111,7 @@ class Controller(object):
         The main event loop
         """
         while True:
-            self._video.get_frame(self._capture)
+            self._video.get_frame()
             if self._video.ret:
 
                 self.frame_diff_control()
@@ -129,5 +127,5 @@ class Controller(object):
             else:
                 break
 
-        self._capture.release()
+        self._video.release_capture_device()
         cv2.destroyAllWindows()
