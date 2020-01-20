@@ -20,7 +20,8 @@ class Expand(Widget):
 
     def calc_expand(self, grid, dimensions_of_frame, speed, attenuation):
         x, y, w, h = np.uint8(np.floor(np.divide((*self._position,
-                                                  *self._dimension),
+                                                  self._dimension[0],
+                                                  self._actual_height),
                                                  grid.grid_step)))
 
         local_vector_sum = \
@@ -36,8 +37,6 @@ class Expand(Widget):
                                np.multiply(np.divide(local_direction_vector,
                                                      vector_count),
                                            speed))
-
-        # self._position = np.add(self._position, self.velocity)
 
         self._actual_height += self.velocity[1]
 
