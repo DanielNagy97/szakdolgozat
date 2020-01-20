@@ -177,13 +177,36 @@ class View(object):
         """
         Draw the shift widget.
         """
-        pos_x, pos_y = shift.position
-        width, height = shift.dimension
+        pos_x, pos_y = np.uint16(shift.position)
+        width, height = np.uint16(shift.dimension)
+
+        shift.image = cv2.resize(shift.image, (width, height),
+                                 interpolation=cv2.INTER_CUBIC)
 
         added_image = \
-            cv2.addWeighted(video.frame[int(pos_y):int(pos_y)+height,
-                                        int(pos_x):int(pos_x)+width, :],
+            cv2.addWeighted(video.frame[pos_y:pos_y+height,
+                                        pos_x:pos_x+width, :],
                             0, shift.image[0:height, 0:width, :], 1-0, 0)
 
-        video.frame[int(pos_y):int(pos_y)+height,
-                    int(pos_x):int(pos_x)+width, :] = added_image
+        video.frame[pos_y:pos_y+height,
+                    pos_x:pos_x+width, :] = added_image
+
+    def show_expand(self, expand, video):
+        """
+        Draw the shift widget.
+        """
+        pos_x, pos_y = np.uint16(expand.position)
+        width, height = np.uint16(expand.dimension)
+        act_h = np.uint16(expand.actual_height)
+
+        expand.image = cv2.resize(expand.image, (width, height),
+                                  interpolation=cv2.INTER_CUBIC)
+
+        added_image = \
+            cv2.addWeighted(video.frame[pos_y:pos_y+act_h,
+                                        pos_x:pos_x+width, :],
+                            0, expand.image[height-act_h:height, 0:width, :],
+                            1-0, 0)
+
+        video.frame[pos_y:pos_y+act_h,
+                    pos_x:pos_x+width, :] = added_image

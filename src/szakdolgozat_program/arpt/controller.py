@@ -6,8 +6,10 @@ from arpt.frame_difference import FrameDifference
 from arpt.canvas import Canvas
 from arpt.window import Window
 from arpt.heat_map import HeatMap
-from arpt.shift import Shift
 from arpt.swirl import Swirl
+from arpt.shift import Shift
+from arpt.expand import Expand
+
 # NOTE: Probably it is enought to import only the arpt package.
 # from arpt import *
 
@@ -41,8 +43,10 @@ class Controller(object):
         self.grid = Grid(16, self._video.dimension)
         self.frame_diff = FrameDifference()
         self.heat_map = HeatMap()
-        self.shift = Shift((50, 50), (180, 256), "test.png")
         self.swirl = Swirl()
+
+        self.shift = Shift((50, 50), (180, 256), "test.png")
+        self.expand = Expand((10, 10), (200, 300), "expand.png")
 
         self.view = View()
 
@@ -76,6 +80,12 @@ class Controller(object):
         """
         self.shift.calc_shift(self.grid, self._video.dimension, 1.8, 0.8)
 
+    def expand_control(self):
+        """
+        Controlling the expand function.
+        """
+        self.expand.calc_expand(self.grid, self._video.dimension, 1.8, 0.8)
+
     def swirl_control(self):
         """
         Controlling the swirl function.
@@ -87,15 +97,17 @@ class Controller(object):
         Controlling the composition of the video.
         """
         self.view.show_shift(self.shift, self._video)
+        self.view.show_expand(self.expand, self._video)
 
     def view_control(self):
         """
         Controlling the View.
         """
+        self.view.show_image(self._windows['webcam'], self._video.frame)
+
         self.view.show_heat_map(self._windows['heatmap'], self.heat_map)
         self.view.show_canvas(self._windows['framediff'],
                               self._canvasses['framediff'])
-        self.view.show_image(self._windows['webcam'], self._video.frame)
         self.view.show_vector_field(self.grid, self.swirl,
                                     self._windows['vectorfield'],
                                     self._canvasses['vectorfield'])
@@ -115,6 +127,7 @@ class Controller(object):
                 self.grid_control()
                 self.heat_map_control()
                 self.shift_control()
+                self.expand_control()
                 self.swirl_control()
                 self.composing_output_video()
 
