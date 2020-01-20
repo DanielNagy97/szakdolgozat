@@ -109,18 +109,18 @@ A \textit{Shift} viselkedésének meghatározásához első lépésként az adot
   (i_1, j_1), (n, m) &= \lfloor \frac{(x,y),(w,h)}{\textit{rács lépésköze}} \rfloor\\
   \vec{v_l} &= \sum_{i=i_1}^n \sum_{j=j_1}^m \vec{u}_{ij}
 \end{align*}
-Az eredővektorból ezután irányvektort számolunk. Majd az irányvektos segítségével kiszámoljuk az elem sebességét:
+Az eredővektorból ezután irányvektort számolunk. Majd az irányvektok segítségével kiszámoljuk az elem sebességét:
 \begin{align*}
-  v_{xy} += \frac{\vec{v}_l}{(n*m)*\textit{gyorsulás}}
+  v_{xy} = v_{xy} + \frac{\vec{v}_l}{(n*m)}*\textit{gyorsulás}
 \end{align*}
 , ahol $\textit{gyorsulás} > 0$.\\
 Az elem pozíciója $(x,y)$ a sebesség függvényében változik.
 \begin{align*}
-  (x,y) += v_{xy}
+  (x,y) = (x,y)+v_{xy}
 \end{align*}
 A sebesség értéket minden iteráció végén tompítani kell, hogy a kezelt virtuális elem meg tudjon állni egy bizonyos ponton. Ha az adott elemet nem éri tovább erő, akkor a tompítás lassulást eredményez, a sebesség csökkenni fog. Olyan hatást is el tudunk érni egy helyesen megválasztott értékkel, mintha az eltolás után az elem csúszós felületen mozogna és így fokozatosan lassul le az iterációk során.
 \begin{align*}
-  v_{xy} *= \textit{tompítás}
+  v_{xy} = v_{xy}*\textit{tompítás}
 \end{align*}
 , ahol $0 \leq \textit{tompítás} < 1$
 
@@ -128,9 +128,30 @@ A sebesség értéket minden iteráció végén tompítani kell, hogy a kezelt v
 
 \SubSection{Drag}
 
+A \textit{Drag} az elem elkapása utáni állapot jelenti, amikor a felhasználó az elkapott elem helyzetét szabadon változtathatja, majd új pozíciójára teheti. Ennek a funkciónak a megvalósításához többféleképpen is hozzáláthatunk.
+
+Az első ötletem szerint a vektormező vektorait felhasználva lokális eredővektorokat számolva becsülte volna meg a program a mozgatandó virtuális elem új helyzetét. Ez a megoldás gyakorlatban az elvárásokat nem elégítette ki. Több probléma is adódott ezzel a megoldással. A \textit{Rács} lyukacsossága miatt nem mindig esett vizsgálandó pont a mozgás helyére. Az egyes kiugró értékek is befolyásolták a végeredményt, a mozgatandó elemek ilyen esetekben gyorsabban mozogtak a vártnál. Ez a megoldás tehát nem tűnt stabilnak, a vektormező rácsának sűrítésével pedig a program jelentős lassulásba ütközött volna. Más megoldás után kellett kutatni.
+
+Mivel a \textit{Drag}-et előreláthatólag a prezentáló csak rövid időszakaszokban fogja használni, ezért a következő ötlettel áltam elő: a \textit{Blink} gesztus pozíciójára kontollpont(okat) illeszthetnénk, melyekre külön-külön elvégezhetnénk az \textit{Optical-Flow} eljárást és a pont vagy a pontok súlypontjának pozíciója függvényében változna a mozgatandó virtuális elem pozíciója is. Már egyetlen kontrollpont használata is kielégítő eredményt adott. Több kontrollpont használata csupán csak a biztonság érdekében tűnik megfelelőnek. Ha esetleg egy pont új pozícióját rosszul becsülné meg az eljárás és a pont egy bizonyos ponton leragadna, akkor maradjanak olyan "tartalék" pontok is, amelyek a funkció helyes működését biztosítani tudják.
+
 \SubSection{Blink}
 
+A \textit{Blink} gesztusok felismerésére először egy ún. \textit{Frame differencing} technikát kell alkalmaznunk.
+Ehhez a videófolyam aktuális képkockájának és az egyel korábbi képkockájának abszolút különbségét kell meghatározni, majd az így kapott képen küszöbölést kell végrehajtani. Eredményképp egy olyan képet kapunk, amelyen az elmozdulás figyelhető meg fehér színnel jelölve. A keletkezett képen különféle alakzatok alakulhatnak ki. Az egyes mozdulatok hasonló nyomot hagynak maguk után. Így tehát egy \textit{Blink} mozdulat leadásakor jellegzetes mintázat rajzolódik ki.
+
+Tervek, ötletek ezzel kapcsolatban...
+
 \SubSection{Rotation}
+
+A \textit{Rotation} gesztus két tulajdonsággal íható le: ezen gesztusnak mindig létezik egy elméleti középpontja, ami körül történik az elmozdulás, valamint van iránya is.
+Becslést adni a mozgás lehetséges középpontjának pozíciójára a vektormező elemzésével célszerű.
+A vektorokhoz egyenes egyenleteket szerkeszthetünk. Az egyenes egyenletének egy pontja a vektot kezdőpontja lesz, a normálvektora pedig az egyenes irányvektora.
+
+Két egyenletből álló egyenletrenszer megoldásaként megkapjuk az $x,y$ ismeretlen értékeket, melyek a két egyenes metszéspontjának a pozícióját adják meg.
+A metszéspontokat számolva létrejön egy ponthalmaz, amelynek súlypontja az elméleti középpont közelében fog elhelyezkedni.
+A programom \textbf{jelenleg} csupán a szomszédos vektorok egyenleteit oldja meg, ezzel számítási időt spórolva meg, kedvező futási időt biztosítva. A becslés pontossága viszont romlani fog.
+
+Ha pedig több \textit{Rotation} pontot is vizsgálni szeretnénk, akkor segítségül hívhatjuk a \textit{Hőtérkép}-ből kinyert vektorcsoportok halmazait, majd ezen csoportokon külön-külön elvégezhetjük az eljárást a lokális súlypontok után kutatva.
 
 \SubSection{Többpontos kezelés}
 Irányok esetében $\vec{u},\vec{v}\in \Bbb R^2$ esetén
