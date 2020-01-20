@@ -175,11 +175,15 @@ class View(object):
 
     def show_shift(self, shift, video):
         """
-        Show the shift vectors.
+        Draw the shift widget.
         """
-        cv2.rectangle(video.frame,
-                      (int(shift.pos_x), int(shift.pos_y)),
-                      (int(shift.pos_x) + int(shift.width),
-                       int(shift.pos_y) + shift.height),
-                      (0, 255, 0),
-                      3)
+        pos_x, pos_y = shift.position
+        width, height = shift.dimension
+
+        added_image = \
+            cv2.addWeighted(video.frame[int(pos_y):int(pos_y)+height,
+                                        int(pos_x):int(pos_x)+width, :],
+                            0, shift.image[0:height, 0:width, :], 1-0, 0)
+
+        video.frame[int(pos_y):int(pos_y)+height,
+                    int(pos_x):int(pos_x)+width, :] = added_image

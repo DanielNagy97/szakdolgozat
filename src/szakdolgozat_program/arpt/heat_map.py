@@ -53,7 +53,7 @@ class HeatMap(object):
         for contour in contours:
             (x, y, w, h) = cv2.boundingRect(contour)
             rect_area = w * h
-            if rect_area > min_area:
+            if rect_area >= min_area:
                 count += 1
 
                 local_vector_sum = \

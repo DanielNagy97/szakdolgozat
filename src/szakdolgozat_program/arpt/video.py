@@ -18,7 +18,7 @@ class Video(object):
         self._to_flip = to_flip
         self._dimension = dimension
 
-        self.ret, self._frame = self._capture.read()
+        self._ret, self._frame = self._capture.read()
         if self._to_flip:
             self._frame = self.flip_frame(self._frame)
 
@@ -47,7 +47,7 @@ class Video(object):
         Get the next frame from the capture device.
         """
         self._old_gray_frame = self._gray_frame
-        self.ret, self._frame = self._capture.read()
+        self._ret, self._frame = self._capture.read()
         if self._to_flip:
             self._frame = self.flip_frame(self._frame)
 
@@ -84,6 +84,10 @@ class Video(object):
         """
         return self._frame
 
+    @frame.setter
+    def frame(self, new_frame):
+        self._frame = new_frame
+
     @property
     def gray_frame(self):
         """
@@ -97,3 +101,10 @@ class Video(object):
         Get the former grayscale frame.
         """
         return self._old_gray_frame
+
+    @property
+    def ret(self):
+        """
+        Get the logic value of the reading successfulness
+        """
+        return self._ret

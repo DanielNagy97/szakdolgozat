@@ -21,7 +21,7 @@ class Controller(object):
         """
         Initialize the controller.
         """
-        self._video = Video(-1, (640, 360), True)
+        self._video = Video(-1, (640, 480), True)
 
         self._windows = {
             'webcam':      Window("test", cv2.WINDOW_NORMAL, (0, 0)),
@@ -41,7 +41,7 @@ class Controller(object):
         self.grid = Grid(16, self._video.dimension)
         self.frame_diff = FrameDifference()
         self.heat_map = HeatMap()
-        self.shift = Shift(200, 150, 100, 100)
+        self.shift = Shift((50, 50), (180, 256), "test.png")
         self.swirl = Swirl()
 
         self.view = View()
@@ -74,7 +74,7 @@ class Controller(object):
         """
         Controlling the shift function.
         """
-        self.shift.calc_shift(self.grid, self._video.dimension, 0.5, 0.8)
+        self.shift.calc_shift(self.grid, self._video.dimension, 1.8, 0.8)
 
     def swirl_control(self):
         """
