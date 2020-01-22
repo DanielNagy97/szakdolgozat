@@ -56,6 +56,7 @@
 
 * [API design for machine learning software:experiences from the scikit-learn project](http://www.uni-miskolc.hu/~qgenagyd/references/API%20design%20for%20machine%20learning%20software:experiences%20from%20the%20scikit-learn%20project.pdf)
 
+* [Hands-On Machine Learning  with Scikit-Learn & TensorFlow](http://www.uni-miskolc.hu/~qgenagyd/references/Hand-on-ML.pdf)
 
 ## Books
 
