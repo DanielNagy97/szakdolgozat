@@ -12,9 +12,13 @@
 
 % TODO: OpenCV-ről néhány dolgot megemlíteni.
 
-\cite{bradski2008learning}
+Az \textit{OpenCV} egy \textit{open source}, elsősorban valós idejű számítógépes látás megvalósítására támogatást nyújtó, magas tudású függvénykönyvtár. Számos képfeldolgozó algoritmus található benne, melyek implementációjánál a fejlesztők a lehető legjobb teljesítmény elérésére törekedtek.
 
-Videófolyamok feldolgozása
+Az \textit{OpenCV} eredetileg C és C++ nyelven íródott, de különböző nyelveket is támogat, mint például a \textit{Python}-t, \textit{Ruby}-t, \textit{Matlab}-ot, stb\ldots
+Platformfüggetlen, így \textit{Linux}-on, \textit{Windows}-on és \textit{Mac OS X} rendszereken is használható. Lehetőséget nyújt továbbá a párhuzamosításra is a \textit{CUDA} és az \textit{OpenCL} technológiák segítségével és tartalmaz egy általános célú gépi tanulásos könyvtárat is, melyek tovább szélesítik a felhasználási területeinek körét. \cite{bradski2008learning}
+
+Videófolyamok feldolgozásához is hasonló eljárásokat alkalmazhatunk, mint az önálló képek esetében. A videó képkockáit iteratív módon dolgozhatjuk fel, képkockáról képkockára. A videó két forrásból származhat: fájból és külső eszközből (pl.: webkamera képe). Az \textit{OpenCV}-ben mindkét esetben először definiálnunk kell egy olvasó eszközt. Fájlból történő olvasás esetén paraméterként a fájl elérési útvonalára kell hivatkozni, külső eszköz esetén pedig az eszköz \textit{index}-ével történik a hivatkozás. Ha egyetlen ilyen eszköz áll rendelkezésünkre, akkor a 0-ás indexet is használhatjuk, hiszen az az első elérhető eszközre mutató index.
+Az eszköz definiálása után a .read() metódusával olvashatjuk ki a képkockákat. A metódus meghívásakor visszatérési értékként megkapjuk a soron következő képkockát és egy értéket, amely az olvasás sikerességéről tájékoztat bennünket. A metódus meghívásakor a videóolvasó pointerét is inkrementáljuk, így a következő .read() meghívásakor már a soron következő képkockát olvashatjuk ki a videófolyamból. Ha már nem kívánjuk tovább használni az adott erőforrást, akkor a .release() metódusával szabadíthatjuk fel azt.
 
 \Section{Gépi tanulás}
 

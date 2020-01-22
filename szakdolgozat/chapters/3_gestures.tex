@@ -6,7 +6,7 @@ A szoftver használata közben a prezentáló személy különféle gesztusok se
 
 \begin{itemize}
 \item \textbf{Sweep}: Egyenes vonalú mozgás. A mozgásnak van iránya és két képkocka között megfigyelhető a hossza is.
-\item \textbf{Shift}: Bizonyos virtuális elemek közvetlenül is reagálnak a környezetükben történő mozgásra. Az ilyen elemek az irányukba történő mozgásra ellentétes irányú mozgással reagálnak. Vagyis a prezentáló személy például a kezei segítségével egyszerűen eltolhatja az adott virtuális elemet.
+\item \textbf{Shift}: Bizonyos virtuális elemek közvetlenül is reagálnak a környezetükben történő mozgásra. Az ilyen elemek az irányukba történő mozgással megegyező irányú mozgással reagálnak. Vagyis a prezentáló személy például a kezei segítségével egyszerűen eltolhatja az adott virtuális elemet.
 \item \textbf{Blink}: Az ujjak gyors ökölbe zárása vagy a tenyér széttárásának mozdulata.
 \item \textbf{Drag}: Bizonyos virtuális elemeket a prezentáló személy képes megfogni, majd odébbhúzni és elengedni. A funkció eléréséhez a prezentálónak egy \textit{Blink} gesztust kell végrehajtania. Az elkapás pillanatában az adott objektum a \textit{Blink} pozíciójára (a prezentáló kézfejére) tapad és követi annak helyzetét. A felhasználó így tetszőleges irányba mozgathatja az "elkapott" elemet. Egy újabb \textit{Blink} gesztussal pedig a kívánt helyére teheti azt.
 \item \textbf{Rotation}: A videófolyamon történő örvénylő mozgás, ami akár több ponton is megfigyelhető. Ez lehet például karlendítés, körvonal/ív menti mozgás, tenyerek forgatása.
@@ -17,7 +17,12 @@ A szoftver használata közben a prezentáló személy különféle gesztusok se
 
 Az elmozdulás becslésére az ún. \textit{Motion-Flow} technikák tűntek a legalkalmasabbnak. Egy kiemelkedő és széles körben elterjedt eljárás a Bruce D. Lucas és Takeo Kanade által kidolgozott módszer, melynek implementálása az \textit{OpenCV}-ben is megtalálható.
 
-\cite{lucas1981iterative}
+A Lucas-Kanade dedikált pontok követésére hivatott. Segítségével meghatározható a videófolyamon történő mozgás. Ehhez képkockapárokat kell összehasonlítani a kijelölt pont(ok) szemszögéből. A módszer azon a megállapításon alapszik, hogy a videófolyamon egy kijelölt pont és a körülötte lévő pixelek halmaza közel azonos intenzitású a vizsgált időintervallumban. Ha  a ponthoz tartozó valós idejű objektum elmozdul a korábbi helyzetéről és az általa képviselt új pont a vizsgálandó pont bizonyos tartományába esik, akkor a módszer képes becslést adni a pont új helyzetére a videófolyamon. A módszer használatánál feltételezzük azt is, hogy a videófolyamon megfigyelhető mozgás viszonylag lassú, vagyis két képkockát vizsgálva az új pont nem eshet kívül a vizsgált pont tartományából. A módszer tetszőleges pontok halmazára alkalmazható.
+
+Az \textit{OpenCV}-ben található implementáció ún. \textit{kép-piramis}-ok használatával próbálja kiküszöbölni a nagy mozdulatok esetén fellépő hibás eredményeket, vagyis a vizsgálandó képeknek különböző felbontású változatait vizsgálja iteratívan a kisebb felbontástól az eredeti felbontásig haladva. A piramis mélysége tetszőleges, a legkisebb szint egyetlen pixelből is állhat. Kis felbontások mellett a nagyobb mozdulatok könnyebben azonosíthatóak, a piramis szélesebb szintjeihez közelítve, nagyobb felbontások mellett pedig pontosítódik a becslés. 
+A módszer elsősorban szürkeárnyalatos képekre használatos, mivel az intenzitás értékek ilen esetekben jóval konzisztensebbek, de megfelelő paraméterek megválasztása mellett színes képekre is alkalmazható. \cite{bradski2008learning} 
+
+\cite{lucas1981iterative} 
 \textit{Flow Motion} működésének a leírása a cikk alapján...\\
 Elmozdulás becslésének módja...\\
 Részletezés képletekkel, ábrákkal...\\
@@ -37,9 +42,11 @@ u = \frac{dx}{dt} &; v = \frac{dy}{dt}
 \bmatrix u \\ v \endbmatrix = {\bmatrix {\sum_{i}f_{x_i}}^2 & \sum_{i}f_{x_i}f_{y_i}\\ \sum_{i}f_{x_i}f_{y_i} & {\sum_{i}f_{y_i}}^2 \endbmatrix}^{-1} \bmatrix -\sum_{i}f_{x_i}f_{t_i} \\ -\sum_{i}f_{y_i}f_{t_i} \endbmatrix
 \end{align*}
 
+A módszer \textit{Spare Optical-Flow}-t valósít meg, vagyis egymástól különálló pontokat vizsgál, ellentétben a \textit{Dense Optical-Flow} módszerekkel, melyek a teljes kép vizsgálatával számolják ki az elmozdulás vektorokat. (forrás) Az utóbbi módszerek számításigénye kifejezetten magas. Valós idejű alkalmazás esetén problémákba ütközhetünk gyengébb hardverek esetében. A mozgás valós idejű detektálására a \textit{Spare Optical-Flow} módszerek is kielégítő eredményekkel szolgálnak, néhány trükk alkalmazása mellett. Ilyenek például a fent említett \textit{kép-piramisok} használata a gyors mozgások pontos követésére és a vizsgálandó pontok kijelölésének a stratégiája is. A pontok kijelöléséhez egy rácsszerkezetet gondoltam a legmegfelelőbbnek, ahol a pontok a rács metszéspontjaiban helyezkednek el. A képtartományt ily módon egyenletesen tudjuk lefedni.
+
 \Section{Rácspontok kezelése}
 
-Ha az \textit{Optical-Flow} eljárást tetszőleges számú pontra elvégezhetjük. Ha létrehozhatunk egy rácsszerkezetet fix pontokkal, akkor a képtartományt egyenletesen lefedhetjük a pontok halmazával.
+Az \textit{Optical-Flow} eljárást tetszőleges számú pontra elvégezhetjük. Ha létrehozhatunk egy rácsszerkezetet fix pontokkal, akkor a képtartományt egyenletesen lefedhetjük a pontok halmazával.
 Ezen pontokat felhasználva minden iterációban az éppen aktuális és az egyel korábbi szürkeárnyalatos képkockákra elvégezhetjük az eljárást és így minden esetben kapunk egy új ponthalmazt, amely az eljárás eredménypontjait tartalmazza. Az eredeti és az új pontokból egy vektormezőt kapunk.
 
 \begin{figure}[h]
@@ -154,6 +161,8 @@ A programom \textbf{jelenleg} csupán a szomszédos vektorok egyenleteit oldja m
 Ha pedig több \textit{Rotation} pontot is vizsgálni szeretnénk, akkor segítségül hívhatjuk a \textit{Hőtérkép}-ből kinyert vektorcsoportok halmazait, majd ezen csoportokon külön-külön elvégezhetjük az eljárást a lokális súlypontok után kutatva.
 
 \SubSection{Többpontos kezelés}
+
+
 Irányok esetében $\vec{u},\vec{v}\in \Bbb R^2$ esetén
 \begin{align*}
 \vmatrix \vec{u}+\vec{v} \endvmatrix &< \varepsilon_{\text{irány}}\\
