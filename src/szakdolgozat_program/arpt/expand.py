@@ -34,17 +34,14 @@ class Expand(Widget):
         vector_count = len(grid.old_points_3D[y:y+h, x:x+w].reshape(-1, 2))
 
         self.velocity = np.add(self.velocity,
-                               np.multiply(np.divide(local_direction_vector,
+                               np.multiply(np.divide(local_direction_vector[1],
                                                      vector_count),
                                            speed))
 
-        self._actual_height += self.velocity[1]
+        self._actual_height += self.velocity
 
         self.velocity = np.multiply(self.velocity, attenuation)
 
-        cap_width, cap_height = dimensions_of_frame
-
-        pos_x, pos_y = self._position
         width, height = self._dimension
 
         if self._actual_height < 50:

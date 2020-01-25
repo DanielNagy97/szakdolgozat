@@ -59,18 +59,35 @@ Ezen pontokat felhasználva minden iterációban az éppen aktuális és az egye
 A mozgás detektálása rácspontok segítségével kevesebb számítást igényel, mintha minden pixel elmozdulását vizsgálnánk és az elmozdulás becslésére is elfogadható eredményeket kapunk.
 A rács sűrűségét tetszőlegesen megadhatjuk. Minél sűrűbb a rács szerkezete, annál több pontot vizsgál a szoftver, ami nagyobb pontosságot is eredményez. Viszont a sűrűbb rács használata a futási időt is befolyásolja. Egy gyengébb hardver esetén nem ajánlott magas sűrűség értékkel futatnunk a programot, mivel tapasztalataim szerint jelentős lassulásra számíthatunk.
 
-\textbf{Hogyan számolja ki a kezdeti rácspontok helyzetét?} 
+A rácspontok helyzetének meghatározásához elsősorban definiálnunk kell egy sűrűségi változót. A sűrűség-értéknek kettő-hatványának kell lennie, hogy a négyzetes rácsszerkezet pontosan illeszkedjen a videófolyam képkockáira, amelyek képaránya általában 16:9-es vagy 4:3-as lehet. A videófolyam felbontása forrásonként változhat. Hasonló képarányok esetében minden esetben azonos mennyiségű pontot generálhatunk, ha a pontok közötti távolságot, vagyis a \textit{lépésközt}, a képkocka felbontásának és a rácssűrűségnek a függvényében határozzuk meg.
+\begin{align*}
+\textit{lépésköz} = \frac{\textit{szélesség}}{\textit{sűrűség}}
+\end{align*}
+, ahol a \textit{szélesség} a képkocka szélessége pixelekben mérve.\\
+A \textit{lépésköz} érték segítségével határozhatjuk meg a pontok helyzetét.\\
+\newline
+\noindent \textbf{Rácspontok$\_$generálása}(szélesség, magasság, lépésköz, @rács)\\ 
+\textbf{FOR} i $\leftarrow$ lépésköz \textbf{TO} (magasság/lépésköz)-1 \textbf{DO}\\
+\indent \textbf{FOR} j $\leftarrow$ lépésköz \textbf{TO} (szélesség/lépésköz)-1 \textbf{DO}\\
+\indent \indent rács $\leftarrow$ rács.append([j,i])\\
+\textbf{RETURN} rács
 
 \Section{Hőtérkép}
 
 A vektormező egyes pontjait vizsgálva szerkeszthetünk egy ún. \textit{Hőtérkép}-et, amelyben különböző intenzitásértékekkel jelöljök az egyes vektorok hosszait. A \textit{Hőtérkép} egy $n*m$-es mátrix, ahol $n$ a vektormező sorainak, $m$ pedig az oszlopainak a száma. A \textit{Hőtérkép} minden eleme egy BGR (blue, green, red) hármas értékkel van ellátva. Ezen értékek jelölik az egyes elemek színét.\\
-Az értékek a következőképpen kerülnek kiszámításra:
-\begin{align*}
-  &\textit{hőérték}_{nm} = \textit{hossz}(\textit{vektor}_{nm})*\textit{érzékenység}\\
-  &\text{IF}\ \textit{hőérték}_{nm} > 255\\
-  &\indent \text{THEN}\ \textit{hőérték}_{nm} = 255\\
-  &\textit{hőtérkép}_{nm} = (255-\textit{hőérték}_{nm},\ 0,\ \textit{hőérték}_{nm})
-\end{align*}
+Az értékek a következőképpen kerülnek kiszámításra:\\
+\newline
+\noindent \textbf{Hőtérkép$\_$kiszámítása}(@vektormező, érzékenység, @hőtérkép)\\ 
+Input paraméter: vektormező (n*m-es mátrix), érzékenység\\
+Output paraméter: hőtérkép\\
+\textbf{FOR} i $\leftarrow$ 1 \textbf{TO} Hossz(vektor$_n$) \textbf{DO}\\
+\indent \textbf{FOR} j $\leftarrow$ 1 \textbf{TO} Hossz(vektor$_m$) \textbf{DO}\\
+\indent \indent hőérték$_{ij}$ $\leftarrow$ hossz(vektor$_{ij}$)*érzékenység\\
+\indent \indent \textbf{IF} hőérték$_{ij}$ > 255\\
+\indent \indent \indent \textbf{THEN} hőérték$_{ij}$ $\leftarrow$ 255\\
+\indent \indent hőtérkép$_{ij}$ $\leftarrow$ (255-hőérték$_{ij}$, 0, hőérték$_{ij}$)\\
+\textbf{RETURN} hőtérkép\\
+\newline
 0 pixel hosszúság esetén az adott indexű elem (255, 0, 0) értéket kap, vagyis kék színnel jelöljük. Ha egy adott vektor számított hőértéke eléri a 255-öt, a hozzá tartozó \textit{hőtérkép-érték} (0, 0, 255) intenzitásértéket kap, vagyis tiszta piros színnel fog megjelenni.
 A \textit{érzékenység} értékkel állíthatjuk be, hogy mely vektorhosszakat vegyen a program figyelembe. Az érték megadja, hogy milyen mértékű legyen a vektorok nagyítása, befolyásolva ezzel a számított \textit{hőértéket}.
 
