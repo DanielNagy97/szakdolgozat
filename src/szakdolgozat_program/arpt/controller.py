@@ -9,6 +9,7 @@ from arpt.heat_map import HeatMap
 from arpt.swirl import Swirl
 from arpt.shift import Shift
 from arpt.expand import Expand
+from arpt.composition import Composition
 
 # NOTE: Probably it is enought to import only the arpt package.
 # from arpt import *
@@ -19,34 +20,53 @@ class Controller(object):
     Controller class
     """
 
-    def __init__(self):
+    def __init__(self, demo=False):
         """
         Initialize the controller.
         """
+        self.demo = demo
+
         self._video = Video(-1, (640, 480), True)
 
-        self._windows = {
-            'webcam':      Window("test", cv2.WINDOW_NORMAL, (0, 0)),
-            'vectorfield': Window("vectorField", cv2.WINDOW_NORMAL, (840, 0)),
-            'framediff':   Window("frameDiff", cv2.WINDOW_NORMAL, (420, 0)),
-            'heatmap':     Window("HeatMap", cv2.WINDOW_NORMAL, (840, 350)),
-            'resultplot':  Window("ResultsPlot", cv2.WINDOW_NORMAL, (0, 350))
-        }
-        self._windows['resultplot'].resize(576, 331)
+        if self.demo:
+            self._windows = {
+                'v_stream':      Window("v_stream", cv2.WINDOW_NORMAL, (0, 0))
+            }
+            cv2.setWindowProperty("v_stream", cv2.WND_PROP_FULLSCREEN,
+                                  cv2.WINDOW_FULLSCREEN)
+            self._canvasses = {
+                'framediff':   Canvas(self._video.dimension, 1)
+            }
+        else:
+            self._windows = {
+                'v_stream':      Window("v_stream", cv2.WINDOW_NORMAL,
+                                        (0, 0)),
+                'vectorfield': Window("vectorField", cv2.WINDOW_NORMAL,
+                                      (840, 0)),
+                'framediff':   Window("frameDiff", cv2.WINDOW_NORMAL,
+                                      (420, 0)),
+                'heatmap':     Window("HeatMap", cv2.WINDOW_NORMAL,
+                                      (840, 350)),
+                'resultplot':  Window("ResultsPlot", cv2.WINDOW_NORMAL,
+                                      (0, 350))
+            }
+            self._windows['resultplot'].resize(576, 331)
 
-        self._canvasses = {
-            'framediff':   Canvas(self._video.dimension, 1),
-            'vectorfield': Canvas(self._video.dimension, 1, 255),
-            'resultplot':  Canvas((700, 300), 3)
-        }
+            self._canvasses = {
+                'framediff':   Canvas(self._video.dimension, 1),
+                'vectorfield': Canvas(self._video.dimension, 1, 255),
+                'resultplot':  Canvas((700, 300), 3)
+            }
 
         self.grid = Grid(16, self._video.dimension)
         self.frame_diff = FrameDifference()
         self.heat_map = HeatMap()
         self.swirl = Swirl()
 
-        self.shift = Shift((50, 50), (180, 256), "test.png")
-        self.expand = Expand((10, 10), (200, 300), "expand.png")
+        self.shift = Shift((50, 50), (180, 256), "./src/test.png")
+        self.expand = Expand((10, 10), (200, 300), "./src/expand.png")
+
+        self._composition = Composition()
 
         self.view = View()
 
@@ -96,24 +116,24 @@ class Controller(object):
         """
         Controlling the composition of the video.
         """
-        self.view.show_shift(self.shift, self._video)
-        self.view.show_expand(self.expand, self._video)
+        self._composition.draw_shift(self.shift, self._video)
+        self._composition.draw_expand(self.expand, self._video)
 
     def view_control(self):
         """
         Controlling the View.
         """
-        self.view.show_image(self._windows['webcam'], self._video.frame)
-
-        self.view.show_heat_map(self._windows['heatmap'], self.heat_map)
-        self.view.show_canvas(self._windows['framediff'],
-                              self._canvasses['framediff'])
-        self.view.show_vector_field(self.grid, self.swirl,
-                                    self._windows['vectorfield'],
-                                    self._canvasses['vectorfield'])
-        self.view.show_global_vector_results(self.grid,
-                                             self._windows['resultplot'],
-                                             self._canvasses['resultplot'])
+        self.view.show_image(self._windows['v_stream'], self._video.frame)
+        if not self.demo:
+            self.view.show_heat_map(self._windows['heatmap'], self.heat_map)
+            self.view.show_canvas(self._windows['framediff'],
+                                  self._canvasses['framediff'])
+            self.view.show_vector_field(self.grid, self.swirl,
+                                        self._windows['vectorfield'],
+                                        self._canvasses['vectorfield'])
+            self.view.show_global_vector_results(self.grid,
+                                                 self._windows['resultplot'],
+                                                 self._canvasses['resultplot'])
 
     def main_loop(self):
         """

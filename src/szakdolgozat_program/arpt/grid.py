@@ -44,7 +44,6 @@ class Grid(object):
         """
         Calculate the optical flow.
         """
-        # points, status, error
         self._new_points, status, error = \
             cv2.calcOpticalFlowPyrLK(video.old_gray_frame,
                                      video.gray_frame,
