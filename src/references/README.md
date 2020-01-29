@@ -1,13 +1,20 @@
 # References
 
 
-## Similar Works
+## Similar/Related Works
 
 * [Interactive Body-Driven Graphics for Augmented VideoPerformance](http://www.uni-miskolc.hu/~qgenagyd/references/Interactive%20Body-Driven%20Graphics%20for%20Augmented%20VideoPerformance.pdf)
+
+* [OpenPose](http://www.uni-miskolc.hu/~qgenagyd/references/OpenPose.pdf)
 
 * [Recognizing Actions by Shape-Motion Prototype Trees](http://www.uni-miskolc.hu/~qgenagyd/references/Recognizing%20Actions%20by%20Shape-Motion%20Prototype%20Trees.pdf)
 
 * [Recognizing Movement using Motion Histograms](http://www.uni-miskolc.hu/~qgenagyd/references/RecognizingMovementusingMotionHistograms.pdf)
+
+
+## Augmented Reality
+
+* [Spatial Augmented Reality](http://www.uni-miskolc.hu/~qgenagyd/references/Spatial%20Augmented%20Reality.pdf)
 
 
 ## Optical-Flow (Lucas-Kanade Method)
@@ -57,6 +64,7 @@
 * [API design for machine learning software:experiences from the scikit-learn project](http://www.uni-miskolc.hu/~qgenagyd/references/API%20design%20for%20machine%20learning%20software:experiences%20from%20the%20scikit-learn%20project.pdf)
 
 * [Hands-On Machine Learning  with Scikit-Learn & TensorFlow](http://www.uni-miskolc.hu/~qgenagyd/references/Hand-on-ML.pdf)
+
 
 ## Books
 
