@@ -8,7 +8,7 @@ class Swirl(object):
     def __init__(self):
         self._points = np.empty((0, 2), dtype=np.int32)
 
-    def calc_swirl(self, grid, motion_blobs, eps=2):
+    def calc_swirl(self, grid, motion_blobs, video, eps=2):
         """
         Calculate the intersections of the vector field.
         :param grid: the grid object
@@ -16,6 +16,11 @@ class Swirl(object):
         :return: None
         """
         # NOTE: needs some kind of smoothing method
+
+        # storing previous points to smoothen the result
+        prev_points = np.empty((0, 2), dtype=np.int32)
+        if self._points.any():
+            prev_points = self._points
         self._points = np.empty((0, 2), dtype=np.int32)
         for blob in motion_blobs:
             (x, y, w, h) = blob
@@ -53,7 +58,12 @@ class Swirl(object):
             if len(intersections) > 0:
                 mean_point = np.array([np.mean(intersections, axis=0)],
                                       dtype=np.uint16)
-                self._points = np.append(self._points, mean_point, axis=0)
+                if ((mean_point[0][0] > video.dimension[0] or
+                        mean_point[0][1] > video.dimension[1]) and
+                   prev_points.any()):
+                    self._points = prev_points
+                else:
+                    self._points = np.append(self._points, mean_point, axis=0)
 
     @property
     def points(self):

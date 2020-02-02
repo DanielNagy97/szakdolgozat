@@ -10,6 +10,7 @@ from arpt.swirl import Swirl
 from arpt.shift import Shift
 from arpt.expand import Expand
 from arpt.composition import Composition
+from arpt.ocr_gesture import Ocr_gesture
 
 # NOTE: Probably it is enought to import only the arpt package.
 # from arpt import *
@@ -35,12 +36,13 @@ class Controller(object):
             cv2.setWindowProperty("v_stream", cv2.WND_PROP_FULLSCREEN,
                                   cv2.WINDOW_FULLSCREEN)
             self._canvasses = {
-                'framediff':   Canvas(self._video.dimension, 1)
+                'framediff':   Canvas(self._video.dimension, 1),
+                'ocr':         Canvas((15, 11), 1)
             }
         else:
             self._windows = {
-                'v_stream':      Window("v_stream", cv2.WINDOW_NORMAL,
-                                        (0, 0)),
+                'v_stream':    Window("v_stream", cv2.WINDOW_NORMAL,
+                                      (0, 0)),
                 'vectorfield': Window("vectorField", cv2.WINDOW_NORMAL,
                                       (840, 0)),
                 'framediff':   Window("frameDiff", cv2.WINDOW_NORMAL,
@@ -48,25 +50,29 @@ class Controller(object):
                 'heatmap':     Window("HeatMap", cv2.WINDOW_NORMAL,
                                       (840, 350)),
                 'resultplot':  Window("ResultsPlot", cv2.WINDOW_NORMAL,
-                                      (0, 350))
+                                      (0, 350)),
+                'ocr':         Window("OCR", cv2.WINDOW_NORMAL)
             }
             self._windows['resultplot'].resize(576, 331)
 
             self._canvasses = {
                 'framediff':   Canvas(self._video.dimension, 1),
                 'vectorfield': Canvas(self._video.dimension, 1, 255),
-                'resultplot':  Canvas((700, 300), 3)
+                'resultplot':  Canvas((700, 300), 3),
+                'ocr':         Canvas((15, 11), 1)
             }
 
         self.grid = Grid(16, self._video.dimension)
         self.frame_diff = FrameDifference()
-        self.heat_map = HeatMap()
+        self.heat_map = HeatMap(self.grid)
         self.swirl = Swirl()
 
         self.shift = Shift((50, 50), (180, 256), "./src/test.png")
         self.expand = Expand((10, 10), (200, 300), "./src/expand.png")
 
         self._composition = Composition()
+
+        self._ocr = Ocr_gesture(self.heat_map)
 
         self.view = View()
 
@@ -90,7 +96,7 @@ class Controller(object):
         """
         Controlling the motion heat-map function.
         """
-        self.heat_map.calc_heat_map(self.grid, 10)
+        self.heat_map.calc_heat_map(self.grid, 7)
         self.heat_map.get_motion_points(self.grid, 10)
         self.heat_map.analyse_two_largest_points()
 
@@ -110,7 +116,14 @@ class Controller(object):
         """
         Controlling the swirl function.
         """
-        self.swirl.calc_swirl(self.grid, self.heat_map.bounding_rects)
+        self.swirl.calc_swirl(self.grid, self.heat_map.bounding_rects,
+                              self._video)
+
+    def ocr_gesture_control(self):
+        """
+        Controlling the motion gesture recognition
+        """
+        self._ocr.draw_gesture(self.heat_map, self._canvasses['ocr'])
 
     def composing_output_video(self):
         """
@@ -134,6 +147,7 @@ class Controller(object):
             self.view.show_global_vector_results(self.grid,
                                                  self._windows['resultplot'],
                                                  self._canvasses['resultplot'])
+            self.view.show_canvas(self._windows['ocr'], self._canvasses['ocr'])
 
     def main_loop(self):
         """
@@ -150,6 +164,7 @@ class Controller(object):
                 self.expand_control()
                 self.swirl_control()
                 self.composing_output_video()
+                self.ocr_gesture_control()
 
                 self.view_control()
 

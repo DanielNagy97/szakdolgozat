@@ -33,7 +33,7 @@ class View(object):
                 cv2.arrowedLine(canvas.canvas,
                                 tuple(grid.old_points[k]),
                                 tuple(grid.new_points[k]),
-                                (0, 0, 0),
+                                0,
                                 2)
         # NOTE: The intersection points here is for testing only!
         if swirl.points.any():

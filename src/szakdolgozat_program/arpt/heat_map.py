@@ -8,6 +8,12 @@ class HeatMap(object):
     """
     Heatmap class
     """
+    def __init__(self, grid):
+        self._map_shape = list(grid.old_points_3D.shape)
+        self._map_shape[-1] = 3
+        self._map_shape = tuple(self._map_shape)
+
+        self._motion_points_roots = np.empty((0, 2), dtype=np.uint8)
 
     def calc_heat_map(self, grid, sensitivity=10):
         """
@@ -24,10 +30,7 @@ class HeatMap(object):
         self._map = np.dstack((np.subtract(255, heat_values),
                                self._map,
                                heat_values))
-        heat_map_shape = list(grid.old_points_3D.shape)
-        heat_map_shape[-1] = 3
-        heat_map_shape = tuple(heat_map_shape)
-        self._map = self._map.reshape(heat_map_shape)
+        self._map = self._map.reshape(self._map_shape)
         self._map = np.uint8(self._map)
 
     def get_motion_points(self, grid, min_area=2):
@@ -46,7 +49,6 @@ class HeatMap(object):
 
         self._bounding_rects = np.empty((0, 4), dtype=np.uint8)
         self._motion_points_direction = np.empty((0, 2), dtype=np.float32)
-        self.motion_points_roots = np.empty((0, 2), dtype=np.float32)
 
         count = 0
 
@@ -68,9 +70,10 @@ class HeatMap(object):
                 local_normalized_direction_vector = \
                     v.get_normalized_vector(local_direction_vector)
 
-                self.motion_points_roots = \
-                    np.append(self.motion_points_roots,
-                              np.array([local_vector_sum[0]]),
+                self._motion_points_roots = \
+                    np.append(self._motion_points_roots,
+                              np.array([(x + w/2, y + h/2)],
+                                       dtype=np.uint8),
                               axis=0)
 
                 self._motion_points_direction = \
@@ -82,6 +85,10 @@ class HeatMap(object):
                                                  np.array([(x, y, w, h)],
                                                           dtype=np.uint8),
                                                  axis=0)
+
+        self._motion_points_roots = self._motion_points_roots[-30:]
+        if len(self._bounding_rects) == 0:
+            self._motion_points_roots = self._motion_points_roots[3:]
 
     def analyse_two_largest_points(self):
         """
@@ -115,6 +122,15 @@ class HeatMap(object):
         return self._map
 
     @property
+    def map_shape(self):
+        """
+        Get the shape of the map.
+        :return: np ndarray with int values from 0-255 \
+            representing colors and shape (columns, rows, 3)
+        """
+        return self._map_shape
+
+    @property
     def bounding_rects(self):
         """
         Get the bounding rects of the heat map blobs.
@@ -131,6 +147,14 @@ class HeatMap(object):
             each element is representing a direction vector
         """
         return self._motion_points_direction
+
+    @property
+    def motion_points_roots(self):
+        """
+        Get the roots of motion points
+        :return: np ndarray with shape (n, 2)
+        """
+        return self._motion_points_roots
 
     @property
     def different_direction(self):
