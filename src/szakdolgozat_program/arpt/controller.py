@@ -72,7 +72,7 @@ class Controller(object):
 
         self._composition = Composition()
 
-        self._ocr = Ocr_gesture(self.heat_map)
+        self._ocr = Ocr_gesture()
 
         self.view = View()
 
@@ -124,6 +124,7 @@ class Controller(object):
         Controlling the motion gesture recognition
         """
         self._ocr.draw_gesture(self.heat_map, self._canvasses['ocr'])
+        self._ocr.predict_motion(self._canvasses['ocr'], self.heat_map)
 
     def composing_output_video(self):
         """
