@@ -51,7 +51,7 @@ class Controller(object):
                                       (840, 350)),
                 'resultplot':  Window("ResultsPlot", cv2.WINDOW_NORMAL,
                                       (0, 350)),
-                'ocr':         Window("OCR", cv2.WINDOW_NORMAL)
+                # 'ocr':         Window("OCR", cv2.WINDOW_NORMAL)
             }
             self._windows['resultplot'].resize(576, 331)
 
@@ -96,8 +96,8 @@ class Controller(object):
         """
         Controlling the motion heat-map function.
         """
-        self.heat_map.calc_heat_map(self.grid, 7)
-        self.heat_map.get_motion_points(self.grid, 10)
+        self.heat_map.calc_heat_map(self.grid, 10)
+        self.heat_map.get_motion_points(self.grid, 7)
         self.heat_map.analyse_two_largest_points()
 
     def shift_control(self):
@@ -148,7 +148,8 @@ class Controller(object):
             self.view.show_global_vector_results(self.grid,
                                                  self._windows['resultplot'],
                                                  self._canvasses['resultplot'])
-            self.view.show_canvas(self._windows['ocr'], self._canvasses['ocr'])
+            # self.view.show_canvas(self._windows['ocr'],
+            #                       self._canvasses['ocr'])
 
     def main_loop(self):
         """
@@ -164,7 +165,7 @@ class Controller(object):
                 self.shift_control()
                 self.expand_control()
                 self.swirl_control()
-                self.composing_output_video()
+                # self.composing_output_video()
                 self.ocr_gesture_control()
 
                 self.view_control()

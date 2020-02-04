@@ -3,8 +3,10 @@ import numpy as np
 import os
 from sklearn.linear_model import SGDClassifier
 from sklearn.model_selection import cross_val_score
+from sklearn.model_selection import cross_val_predict
 from sklearn import model_selection
 import pickle
+from sklearn.metrics import confusion_matrix
 
 # Reading datas and making the dataset
 path = "./training_datas/ocr_datas/"
@@ -29,8 +31,8 @@ X, y = np.array(X)[shuffle_index], np.array(y)[shuffle_index]
 # Splitting dataset to train and test partitions
 X_train, X_test, Y_train, Y_test = \
     model_selection.train_test_split(X, y,
-                                     test_size=0.33,
-                                     random_state=7)
+                                     test_size=0.20,
+                                     random_state=3)
 
 # Defining classifier and fitting training data to it
 clf = SGDClassifier(random_state=42)
@@ -39,6 +41,11 @@ clf.fit(X_train, Y_train)
 # score by cross-validation
 scores = cross_val_score(clf, X_test, Y_test)
 print(scores.mean())
+
+# cronfusion matrix
+y_train_pred = cross_val_predict(clf, X_train, Y_train, cv=3)
+confusion = confusion_matrix(Y_train, y_train_pred)
+print(confusion)
 
 # testing prediction on a specified element
 # testing on the 20th element of the test dataset

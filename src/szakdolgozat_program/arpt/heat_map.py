@@ -86,9 +86,9 @@ class HeatMap(object):
                                                           dtype=np.uint8),
                                                  axis=0)
 
-        self._motion_points_roots = self._motion_points_roots[-30:]
+        self._motion_points_roots = self._motion_points_roots[-33:]
         if len(self._bounding_rects) == 0:
-            self._motion_points_roots = self._motion_points_roots[3:]
+            self._motion_points_roots = self._motion_points_roots[1:]
 
     def analyse_two_largest_points(self):
         """
@@ -155,6 +155,14 @@ class HeatMap(object):
         :return: np ndarray with shape (n, 2)
         """
         return self._motion_points_roots
+
+    @motion_points_roots.setter
+    def motion_points_roots(self, new):
+        """
+        Get the roots of motion points
+        :return: np ndarray with shape (n, 2)
+        """
+        self._motion_points_roots = new
 
     @property
     def different_direction(self):
