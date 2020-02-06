@@ -11,6 +11,7 @@ from arpt.shift import Shift
 from arpt.expand import Expand
 from arpt.composition import Composition
 from arpt.ocr_gesture import Ocr_gesture
+from arpt.grab import Grab
 
 # NOTE: Probably it is enought to import only the arpt package.
 # from arpt import *
@@ -74,6 +75,8 @@ class Controller(object):
 
         self._ocr = Ocr_gesture()
 
+        self._grab = Grab()
+
         self.view = View()
 
     def frame_diff_control(self):
@@ -126,6 +129,14 @@ class Controller(object):
         self._ocr.draw_gesture(self.heat_map, self._canvasses['ocr'])
         self._ocr.predict_motion(self._canvasses['ocr'], self.heat_map)
 
+    def grab_control(self):
+        """
+        Controlling the grab function
+        """
+        self._grab.create_data(self.heat_map,
+                               self._canvasses['framediff'],
+                               self.grid)
+
     def composing_output_video(self):
         """
         Controlling the composition of the video.
@@ -167,6 +178,7 @@ class Controller(object):
                 self.swirl_control()
                 # self.composing_output_video()
                 self.ocr_gesture_control()
+                self.grab_control()
 
                 self.view_control()
 
