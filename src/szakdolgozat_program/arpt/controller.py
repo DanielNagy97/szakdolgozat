@@ -9,9 +9,11 @@ from arpt.heat_map import HeatMap
 from arpt.swirl import Swirl
 from arpt.shift import Shift
 from arpt.expand import Expand
+from arpt.widget import Widget
 from arpt.composition import Composition
 from arpt.ocr_gesture import Ocr_gesture
 from arpt.grab import Grab
+from arpt.event_handler import Event_handler
 
 # NOTE: Probably it is enought to import only the arpt package.
 # from arpt import *
@@ -71,11 +73,15 @@ class Controller(object):
         self.shift = Shift((50, 50), (180, 256), "./src/test.png")
         self.expand = Expand((10, 10), (200, 300), "./src/expand.png")
 
+        self.widget = Widget((50, 50), (180, 256), "./src/test.png")
+
         self._composition = Composition()
 
         self._ocr = Ocr_gesture()
 
         self._grab = Grab()
+
+        self._event = Event_handler()
 
         self.view = View()
 
@@ -136,12 +142,29 @@ class Controller(object):
         self._grab.create_data(self.heat_map,
                                self._canvasses['framediff'],
                                self.grid)
+        self._grab.predict(self.heat_map)
+
+    def event_control(self):
+        """
+        Controlling the event handler
+        """
+        self._event.grab(self._grab)
+        self._event.ocr_gesture(self._ocr)
+
+        if self._event.down:
+            # print(self._grab.center_point)
+            self._event.calc_grab_position(self._video)
+            x, y = self._event.position.ravel()
+            cv2.circle(self._video.frame, (int(x), int(y)),
+                       3, (0, 0, 255), 4)
+            # self._event.change_state()
 
     def composing_output_video(self):
         """
         Controlling the composition of the video.
         """
         self._composition.draw_shift(self.shift, self._video)
+        # self._composition.draw_shift(self.widget, self._video)
         self._composition.draw_expand(self.expand, self._video)
 
     def view_control(self):
@@ -176,9 +199,11 @@ class Controller(object):
                 self.shift_control()
                 self.expand_control()
                 self.swirl_control()
-                # self.composing_output_video()
+                self.composing_output_video()
                 self.ocr_gesture_control()
                 self.grab_control()
+
+                self.event_control()
 
                 self.view_control()
 
