@@ -47,7 +47,7 @@ A módszer \textit{Spare Optical-Flow}-t valósít meg, vagyis egymástól kül�
 \Section{Rácspontok kezelése}
 
 Az \textit{Optical-Flow} eljárást tetszőleges számú pontra elvégezhetjük. Ha létrehozhatunk egy rácsszerkezetet fix pontokkal, akkor a képtartományt egyenletesen lefedhetjük a pontok halmazával.
-Ezen pontokat felhasználva minden iterációban az éppen aktuális és az egyel korábbi szürkeárnyalatos képkockákra elvégezhetjük az eljárást és így minden esetben kapunk egy új ponthalmazt, amely az eljárás eredménypontjait tartalmazza. Az eredeti és az új pontokból egy vektormezőt kapunk.
+Ezen pontokat felhasználva minden iterációban az éppen aktuális és az egyel korábbi szürkeárnyalatos képkockákra elvégezhetjük az eljárást és így minden esetben kapunk egy új ponthalmazt, amely az eljárás eredménypontjait tartalmazza. Az eredeti és az új pontok párjaiból egy vektormezőt kapunk.
 
 \begin{figure}[h]
 \centering
@@ -74,7 +74,7 @@ A \textit{lépésköz} érték segítségével határozhatjuk meg a pontok helyz
 
 \Section{Hőtérkép}
 
-A vektormező egyes pontjait vizsgálva szerkeszthetünk egy ún. \textit{Hőtérkép}-et, amelyben különböző intenzitásértékekkel jelöljök az egyes vektorok hosszait. A \textit{Hőtérkép} egy $n*m$-es mátrix, ahol $n$ a vektormező sorainak, $m$ pedig az oszlopainak a száma. A \textit{Hőtérkép} minden eleme egy BGR (blue, green, red) hármas értékkel van ellátva. Ezen értékek jelölik az egyes elemek színét.\\
+A vektormező egyes pontjait vizsgálva szerkeszthetünk egy ún. \textit{Hőtérkép}-et, amelyben különböző intenzitásértékekkel jelöljük az egyes vektorok hosszait. A \textit{Hőtérkép} egy $n*m$-es mátrix, ahol $n$ a vektormező sorainak, $m$ pedig az oszlopainak a száma. A \textit{Hőtérkép} minden eleme egy BGR (blue, green, red) hármas értékkel van ellátva. Ezen értékek jelölik az egyes elemek színét.\\
 Az értékek a következőképpen kerülnek kiszámításra:\\
 \newline
 \noindent \textbf{Hőtérkép$\_$kiszámítása}(@vektormező, érzékenység, @hőtérkép)\\ 
@@ -98,7 +98,7 @@ A \textit{érzékenység} értékkel állíthatjuk be, hogy mely vektorhosszakat
 \label{fig:heatmap}
 \end{figure}
 
-Az így kapott mátrixból ezután különféle információkat nyerhetünk ki. Az intenzitás értékeket vizsgálva meghatározhatjuk a nagyobb elmozdulások csoportjait. Ehhez küszöbölni kell a mátrixot, majd a kapott képen kontúrok kereséssel meg lehet állapítani, hogy mely vektorok tartoznak egy csoportba. A \ref{fig:heatmap} ábrán megfigyelhető, hogy az összetartozó értékek fehér kerettel van jelölve. Továbbá az ábrán sárga nyílakkal vannak jelölve az elmozdulások irányai. A csoportokat külön-külön vizsgálva tehát további értékes információkhoz juthatunk. Ilyen például az egyes csoportok iránya is, amelyet egy lokális eredővektor számításából kaphatunk meg. A csoportokat felhasználhatjuk további funkciók megvalósítására is, mint például a \textit{Többpontos kezelés} vagy a \textit{Rotation} vizsgálatára is.
+Az így kapott mátrixból ezután különféle információkat nyerhetünk ki. Az intenzitás értékeket vizsgálva meghatározhatjuk a nagyobb elmozdulások csoportjait. Ehhez küszöbölni kell a mátrixot, majd a kapott képen kontúrok keresésével meg lehet állapítani, hogy mely vektorok tartoznak egy csoportba. A \ref{fig:heatmap} ábrán megfigyelhető, hogy az összetartozó értékek fehér kerettel van jelölve. Továbbá az ábrán sárga nyílakkal vannak jelölve az elmozdulások irányai. A csoportokat külön-külön vizsgálva tehát további értékes információkhoz juthatunk. Ilyen például az egyes csoportok iránya is, amelyet egy lokális eredővektor számításából kaphatunk meg. A csoportokat felhasználhatjuk további funkciók megvalósítására is, mint például a \textit{Többpontos kezelés}, a \textit{Rotation}, valamint az \textit{OCR-gesztus} vizsgálatára is.
 
 \Section{Kontrollpontok és vektorok számítása}
 
@@ -133,9 +133,9 @@ A \textit{Shift} viselkedésének meghatározásához első lépésként az adot
   (i_1, j_1), (n, m) &= \lfloor \frac{(x,y),(w,h)}{\textit{rács lépésköze}} \rfloor\\
   \vec{v_l} &= \sum_{i=i_1}^n \sum_{j=j_1}^m \vec{u}_{ij}
 \end{align*}
-Az eredővektorból ezután irányvektort számolunk. Majd az irányvektok segítségével kiszámoljuk az elem sebességét:
+Az eredővektorból ezután irányvektort számolunk. Majd az irányvektor segítségével kiszámoljuk az elem sebességét:
 \begin{align*}
-  v_{xy} = v_{xy} + \frac{\vec{v}_l}{(n*m)}*\textit{gyorsulás}
+  v_{xy} = v_{xy} + \frac{\vec{v}_l}{(n \cdot m)} \cdot \textit{gyorsulás}
 \end{align*}
 , ahol $\textit{gyorsulás} > 0$.\\
 Az elem pozíciója $(x,y)$ a sebesség függvényében változik.
@@ -144,7 +144,7 @@ Az elem pozíciója $(x,y)$ a sebesség függvényében változik.
 \end{align*}
 A sebesség értéket minden iteráció végén tompítani kell, hogy a kezelt virtuális elem meg tudjon állni egy bizonyos ponton. Ha az adott elemet nem éri tovább erő, akkor a tompítás lassulást eredményez, a sebesség csökkenni fog. Olyan hatást is el tudunk érni egy helyesen megválasztott értékkel, mintha az eltolás után az elem csúszós felületen mozogna és így fokozatosan lassul le az iterációk során.
 \begin{align*}
-  v_{xy} = v_{xy}*\textit{tompítás}
+  v_{xy} = v_{xy} \cdot \textit{tompítás}
 \end{align*}
 , ahol $0 \leq \textit{tompítás} < 1$
 
@@ -163,6 +163,13 @@ Mivel a \textit{Drag}-et előreláthatólag a prezentáló csak rövid időszaka
 A \textit{Blink} gesztusok felismerésére először egy ún. \textit{Frame differencing} technikát kell alkalmaznunk.
 Ehhez a videófolyam aktuális képkockájának és az egyel korábbi képkockájának abszolút különbségét kell meghatározni, majd az így kapott képen küszöbölést kell végrehajtani. Eredményképp egy olyan képet kapunk, amelyen az elmozdulás figyelhető meg fehér színnel jelölve. A keletkezett képen különféle alakzatok alakulhatnak ki. Az egyes mozdulatok hasonló nyomot hagynak maguk után. Így tehát egy \textit{Blink} mozdulat leadásakor jellegzetes mintázat rajzolódik ki.
 
+\begin{figure}[h]
+\centering
+\includegraphics[width=5truecm, height=5truecm]{images/Grab_screenshot.png}
+\caption{Egy Blink mozdulat pillanatképe}
+\label{fig:heatmap}
+\end{figure}
+
 Tervek, ötletek ezzel kapcsolatban...
 
 \SubSection{Rotation}
@@ -170,6 +177,13 @@ Tervek, ötletek ezzel kapcsolatban...
 A \textit{Rotation} gesztus két tulajdonsággal íható le: ezen gesztusnak mindig létezik egy elméleti középpontja, ami körül történik az elmozdulás, valamint van iránya is.
 Becslést adni a mozgás lehetséges középpontjának pozíciójára a vektormező elemzésével célszerű.
 A vektorokhoz egyenes egyenleteket szerkeszthetünk. Az egyenes egyenletének egy pontja a vektot kezdőpontja lesz, a normálvektora pedig az egyenes irányvektora.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=11.2truecm, height=6.3truecm]{images/swirl_screenshot.png}
+\caption{A vektormező egy állapota a becsült forgási középponttal}
+\label{fig:heatmap}
+\end{figure}
 
 Két egyenletből álló egyenletrenszer megoldásaként megkapjuk az $x,y$ ismeretlen értékeket, melyek a két egyenes metszéspontjának a pozícióját adják meg.
 A metszéspontokat számolva létrejön egy ponthalmaz, amelynek súlypontja az elméleti középpont közelében fog elhelyezkedni.
@@ -179,9 +193,29 @@ Ha pedig több \textit{Rotation} pontot is vizsgálni szeretnénk, akkor segíts
 
 \SubSection{Többpontos kezelés}
 
-
+A \textit{Hőtérkép}-et vizsgálva azonosíthatunk és elkülöníthetünk vektorok halmazait egymástól. Az így kapott csoportokat vizsgálva további funkciókat valósíthatunk meg. A több ponttal irányítható funkciók közé tartozhatnak a \textit{Widget}-eken végrehajtható különféle manipulációk, mint például a skálázás is. További komplexebb gesztusok felismeréséhez is felhasználhatnánk a pontok egymáshoz képesti vizsgálatából kapott eredményeket.
+Minden vektorcsoporthoz tartozik egy-egy lokális eredővektorból számított irányvektor, mely a vektorcsoport elmozdulásának irányát mutatja.
+A skálázás műveletéhez két vektorcsoportot feltételezve az alábbi módon vizsgálhatjuk a két pont egymáshoz képesti elmozdulását.
 Irányok esetében $\vec{u},\vec{v}\in \Bbb R^2$ esetén
 \begin{align*}
 \vmatrix \vec{u}+\vec{v} \endvmatrix &< \varepsilon_{\text{irány}}\\
 &\approx \vec{0}
 \end{align*}
+Amennyiben a két pont iránya teljesen ellentétes, akkor a kapott érték a null vektorhoz közelít. Érdemes normalizált vektorokat használni, ha csupán az elmozdulás irányát szeretnénk vizsgálni és az egyes lokális irányvektorok hosszától el szeretnénk tekinteni.
+
+\SubSection{OCR-Gesture}
+
+A prezentáló személy bizonyos mozdulatokat elvégezve további funkciókat érhet el. Az ilyen gesztusok egy fajtája általában a magyarázó mozgástól eltérőek, bizonyos pályákat követnek. Ilyen mozdulatok lehetnek például egy kör, vagy egy L betű, vagy különféle minták rajzolása levegőbe. Az egyes mozdulatok hasonló mintázatot követnek.
+Az ilyen típusú gesztusok felismeréséhez felhasználhatjuk az \textit{OCR}, vagyis az \textit{Optical Character recognition} (Optikai karakter felismerés) módszert is, mely írott karakterek felismerésére szolgál. 
+Az OCR kipróbálásához rendelkezésre áll egy ingyenes adatkészlet is, a MNIST, amely 70.000 kisfelbontású képet tartalmaz írott számokról 0-9-ig. Segítségével különféle osztályozók taníthatók be, illetve az osztáyozók tejesítményének egyik mérőeszközévé vált az idők során. Az osztályozómodell betanításához a jellegvektorok értékeit a szürkeárnyalatosképek intenzitásértékei adják. Ha egy új osztályozó rendszert fejlesztenek, valószínűleg a MNIST adatkészlettel is kipróbálják azt. \cite{geron2019hands}
+
+Mivel a probléma hasonlít az OCR-hez, hasonló megoldást alkalmazhatunk a levegőben leírt gesztusok felismeréséhez is. A mozdulat képét egy, a \textit{Hőtérképpel} megegyező vászonra rajzolja rá a program. A vászon mérete 16-os rácssűrűség mellett 11*15-ös. A vászon alapszíne fehér, vagyis 255 inenzitás értékekkel van ellátva. A gesztus képét a \textit{Hőtérkép} elemzésénel kinyert kontrollpontok rajzolják a vászonra: A vektorcsoportnak meghatározandó a súlypontja, mely a virtuális ecset hegyét jelenti. A súlypont elmozdulását a vásznon 0 intenzitásértékek követik, vagyis a leadott mozdulatok képe fekete színnel jelenik meg a vásznon. Mivel az egyes mozdulatok hasonló mintázatot követnek, a vásznon megjelenő képük is hasonló lesz. A vászon frissítése két módszerrel történik. Az elmozdulás értékek egy csúszóablakban helyezkednek el, amelyben maximum  30 érték kaphat helyet. Továbbá ha a \textit{Hőtérkép}-en nem figyelhető meg kontrollpont, az elmozdulás értékek törlése felgyorsul, míg a teljesen üres vásznot nem kapjuk.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=11.2truecm, height=6.3truecm]{images/OCR-Gesture.png}
+\caption{Egy levegőbe leírt kör mintázata a 11*15-ös vásznon}
+\label{fig:heatmap}
+\end{figure}
+
+A modell betanításához képekre lesz szükségünk, amelyeket a programmal egyesével legyárthatunk és osztályozhatunk. További módszerek is léteznek a tanítóminta előállítására. Ilyenek lehetnek a minták generálása egy alap mintahalmazból zajosítással és egyéb megoldásokkal. Amint a minta rendelkezésünkre áll, a modell tanítható is. A témát egy másik fejezetben részletesen is kifejtem.
