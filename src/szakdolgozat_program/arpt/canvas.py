@@ -13,9 +13,6 @@ class Canvas(object):
         :param channels: number of the channels
         :param fill_value: initial values of the pixels
         """
-        # TODO: Unify the order of parameters!
-        # Parameters unified: width is always before height
-
         self._canvas = np.zeros([*dimension[::-1], channels], dtype=np.uint8)
         self._canvas.fill(fill_value)
 

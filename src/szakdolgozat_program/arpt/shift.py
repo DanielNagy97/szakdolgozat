@@ -1,5 +1,4 @@
 import numpy as np
-from arpt import vector as v
 from arpt.widget import Widget
 
 
@@ -33,19 +32,16 @@ class Shift(Widget):
                                                   *self._dimension),
                                                  grid.grid_step)))
 
-        local_vector_sum = \
-            np.array([grid.old_points_3D[y:y+h, x:x+w].sum(axis=0),
-                      grid.new_points_3D[y:y+h, x:x+w].sum(axis=0)],
-                     dtype=np.float32).sum(axis=1)
-
-        local_direction_vector = v.get_direction_vector(local_vector_sum)
-
-        vector_count = len(grid.old_points_3D[y:y+h, x:x+w].reshape(-1, 2))
+        # NOTE: reducing computation time by using the grid's direction vectors
+        # Calculating the local resultant vector for the Widget
+        direction_vectors = np.reshape(grid.direction_vectors,
+                                       grid.old_points_3D.shape)
+        local_direction_vector = \
+            np.mean(direction_vectors[y:y+h, x:x+w].reshape((-1, 2)),
+                    axis=0)
 
         self.velocity = np.add(self.velocity,
-                               np.multiply(np.divide(local_direction_vector,
-                                                     vector_count),
-                                           speed))
+                               np.multiply(local_direction_vector, speed))
 
         self._position = np.add(self._position, self.velocity)
 

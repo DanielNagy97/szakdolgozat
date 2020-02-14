@@ -8,6 +8,7 @@ class HeatMap(object):
     """
     Heatmap class
     """
+
     def __init__(self, grid):
         self._map_shape = list(grid.old_points_3D.shape)
         self._map_shape[-1] = 3
@@ -23,7 +24,6 @@ class HeatMap(object):
             for displaying motion vector lengths
         :return: None
         """
-
         heat_values = np.int32(np.multiply(grid.vector_lengths, sensitivity))
         heat_values = np.where(heat_values > 255, 255, heat_values)
         self._map = np.zeros(len(heat_values), dtype=np.uint8)
@@ -58,15 +58,12 @@ class HeatMap(object):
             if rect_area >= min_area:
                 count += 1
 
-                local_vector_sum = \
-                    np.array([grid.old_points_3D[y:y+h, x:x+w].sum(axis=0),
-                              grid.new_points_3D[y:y+h, x:x+w].sum(axis=0)],
-                             dtype=np.float32).sum(axis=1)
-
-                local_vector_sum = np.divide(local_vector_sum, rect_area)
-
+                direction_vectors = np.reshape(grid.direction_vectors,
+                                               grid.old_points_3D.shape)
                 local_direction_vector = \
-                    v.get_direction_vector(local_vector_sum)
+                    np.mean(direction_vectors[y:y+h, x:x+w].reshape((-1, 2)),
+                            axis=0)
+
                 local_normalized_direction_vector = \
                     v.get_normalized_vector(local_direction_vector)
 

@@ -24,12 +24,17 @@ class Swirl(object):
         self._points = np.empty((0, 2), dtype=np.int32)
         for blob in motion_blobs:
             (x, y, w, h) = blob
-            direction_vectors = \
-                np.subtract(grid.new_points_3D[y:y+h, x:x+w].reshape(-1, 2),
-                            grid.old_points_3D[y:y+h, x:x+w].reshape(-1, 2))
 
-            vector_lenghts = np.sqrt(np.sum(np.power(direction_vectors, 2),
-                                            axis=1))
+            direction_vectors = np.reshape(grid.direction_vectors,
+                                           grid.old_points_3D.shape)
+            direction_vectors = \
+                direction_vectors[y:y+h, x:x+w].reshape((-1, 2))
+
+            lenghts_new_shape = list(grid.old_points_3D.shape)
+            lenghts_new_shape[-1] = 1
+            vector_lenghts = np.reshape(grid.vector_lengths,
+                                        tuple(lenghts_new_shape))
+            vector_lenghts = vector_lenghts[y:y+h, x:x+w].reshape((-1, ))
 
             indexes = np.where(vector_lenghts > eps)
 

@@ -20,7 +20,4 @@ class FrameDifference(object):
         blurred = cv2.blur(difference, (20, 20))
         _, thresholded = cv2.threshold(blurred, 20, 255, cv2.THRESH_BINARY)
         canvas.canvas = (cv2.addWeighted(canvas.canvas,
-                         0.9,
-                         thresholded,
-                         1-0,
-                         0))
+                                         0.9, thresholded, 1-0, 0))

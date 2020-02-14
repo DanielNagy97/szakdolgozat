@@ -9,6 +9,7 @@ class Grab(object):
     """
     Grab function class
     """
+
     def __init__(self):
         self.rect_area = 0
         self._center = []
@@ -56,10 +57,10 @@ class Grab(object):
                 tuple(np.uint32(grid.old_points_3D[self._center[0],
                                                    self._center[1]]))
             image = new_canvas[pt1[1]:pt2[1], pt1[0]:pt2[0]]
+            cv2.imshow("Grab image", image)
             image = cv2.resize(image, (16, 16),
                                interpolation=cv2.INTER_AREA)
             # cv2.circle(frame_diff_canv.canvas, self._center_point, 5, 255, 3)
-            # cv2.imshow("Grab image", frame_diff_canv.canvas)
 
             local_direction_vectors = \
                 np.subtract(grid.new_points_3D[self.y:self.y+self.h,

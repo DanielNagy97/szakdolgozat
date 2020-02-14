@@ -97,9 +97,9 @@ class Controller(object):
         Controlling vector field grid.
         """
         self.grid.calc_optical_flow(self._video)
+        self.grid.update_vector_lengths()
         self.grid.calc_global_resultant_vector()
         self.grid.update_new_points_3D()
-        self.grid.update_vector_lengths()
 
     def heat_map_control(self):
         """
@@ -151,7 +151,7 @@ class Controller(object):
         self._event.grab(self._grab)
         self._event.ocr_gesture(self._ocr)
 
-        if self._event.down:
+        if self._event.grabbed:
             # print(self._grab.center_point)
             self._event.calc_grab_position(self._video)
             x, y = self._event.position.ravel()

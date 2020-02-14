@@ -53,7 +53,8 @@ class Grid(object):
 
     def update_new_points_3D(self):
         """
-        Update the new points.
+        Updating the new 3D points.
+        Reshaping the new points to 3D.
         """
         self._new_points_3D = \
             self._new_points.reshape(self.old_points_3D.shape)
@@ -61,23 +62,24 @@ class Grid(object):
     def update_vector_lengths(self):
         """
         Update the vector lengths.
+        Updating the direction vectors.
         """
-        direction_vectors = np.subtract(self._new_points, self._old_points)
-        self._vector_lengths = np.sqrt(np.sum(np.power(direction_vectors, 2),
-                                              axis=1))
+        self._direction_vectors = \
+            np.subtract(self._new_points, self._old_points)
+        self._vector_lengths = \
+            np.sqrt(np.sum(np.power(self._direction_vectors, 2),
+                           axis=1))
 
     def calc_global_resultant_vector(self):
         """
         Calculate the global resultant vector.
         """
-        vector_sum = np.array([self._old_points.sum(axis=0),
-                              self._new_points.sum(axis=0)],
-                              dtype=np.float32)
+        self._global_direction_vector = np.mean(self._direction_vectors,
+                                                axis=0)
 
-        vector_count = len(self._old_points)
-        self._global_direction_vector = v.get_direction_vector(vector_sum)
         average_vector_length = \
-            v.get_vector_length(self._global_direction_vector) / vector_count
+            v.get_vector_length(self._global_direction_vector)
+
         self._avg_vector_lengths.append(average_vector_length)
         self._avg_vector_lengths = self._avg_vector_lengths[-30:]
 
@@ -147,3 +149,11 @@ class Grid(object):
         :return: np ndarray with two elements
         """
         return self._global_direction_vector
+
+    @property
+    def direction_vectors(self):
+        """
+        Get the direction vectors of the vector field
+        :return: np ndarray with float values
+        """
+        return self._direction_vectors

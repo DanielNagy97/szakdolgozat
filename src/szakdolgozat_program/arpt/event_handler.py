@@ -7,9 +7,7 @@ class Event_handler(object):
     Event handler class
     """
     def __init__(self):
-        self._up = True
-        self._down = False
-        self._move = False
+        self._grabbed = False
         self._position = []
         self.lk_params = \
             dict(winSize=(50, 50),
@@ -51,20 +49,11 @@ class Event_handler(object):
         """
         Changing states
         """
-        self._up = not self._up
-        self._down = not self._down
+        self._grabbed = not self._grabbed
 
     @property
-    def up(self):
-        return self._up
-
-    @property
-    def down(self):
-        return self._down
-
-    @property
-    def move(self):
-        return self._move
+    def grabbed(self):
+        return self._grabbed
 
     @property
     def position(self):
@@ -72,4 +61,4 @@ class Event_handler(object):
 
     @position.setter
     def position(self, new_position):
-        self._down = new_position
+        self._grabbed = new_position
