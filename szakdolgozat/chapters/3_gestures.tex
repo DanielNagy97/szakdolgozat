@@ -19,8 +19,8 @@ Az elmozdulás becslésére az ún. \textit{Motion-Flow} technikák tűntek a le
 
 A Lucas-Kanade dedikált pontok követésére hivatott. Segítségével meghatározható a videófolyamon történő mozgás. Ehhez képkockapárokat kell összehasonlítani a kijelölt pont(ok) szemszögéből. A módszer azon a megállapításon alapszik, hogy a videófolyamon egy kijelölt pont és a körülötte lévő pixelek halmaza közel azonos intenzitású a vizsgált időintervallumban. Ha  a ponthoz tartozó valós idejű objektum elmozdul a korábbi helyzetéről és az általa képviselt új pont a vizsgálandó pont bizonyos tartományába esik, akkor a módszer képes becslést adni a pont új helyzetére a videófolyamon. A módszer használatánál feltételezzük azt is, hogy a videófolyamon megfigyelhető mozgás viszonylag lassú, vagyis két képkockát vizsgálva az új pont nem eshet kívül a vizsgált pont tartományából. A módszer tetszőleges pontok halmazára alkalmazható.
 
-Az \textit{OpenCV}-ben található implementáció ún. \textit{kép-piramis}-ok használatával próbálja kiküszöbölni a nagy mozdulatok esetén fellépő hibás eredményeket, vagyis a vizsgálandó képeknek különböző felbontású változatait vizsgálja iteratívan a kisebb felbontástól az eredeti felbontásig haladva. A piramis mélysége tetszőleges, a legkisebb szint egyetlen pixelből is állhat. Kis felbontások mellett a nagyobb mozdulatok könnyebben azonosíthatóak, a piramis szélesebb szintjeihez közelítve, nagyobb felbontások mellett pedig pontosítódik a becslés. 
-A módszer elsősorban szürkeárnyalatos képekre használatos, mivel az intenzitás értékek ilen esetekben jóval konzisztensebbek, de megfelelő paraméterek megválasztása mellett színes képekre is alkalmazható. \cite{bradski2008learning} 
+Az \textit{OpenCV}-ben található implementáció ún. \textit{kép-piramis}-ok használatával próbálja kiküszöbölni a nagy mozdulatok esetén fellépő hibás eredményeket, vagyis a vizsgálandó képeknek különböző felbontású változatait vizsgálja iteratívan a kisebb felbontástól az eredeti felbontásig haladva. A piramis mélysége tetszőleges, a legkisebb szint egyetlen pixelből is állhat. Kis felbontások mellett a nagyobb mozdulatok könnyebben azonosíthatóak, a piramis szélesebb szintjeihez közelítve, nagyobb felbontások mellett pedig a becslés pontosítása történik. 
+A módszer elsősorban szürkeárnyalatos képekre használatos, mivel az intenzitás értékek ilyen esetekben jóval konzisztensebbek, de a megfelelő paraméterek megválasztása mellett színes képekre is alkalmazható. \cite{bradski2008learning} 
 
 \cite{lucas1981iterative} 
 \textit{Flow Motion} működésének a leírása a cikk alapján...\\
@@ -42,7 +42,7 @@ u = \frac{dx}{dt} &; v = \frac{dy}{dt}
 \bmatrix u \\ v \endbmatrix = {\bmatrix {\sum_{i}f_{x_i}}^2 & \sum_{i}f_{x_i}f_{y_i}\\ \sum_{i}f_{x_i}f_{y_i} & {\sum_{i}f_{y_i}}^2 \endbmatrix}^{-1} \bmatrix -\sum_{i}f_{x_i}f_{t_i} \\ -\sum_{i}f_{y_i}f_{t_i} \endbmatrix
 \end{align*}
 
-A módszer \textit{Spare Optical-Flow}-t valósít meg, vagyis egymástól különálló pontokat vizsgál, ellentétben a \textit{Dense Optical-Flow} módszerekkel, melyek a teljes kép vizsgálatával számolják ki az elmozdulás vektorokat. (forrás) Az utóbbi módszerek számításigénye kifejezetten magas. Valós idejű alkalmazás esetén problémákba ütközhetünk gyengébb hardverek esetében. A mozgás valós idejű detektálására a \textit{Spare Optical-Flow} módszerek is kielégítő eredményekkel szolgálnak, néhány trükk alkalmazása mellett. Ilyenek például a fent említett \textit{kép-piramisok} használata a gyors mozgások pontos követésére és a vizsgálandó pontok kijelölésének a stratégiája is. A pontok kijelöléséhez egy rácsszerkezetet gondoltam a legmegfelelőbbnek, ahol a pontok a rács metszéspontjaiban helyezkednek el. A képtartományt ily módon egyenletesen tudjuk lefedni.
+A módszer \textit{Spare Optical-Flow}-t valósít meg, vagyis egymástól különálló pontokat vizsgál, ellentétben a \textit{Dense Optical-Flow} módszerekkel, melyek a teljes kép vizsgálatával számolják ki az elmozdulás vektorokat. (forrás) Az utóbbi módszerek számításigénye kifejezetten magas. Valós idejű alkalmazás esetén problémákba ütközhetünk gyengébb hardverek esetében. A mozgás valós idejű detektálására a \textit{Spare Optical-Flow} módszerek is kielégítő eredményekkel szolgálnak, néhány trükk alkalmazása mellett. Ilyenek például a már említett \textit{kép-piramisok} használata a gyors mozgások pontos követésére és a vizsgálandó pontok kijelölésének a stratégiája is. A pontok kijelöléséhez egy rácsszerkezet használatát gondoltam a legmegfelelőbbnek, ahol a pontok a rács metszéspontjaiban helyezkednek el. A képtartományt ily módon egyenletesen tudjuk lefedni.
 
 \Section{Rácspontok kezelése}
 
@@ -98,7 +98,7 @@ A \textit{érzékenység} értékkel állíthatjuk be, hogy mely vektorhosszakat
 \label{fig:heatmap}
 \end{figure}
 
-Az így kapott mátrixból ezután különféle információkat nyerhetünk ki. Az intenzitás értékeket vizsgálva meghatározhatjuk a nagyobb elmozdulások csoportjait. Ehhez küszöbölni kell a mátrixot, majd a kapott képen kontúrok keresésével meg lehet állapítani, hogy mely vektorok tartoznak egy csoportba. A \ref{fig:heatmap} ábrán megfigyelhető, hogy az összetartozó értékek fehér kerettel van jelölve. Továbbá az ábrán sárga nyílakkal vannak jelölve az elmozdulások irányai. A csoportokat külön-külön vizsgálva tehát további értékes információkhoz juthatunk. Ilyen például az egyes csoportok iránya is, amelyet egy lokális eredővektor számításából kaphatunk meg. A csoportokat felhasználhatjuk további funkciók megvalósítására is, mint például a \textit{Többpontos kezelés}, a \textit{Rotation}, valamint az \textit{OCR-gesztus} vizsgálatára is.
+Az így kapott mátrixból ezután különféle információkat nyerhetünk ki. Az intenzitás értékeket vizsgálva meghatározhatjuk a nagyobb elmozdulások csoportjait. Ehhez küszöbölni kell a mátrixot, majd a kapott képen kontúrok keresésével meg lehet állapítani, hogy mely vektorok tartoznak egy csoportba. A \ref{fig:heatmap} ábrán megfigyelhető, hogy az összetartozó értékek fehér kerettel vannak jelölve. Továbbá a csoportok elmozdulásának irányai sárga nyilakkal vannak ábrázolva. A csoportokat külön-külön vizsgálva további értékes információkhoz juthatunk. Ilyen például az egyes csoportok iránya is, amelyet egy lokális eredővektor számításából kaphatunk meg. A csoportokat felhasználhatjuk további funkciók megvalósítására is, mint például a \textit{Többpontos kezelés}, a \textit{Rotation}, valamint az \textit{OCR-gesztus} vizsgálatára is.
 
 \Section{Kontrollpontok és vektorok számítása}
 
@@ -167,22 +167,24 @@ Ehhez a videófolyam aktuális képkockájának és az egyel korábbi képkocká
 \centering
 \includegraphics[width=5truecm, height=5truecm]{images/Grab_screenshot.png}
 \caption{Egy Blink mozdulat pillanatképe}
-\label{fig:heatmap}
+\label{fig:blink}
 \end{figure}
 
-Tervek, ötletek ezzel kapcsolatban...
+A pontosabb becslés érdekében felhasználhatjuk a vektormező adatait is. A \textit{Blink} terüetére eső vektorok irányvektorait figyelve a mozgásról bővebb információt kapunk.
+
+Tervek, ötletek...
 
 \SubSection{Rotation}
 
 A \textit{Rotation} gesztus két tulajdonsággal íható le: ezen gesztusnak mindig létezik egy elméleti középpontja, ami körül történik az elmozdulás, valamint van iránya is.
 Becslést adni a mozgás lehetséges középpontjának pozíciójára a vektormező elemzésével célszerű.
-A vektorokhoz egyenes egyenleteket szerkeszthetünk. Az egyenes egyenletének egy pontja a vektot kezdőpontja lesz, a normálvektora pedig az egyenes irányvektora.
+A vektorokhoz egyenes egyenleteket szerkeszthetünk. Az egyenes egyenletének egy pontja a vektor kezdőpontja lesz, a normálvektora pedig az egyenes irányvektora.
 
 \begin{figure}[h]
 \centering
 \includegraphics[width=11.2truecm, height=6.3truecm]{images/swirl_screenshot.png}
 \caption{A vektormező egy állapota a becsült forgási középponttal}
-\label{fig:heatmap}
+\label{fig:rotation}
 \end{figure}
 
 Két egyenletből álló egyenletrenszer megoldásaként megkapjuk az $x,y$ ismeretlen értékeket, melyek a két egyenes metszéspontjának a pozícióját adják meg.
@@ -215,7 +217,7 @@ Mivel a probléma hasonlít az OCR-hez, hasonló megoldást alkalmazhatunk a lev
 \centering
 \includegraphics[width=11.2truecm, height=6.3truecm]{images/OCR-Gesture.png}
 \caption{Egy levegőbe leírt kör mintázata a 11*15-ös vásznon}
-\label{fig:heatmap}
+\label{fig:ocr-gesture}
 \end{figure}
 
 A modell betanításához képekre lesz szükségünk, amelyeket a programmal egyesével legyárthatunk és osztályozhatunk. További módszerek is léteznek a tanítóminta előállítására. Ilyenek lehetnek a minták generálása egy alap mintahalmazból zajosítással és egyéb megoldásokkal. Amint a minta rendelkezésünkre áll, a modell tanítható is. A témát egy másik fejezetben részletesen is kifejtem.
