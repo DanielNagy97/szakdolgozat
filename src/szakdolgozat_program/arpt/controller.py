@@ -61,7 +61,7 @@ class Controller(object):
             self._canvasses = {
                 'framediff':   Canvas(self._video.dimension, 1),
                 'vectorfield': Canvas(self._video.dimension, 1, 255),
-                'resultplot':  Canvas((700, 300), 3),
+                'resultplot':  Canvas((700, 700), 3),
                 'ocr':         Canvas((15, 11), 1)
             }
 

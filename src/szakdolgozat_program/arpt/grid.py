@@ -35,6 +35,7 @@ class Grid(object):
         # QUEST: Where has it used?
         self._old_points_3D = self._old_points.reshape(cols, rows, 2)
         self._avg_vector_lengths = []
+        self._global_direction_vectors = np.empty((0, 2), dtype=np.float32)
         self.lk_params = dict(winSize=(50, 50),
                               maxLevel=2,
                               criteria=(cv2.TERM_CRITERIA_EPS |
@@ -82,6 +83,13 @@ class Grid(object):
 
         self._avg_vector_lengths.append(average_vector_length)
         self._avg_vector_lengths = self._avg_vector_lengths[-30:]
+
+        self._global_direction_vectors =\
+            np.append(self._global_direction_vectors,
+                      np.array([self._global_direction_vector],
+                               dtype=np.float32),
+                      axis=0)
+        self._global_direction_vectors = self._global_direction_vectors[-30:]
 
     @property
     def old_points(self):
@@ -149,6 +157,14 @@ class Grid(object):
         :return: np ndarray with two elements
         """
         return self._global_direction_vector
+
+    @property
+    def global_direction_vectors(self):
+        """
+        Get the global direction vectors for the last 30 frame
+        :return: np ndarray
+        """
+        return self._global_direction_vectors
 
     @property
     def direction_vectors(self):
