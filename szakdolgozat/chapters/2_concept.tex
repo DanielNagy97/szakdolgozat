@@ -8,6 +8,13 @@ A kiterjesztett valóság (\textit{Augmented Reality}, AR), mint fogalom alatt o
 
 Megvalósításának számos módja ismert, gondolhatunk például a legelterjettebb felhasználási területre, az okostelefonos megoldásokra is. A legtöbb közösségi felülethez tartozó kamera-alkalmazások kiterjesztett valóság alapú technológiákat is alkalmaznak, melyek segítségével az előlapi kamera képével a felhasználók az arcukra különböző filtereket, digitális maszkokat illeszthetnek. Megemlíteném még a népszerű játékot is, a \textit{Pokemon Go}-t, melyben a képernyőt nézve nyerhetünk betekintést a kiterjesztett valóságba. Az okostelefon különféle szenzorainak hála (giroszkóp, GPS, iránytű) a kiterjesztett világot bejárhatjuk, a telefon képernyője egy ablakot nyit eme kevert valóságba. Az ilyen megoldásokat \textit{Spatial Augmented Reality}-nek \cite{bimber2005spatial}, vagyis térbeli kiterjesztett valóságnak nevezzük. A virtuális elemek helyzete a valós világ bizonyos pontjaihoz van kötve, a virtuális elemek függenek a valós környezettől.
 
+\begin{figure}[h]
+\centering
+\includegraphics[width=10.3truecm, height=6.28truecm]{images/AR-hololens.png}
+\caption{Microsoft HoloLens promóciós kép}
+\label{fig:hololens}
+\end{figure}
+
 A kevert világ észlelésének módjai lehetnek a már említett kézi eszközökön kívül fejre helyezhető eszközök is, illetve megvalósulhat külső eszközök használatával is, amelyek nem sokkal térnek el az előbbiektől.
 A fejre helyezhető eszközök általában olyan szemüvegek, amelyekben a valós és virtuális világ egyformán érzékelhető. Ilyen eszköz például a \textit{Microsoft HoloLens} is. Ezen eszközökre is jellemző a már okostelefonoknál említett szenzorok használata a pontosabb eredmény elérése érdekében.
 
@@ -20,7 +27,14 @@ A külső eszközökkel megvalósított kiterjesztett valóság, amelyet több s
 Manapság számtalan prezentációs szoftver közül választhatunk. A legtöbb szoftverről elmondható, hogy diasoros elven működik, vagyis a prezentáció anyaga egy előre meghatározott sorrendben fut le, a tartalom pedig ún. fóliákon helyezkednek el, hasonló módon, mint a régi írásvetítők esetében, ahol a prezentáció témáját előre elkészített fóliák segítségével mutathattuk be. Manapság már a prezentáció anyaga teljes mértékben digitális, viszont a hagyományos értelemben vett prezentációs szoftverek esetében a vetítés menete hasonló, a digitális fóliákat cserélgethetjük, lépkedhetünk közöttük.
 
 A digitális tartalom lehetőséget ad arra, hogy dinamikus elemekkel ellátott, látványos prezentációt készítsünk. Erre a különböző szoftverek különféle lehetőségeket kínálnak.
-Az egyik legismertebb prezentációs szoftver kétségkívül a \textit{Microsoft Power Point}. Meghatározó szereplője a prezentációs szoftverek világának. Használatával gyorsan és egyszerűen állíthatunk össze prezentációkat, amelyek minőségét a látványos átvezető animációk és a dinamikus elemek használatával fokozhatunk. Hátrányai közé tartozik a platformfüggőség és a magas ára is.
+Az egyik legismertebb prezentációs szoftver kétségkívül a \textit{Microsoft PowerPoint}. Meghatározó szereplője a prezentációs szoftverek világának. Használatával gyorsan és egyszerűen állíthatunk össze prezentációkat, amelyek minőségét a látványos átvezető animációk és a dinamikus elemek használatával fokozhatunk. Hátrányai közé tartozik a platformfüggőség és a magas ára is.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=8.97truecm, height=6.17truecm]{images/PowerPoint.png}
+\caption{Képernyőfotó a PowerPoint-ről (forrás: microsoft.com)}
+\label{fig:ppt}
+\end{figure}
 
 Több, hasoló elven működő ingyenes szoftver is megjelent az évek során, amelyek képesek kezelni a PPT formátumát is. Ezen szoftverek segítségével megoldhatjuk a kompatibilitási gondokat. Mivel ingyenesek és platformfüggetlenek, mindenki számára elérhetőek. Megemlíthetném a sok közül a \textit{Libre-Office}-t, a \textit{WPS-Office}-t és a \textit{Google Slides}-ot. Működésük nagyban hasonlít a \textit{Power Point}-hoz, utóbbit internetkapcsolat mellett a böngénszőnkben használhatjuk.
 
@@ -29,9 +43,18 @@ Ilyen a \textit{Prezi} szoftvere is, mely újítása egy egyszű koncepció nagy
 2017-ben jelent meg a hír, hogy a Prezi kiterjetsztett valóságot megvalósító prezentációs szoftvert tervez fejleszteni, \textit{Prezi AR} néven. A beharangozó konferencián kívül az internetre felkerült még pár videó is, amelyekkel a koncepciót kívánták szemléltetni. A tervek szerint a prezentáló a videófolyamra rajzolt virtuális elemek segítségével mutathatja be a témakört. A közzétett demo videók alapján kapcsolatba is léphet ezekkel az elemekkel a gesztusai segítségével. A projektről azóta semmiféle hír nem jelent meg.
 
 A kiterjesztett valóság adta lehetőségek prezentációs szoftverek használatánál szemléltetésére jó példa a már elkészült szoftver, amely a \textit{Interactive Body-Driven Graphics for Augmented Video Performance} című publikációban jelent meg, 2019-ben. \cite{saquib2019interactive}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=10truecm, height=7.14truecm]{images/IBDGAVP.png}
+\caption{Képernyőfotó a PowerPoint-ről (forrás: microsoft.com)}
+\label{fig:ibdgavp}
+\end{figure}
+
 A megvalósításhoz a \textit{Kinect} kamerarendszert használták fel, amely mélységérzékelővel is fel van szerelve.
 Kezdetben \textit{Deep-Learning} technológián alapuló alakferismerést kívántak alkalmazni, viszont ez a megoldás még egy magas teljesítményű számítógépen sem tudott kielégítő futási eredményeket adni. A valós idejű futás, amely egy prezentációs szoftvernél elvárt tulajdonság, nem volt lehetséges ezzel a technikával. A szoftver, amelyet használni szerettek volna az \textit{OpenPose} volt, amely magas pontossággal képes megbecsülni a 2D-s videófolyamon elhelyezkedő személyek helyzetét és azok testrészeinek a pozícióját. \cite{cao2018openpose}
 A cikkben leírtak szerint a \textit{Kinect} használata megkönnyítette a fejlesztést és segítségével képes valós időben futni a szoftver.
+
 Egy \textit{Widget} szerkesztőt is készítettek a programhoz, amellyel az egérrel vagy digitális rajztáblán rajzolt virtuális elemeket szerkeszthetünk. Az elemekkel a prezentáció során az előadó kapcsolatba tud lépni. A szoftver használata során elengedhetetlen a léptető használata. Ezzel a prezentáló személy egyrészt változtathatja a megjelenített elemeket, aktiválhatja a funkciókat. Másrészt a magyarázó mozgás is jelezhető vele, ilyenkor nem kerülhet interakcióba az elemekkel az előadó.
 
 % A megvalósított koncepció eszközfüggőségének hátránya (kinect, léptető)
@@ -40,9 +63,14 @@ Egy \textit{Widget} szerkesztőt is készítettek a programhoz, amellyel az egé
 
 \Section{Valós idejű videó annotálás}
 
-% TODO: OpenCV-ről néhány dolgot megemlíteni.
-
 Az \textit{OpenCV} egy \textit{open source}, elsősorban valós idejű számítógépes látás megvalósítására támogatást nyújtó, magas tudású függvénykönyvtár. Számos képfeldolgozó algoritmus található benne, melyek implementációjánál a fejlesztők a lehető legjobb teljesítmény elérésére törekedtek.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=2.4truecm, height=2.96truecm]{images/OpenCV-logo.png}
+\caption{Az OpenCV logója}
+\label{fig:opencv}
+\end{figure}
 
 Az \textit{OpenCV} eredetileg C és C++ nyelven íródott, de különböző nyelveket is támogat, mint például a \textit{Python}-t, \textit{Ruby}-t, \textit{Matlab}-ot, stb\ldots
 Platformfüggetlen, így \textit{Linux}-on, \textit{Windows}-on és \textit{Mac OS X} rendszereken is használható. Lehetőséget nyújt továbbá a párhuzamosításra is a \textit{CUDA} és az \textit{OpenCL} technológiák segítségével és tartalmaz egy általános célú gépi tanulásos könyvtárat is, melyek tovább szélesítik a felhasználási területeinek körét. \cite{bradski2008learning}
@@ -52,4 +80,15 @@ Az eszköz definiálása után a \texttt{.read()} metódusával olvashatjuk ki a
 
 \Section{Gépi tanulás}
 
-SciKit Learning
+A dolgozatom szempontjából a \textit{Scikit-learn} gépi tanulásos függvénykönyvtár tűnt a legmegfelelőbb választásnak. A 2007-es megjelenése óta az egyik legnépszerűbb \textit{open-source} gépi tanulás megvalósítására támogatást nyújtó, sokoldalú függvénykönyvtár \textit{Python} környezethez. A fejlesztésnél a kód minőségét helyezték előtérbe, rendkívül jól dokumentált, könnyel használható API.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=4.76truecm, height=2.96truecm]{images/scikit-learn-logo.png}
+\caption{A Scikit-learn logója}
+\label{fig:scikit}
+\end{figure}
+
+A könyvtár egy kibővítése a már meglévő \textit{SciPy} csomagnak, amely matematikai, tudományos és mérnöki könyvtárakat tartalmaz, mint pédául a \textit{Numpy}, \textit{Matplotlib}, \textit{pandas}, \textit{SymPy}, \textit{IPython}.
+
+A megoldandó probléma szempontjából sok modell áll rendelkezésünkre, melyek pár sor átírásával könnyen cserélhetőek, kipróbálhatóak. Az implementált modellek közé tartoznak például a lineáris modellek, segéd vektor gépek, döntési fák, felügyelt tanulásos neurális hálók, stb $\ldots$ A könyvtár főbb funkciói közé tartozik az osztályozás, a regresszió, és a csoportosítás. Emellett előfeldolgozási, dimenziócsökkentési, modell finomhangolási eljárások is megtalálhatóak benne, melyek használata hatékonyabb működést eredményezhet. \cite{pedregosa2011scikit} \cite{hackeling2017mastering}
