@@ -2,7 +2,7 @@
 
 \Section{Felismerendő gesztusok}
 
-A szoftver használata közben a prezentáló személy különféle gesztusok segítségével léphet kapcsolatba a virtuális elemekkel. Általában a felhasználó a karjai mozgatásával valósítja meg ezeket a mozdulatokat.
+A szoftver használata közben a prezentáló személy különféle gesztusok segítségével irányíthatja a prezentáció menetét és szintén ezen gesztusok segítségével léphet kapcsolatba a videófolyamon megjelenő virtuális elemekkel. A felhasználó a karjai segítségével valósíthatja meg a mozdulatokat. A gesztusokat az alábbi kategóriákba sorolhatjuk:
 
 \begin{itemize}
 \item \textbf{Sweep}: Egyenes vonalú mozgás. A mozgásnak van iránya és két képkocka között megfigyelhető a hossza is.
@@ -17,12 +17,19 @@ A szoftver használata közben a prezentáló személy különféle gesztusok se
 
 Az elmozdulás becslésére az ún. \textit{Motion-Flow} technikák tűntek a legalkalmasabbnak. Egy kiemelkedő és széles körben elterjedt eljárás a Bruce D. Lucas és Takeo Kanade által kidolgozott módszer, melynek implementálása az \textit{OpenCV}-ben is megtalálható.
 
-A Lucas-Kanade dedikált pontok követésére hivatott. Segítségével meghatározható a videófolyamon történő mozgás. Ehhez képkockapárokat kell összehasonlítani a kijelölt pont(ok) szemszögéből. A módszer azon a megállapításon alapszik, hogy a videófolyamon egy kijelölt pont és a körülötte lévő pixelek halmaza közel azonos intenzitású a vizsgált időintervallumban. Ha  a ponthoz tartozó valós idejű objektum elmozdul a korábbi helyzetéről és az általa képviselt új pont a vizsgálandó pont bizonyos tartományába esik, akkor a módszer képes becslést adni a pont új helyzetére a videófolyamon. A módszer használatánál feltételezzük azt is, hogy a videófolyamon megfigyelhető mozgás viszonylag lassú, vagyis két képkockát vizsgálva az új pont nem eshet kívül a vizsgált pont tartományából. A módszer tetszőleges pontok halmazára alkalmazható.
+A Lucas-Kanade módszer dedikált pontok követésére hivatott. Ha a videófomlyaból kiemelünk két képkockát, melyek között az eltelt idő kicsi, a módszer képes megbecsülni a két képkockán elhelyezkedő kijelölt pontok pozíciójának a változását, vagyis megadja a pontok elmozdulását. A módszer azon a megállapításon alapszik, hogy a videófolyamon egy kijelölt pont és a körülötte lévő pixelek halmaza közel azonos intenzitású a vizsgált időintervallumban. Ha a ponthoz tartozó valós objektum elmozdul a korábbi helyzetéről és az általa képviselt új pont a vizsgálandó pont bizonyos tartományába esik, akkor a módszer képes becslést adni a pont új helyzetére a videófolyamon. A módszer használatánál feltételezzük azt is, hogy a videófolyamon megfigyelhető mozgás viszonylag lassú, vagyis két képkockát vizsgálva az új pont nem eshet kívül a vizsgált pont tartományából. A módszer tetszőleges pontok halmazára alkalmazható. \cite{lucas1981iterative} 
 
-Az \textit{OpenCV}-ben található implementáció ún. \textit{kép-piramis}-ok használatával próbálja kiküszöbölni a nagy mozdulatok esetén fellépő hibás eredményeket, vagyis a vizsgálandó képeknek különböző felbontású változatait vizsgálja iteratívan a kisebb felbontástól az eredeti felbontásig haladva. A piramis mélysége tetszőleges, a legkisebb szint egyetlen pixelből is állhat. Kis felbontások mellett a nagyobb mozdulatok könnyebben azonosíthatóak, a piramis szélesebb szintjeihez közelítve, nagyobb felbontások mellett pedig a becslés pontosítása történik. 
+Az \textit{OpenCV}-ben található implementáció ún. \textit{Gauss képpiramis}-ok használatával próbálja kiküszöbölni a nagy mozdulatok esetén fellépő hibás eredményeket, vagyis a vizsgálandó képeknek különböző felbontású változatait vizsgálja iteratívan a kisebb felbontástól az eredeti felbontásig haladva. A piramis mélysége tetszőleges, a legkisebb szint egyetlen pixelből is állhat. Kis felbontások mellett a nagyobb mozdulatok könnyebben azonosíthatóak, a piramis szélesebb szintjeihez közelítve, nagyobb felbontások mellett pedig a becslés pontosítása történik.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=7.65truecm, height=3.84truecm]{images/gauss_pyramid.png}
+\caption{Gauss piramis}
+\label{fig:gausspyramid}
+\end{figure}
+
 A módszer elsősorban szürkeárnyalatos képekre használatos, mivel az intenzitás értékek ilyen esetekben jóval konzisztensebbek, de a megfelelő paraméterek megválasztása mellett színes képekre is alkalmazható. \cite{bradski2008learning} 
 
-\cite{lucas1981iterative} 
 \textit{Flow Motion} működésének a leírása a cikk alapján...\\
 Elmozdulás becslésének módja...\\
 Részletezés képletekkel, ábrákkal...\\
@@ -42,7 +49,7 @@ u = \frac{dx}{dt} &; v = \frac{dy}{dt}
 \bmatrix u \\ v \endbmatrix = {\bmatrix {\sum_{i}f_{x_i}}^2 & \sum_{i}f_{x_i}f_{y_i}\\ \sum_{i}f_{x_i}f_{y_i} & {\sum_{i}f_{y_i}}^2 \endbmatrix}^{-1} \bmatrix -\sum_{i}f_{x_i}f_{t_i} \\ -\sum_{i}f_{y_i}f_{t_i} \endbmatrix
 \end{align*}
 
-A módszer \textit{Spare Optical-Flow}-t valósít meg, vagyis egymástól különálló pontokat vizsgál, ellentétben a \textit{Dense Optical-Flow} módszerekkel, melyek a teljes kép vizsgálatával számolják ki az elmozdulás vektorokat. (forrás) Az utóbbi módszerek számításigénye kifejezetten magas. Valós idejű alkalmazás esetén problémákba ütközhetünk gyengébb hardverek esetében. A mozgás valós idejű detektálására a \textit{Spare Optical-Flow} módszerek is kielégítő eredményekkel szolgálnak, néhány trükk alkalmazása mellett. Ilyenek például a már említett \textit{kép-piramisok} használata a gyors mozgások pontos követésére és a vizsgálandó pontok kijelölésének a stratégiája is. A pontok kijelöléséhez egy rácsszerkezet használatát gondoltam a legmegfelelőbbnek, ahol a pontok a rács metszéspontjaiban helyezkednek el. A képtartományt ily módon egyenletesen tudjuk lefedni.
+A módszer \textit{Spare Optical-Flow}-t valósít meg, vagyis egymástól különálló pontokat vizsgál, ellentétben a \textit{Dense Optical-Flow} módszerekkel, melyek a teljes kép vizsgálatával számolják ki az elmozdulás vektorokat. \cite{bradski2008learning} Az utóbbi módszerek számításigénye kifejezetten magas. Valós idejű alkalmazás esetén problémákba ütközhetünk gyengébb hardverek esetében. A mozgás valós idejű detektálására a \textit{Spare Optical-Flow} módszerek is kielégítő eredményekkel szolgálnak, néhány trükk alkalmazása mellett. Ilyenek például a már említett \textit{kép-piramisok} használata a gyors mozgások pontos követésére és a vizsgálandó pontok kijelölésének a stratégiája is. A pontok kijelöléséhez egy rácsszerkezet használatát gondoltam a legmegfelelőbbnek, ahol a pontok a rács metszéspontjaiban helyezkednek el. A képtartományt ily módon egyenletesen fedik le a pontok.
 
 \Section{Rácspontok kezelése}
 
@@ -51,7 +58,7 @@ Ezen pontokat felhasználva minden iterációban az éppen aktuális és az egye
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=11.2truecm, height=6.3truecm]{images/vectorField_screenshot.png}
+\frame{\includegraphics[width=11.2truecm, height=6.3truecm]{images/vectorField_screenshot.png}}
 \caption{Képernyőfotó a vektormezőről}
 \label{fig:vectorfield}
 \end{figure}
@@ -118,7 +125,7 @@ A mozgás hossza a vektormező vektorainak átlagos hosszában mérhető és pix
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=11.86truecm, height=5truecm]{images/ResultantPlot_screenshot.png}
+\frame{\includegraphics[width=11.86truecm, height=5truecm]{images/ResultantPlot_screenshot.png}}
 \caption{Képernyőfotó a globális eredővektor grafikonjáról}
 \label{fig:resultantplot}
 \end{figure}
@@ -183,7 +190,7 @@ A vektorokhoz egyenes egyenleteket szerkeszthetünk. Az egyenes egyenletének eg
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=11.2truecm, height=6.3truecm]{images/swirl_screenshot.png}
+\frame{\includegraphics[width=8.88truecm, height=6.66truecm]{images/swirl_screenshot.png}}
 \caption{A vektormező egy állapota a becsült forgási középponttal}
 \label{fig:rotation}
 \end{figure}
@@ -214,16 +221,16 @@ Az OCR kipróbálásához rendelkezésre áll egy ingyenes adatkészlet is, a MN
 
 Mivel a probléma hasonlít az OCR-hez, hasonló megoldást alkalmazhatunk a levegőben leírt gesztusok felismeréséhez is. A mozdulat képét egy, a \textit{Hőtérképpel} megegyező vászonra rajzolja rá a program. A vászon mérete 16-os rácssűrűség mellett 11*15-ös, vagyis megegyezik a \textit{Hőtérkép} dimenzióival. A vászon alapszíne fehér, vagyis 255 inenzitás értékekkel van ellátva. A gesztus képét a \textit{Hőtérkép} elemzésénel kinyert kontrollpontok rajzolják a vászonra: A vektorcsoportnak meghatározandó a súlypontja, mely a virtuális ecset hegyét jelenti. A súlypont elmozdulását a vásznon 0 intenzitásértékek követik, vagyis az elvégzett mozdulatok képei fekete színnel jelennek meg a vásznon. Mivel az egyes mozdulatok hasonló mintázatot követnek, a vásznon megjelenő képük is hasonló lesz.
 
+\begin{figure}[h]
+\centering
+\frame{\includegraphics[width=10truecm, height=7.33truecm]{images/OCR-Gesture.png}}
+\caption{Egy levegőbe leírt kör mintázata a 11*15-ös vásznon}
+\label{fig:ocr-gesture}
+\end{figure}
+
 A vászon frissítése két módszerrel történik. Az elmozdulás értékek egy csúszóablakban helyezkednek el, amelyben maximum  30 érték kaphat helyet. Továbbá ha a \textit{Hőtérkép}-en nem figyelhető meg kontrollpont, az elmozdulás értékek törlése felgyorsul, míg a teljesen üres vásznot nem kapjuk.
 
 A felismerés pillanatát feltételekhez kell kötnünk. A mozdulat rajzolatának végső formája akkor alakul ki, amikor a felhasználó befejezte az adott mozdulatot. Ilyen esetben a videófolyamon nem figyelhető meg további mozgás. Az időzítés egyik feltétele mindenképpen a mozgás hiányának kell lennie. Ez többféleképpen is megfigyelhető, vizsgálhatjuk a globális eredővektorunkat is, vagy a \textit{Hőtérkép} segítségével meghatározott csoportok számát is figyelembe vehetjük. Mivel a mintázat rajzolásához is a vektorok összetartozó csoportját használtuk fel, az időzítés egyik feltételének a vektorcsoportok hiányát szabhatjuk meg. Egy másik feltétel a rajzolat aktuális állapotára vonatkozhat. Figyelembe vehetjük a vonalhosszat is, vagyis egy bizonyos vonalhossz alatt nem végeznénk el az osztályozási becslést. Ezen két feltétel biztosítja, hogy az osztályozási művelet végrehajtása a megfelelő pillanatban történjen, elkerülve a felesleges számításokat, hibás becsléseket.
 A mozdulat osztályozása utáni pillanatban a vásznat törölnünk kell, vagyis csupa 255 intenzitásértékkel kell ellátnunk, hogy a megszabott feltételek tovább ne teljesüljenek a további becsléseket elkerülve.
-
-\begin{figure}[h]
-\centering
-\includegraphics[width=11.2truecm, height=6.3truecm]{images/OCR-Gesture.png}
-\caption{Egy levegőbe leírt kör mintázata a 11*15-ös vásznon}
-\label{fig:ocr-gesture}
-\end{figure}
 
 A modell betanításához képekre lesz szükségünk, amelyeket a programmal egyesével legyárthatunk és osztályozhatunk. További módszerek is léteznek a tanítóminta előállítására. Ilyenek lehetnek a minták generálása egy alap mintahalmazból zajosítással és egyéb megoldásokkal. Amint a minta rendelkezésünkre áll, a modell tanítható is. A témát egy másik fejezetben részletesen is kifejtem.
