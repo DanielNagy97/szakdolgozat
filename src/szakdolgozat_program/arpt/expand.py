@@ -16,7 +16,8 @@ class Expand(Widget):
         """
         super().__init__(position, dimension, image)
         self.velocity = 0.0
-        self._actual_height = self.dimension[1]
+        self.min_height = 50
+        self._actual_height = self.min_height
 
     def calc_expand(self, grid, dimensions_of_frame, speed, attenuation):
         x, y, w, h = np.uint8(np.floor(np.divide((*self._position,
@@ -44,8 +45,8 @@ class Expand(Widget):
 
         width, height = self._dimension
 
-        if self._actual_height < 50:
-            self._actual_height = 50
+        if self._actual_height < self.min_height:
+            self._actual_height = self.min_height
 
         if self._actual_height > height:
             self._actual_height = height

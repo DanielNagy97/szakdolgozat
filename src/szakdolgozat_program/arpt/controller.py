@@ -14,6 +14,7 @@ from arpt.composition import Composition
 from arpt.ocr_gesture import Ocr_gesture
 from arpt.grab import Grab
 from arpt.event_handler import Event_handler
+from arpt.button import Button
 
 # NOTE: Probably it is enought to import only the arpt package.
 # from arpt import *
@@ -70,11 +71,6 @@ class Controller(object):
         self.heat_map = HeatMap(self.grid)
         self.swirl = Swirl()
 
-        self.shift = Shift((50, 50), (180, 256), "./src/test.png")
-        self.expand = Expand((10, 10), (200, 300), "./src/expand.png")
-
-        self.widget = Widget((50, 50), (180, 256), "./src/test.png")
-
         self._composition = Composition()
 
         self._ocr = Ocr_gesture()
@@ -84,6 +80,29 @@ class Controller(object):
         self._event = Event_handler()
 
         self.view = View()
+
+        self.scene = [
+            {
+                'widgets': [
+                    Button((40, 350), (100, 100), "./src/button.png")
+                ]
+            },
+            {
+                'widgets': [
+                    Button((510, 40), (100, 100), "./src/button.png"),
+                    Shift((60, 40), (200, 256), "./src/test.png"),
+                    Expand((10, 10), (200, 300), "./src/expand.png")
+                ],
+            },
+            {
+                'widgets': [
+                    Expand((400, 150), (200, 300), "./src/expand.png"),
+                    Widget((140, 50), (100, 100), "./src/test.png")
+                ],
+            }
+        ]
+
+        self.current_scene = 0
 
     def frame_diff_control(self):
         """
@@ -108,18 +127,6 @@ class Controller(object):
         self.heat_map.calc_heat_map(self.grid, 10)
         self.heat_map.get_motion_points(self.grid, 7)
         self.heat_map.analyse_two_largest_points()
-
-    def shift_control(self):
-        """
-        Controlling the shift function.
-        """
-        self.shift.calc_shift(self.grid, self._video.dimension, 1.8, 0.8)
-
-    def expand_control(self):
-        """
-        Controlling the expand function.
-        """
-        self.expand.calc_expand(self.grid, self._video.dimension, 1.8, 0.8)
 
     def swirl_control(self):
         """
@@ -152,20 +159,65 @@ class Controller(object):
         self._event.ocr_gesture(self._ocr)
 
         if self._event.grabbed:
-            # print(self._grab.center_point)
             self._event.calc_grab_position(self._video)
             x, y = self._event.position.ravel()
             cv2.circle(self._video.frame, (int(x), int(y)),
                        3, (0, 0, 255), 4)
-            # self._event.change_state()
+
+    def shift_control(self, shift_widget):
+        """
+        Controlling the shift function.
+        """
+        shift_widget.calc_shift(self.grid, self._video.dimension, 1.8, 0.8)
+
+    def expand_control(self, expand_widget):
+        """
+        Controlling the expand function.
+        """
+        expand_widget.calc_expand(self.grid, self._video.dimension, 1.8, 0.8)
+
+    def button_control(self, button_widget):
+        """
+        Controlling the button widget.
+        """
+        button_widget.inspect_button(self.heat_map, self.grid, self._video)
+
+        # For test purposes
+        # Pushing the button, will take us to the next "slide"
+        if button_widget._pushed:
+            self.current_scene += 1
+
+    def update_widgets(self):
+        """
+        Updating the widgets
+        """
+
+        for widget in self.scene[self.current_scene]['widgets']:
+            if type(widget).__name__ == "Shift":
+                self.shift_control(widget)
+
+            if type(widget).__name__ == "Expand":
+                self.expand_control(widget)
+
+            if type(widget).__name__ == "Button":
+                self.button_control(widget)
 
     def composing_output_video(self):
         """
         Controlling the composition of the video.
         """
-        self._composition.draw_shift(self.shift, self._video)
-        # self._composition.draw_shift(self.widget, self._video)
-        self._composition.draw_expand(self.expand, self._video)
+        for widget in self.scene[self.current_scene]['widgets']:
+            if type(widget).__name__ == "Shift":
+                self._composition.draw_widget(widget, self._video)
+
+            if type(widget).__name__ == "Expand":
+                self._composition.draw_expand(widget, self._video)
+
+            if type(widget).__name__ == "Widget":
+                self._composition.draw_widget(widget, self._video)
+
+            if type(widget).__name__ == "Button":
+                self._composition.draw_widget(widget, self._video)
 
     def view_control(self):
         """
@@ -196,20 +248,24 @@ class Controller(object):
                 self.frame_diff_control()
                 self.grid_control()
                 self.heat_map_control()
-                self.shift_control()
-                self.expand_control()
                 self.swirl_control()
-                self.composing_output_video()
                 self.ocr_gesture_control()
                 self.grab_control()
 
                 self.event_control()
 
+                self.update_widgets()
+
+                self.composing_output_video()
                 self.view_control()
 
                 k = cv2.waitKey(1) & 0xFF
                 if k == 27:
                     break
+                if k == 32:
+                    self.current_scene += 1
+                    if self.current_scene > len(self.scene)-1:
+                        break
             else:
                 break
 

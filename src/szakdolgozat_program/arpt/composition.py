@@ -8,23 +8,23 @@ class Composition():
     """
 
     @staticmethod
-    def draw_shift(shift, video):
+    def draw_widget(widget, video):
         """
-        Draw the shift widget.
-        :param shift: a shift widget
+        Draw the widget.
+        :param widget: a widget object
         :param video: the video stream
         :return: None
         """
-        pos_x, pos_y = np.uint16(shift.position)
-        width, height = np.uint16(shift.dimension)
+        pos_x, pos_y = np.uint16(widget.position)
+        width, height = np.uint16(widget.dimension)
 
-        shift.image = cv2.resize(shift.image, (width, height),
-                                 interpolation=cv2.INTER_CUBIC)
+        widget.image = cv2.resize(widget.image, (width, height),
+                                  interpolation=cv2.INTER_CUBIC)
 
         added_image = \
             cv2.addWeighted(video.frame[pos_y:pos_y+height,
                                         pos_x:pos_x+width, :],
-                            0, shift.image[0:height, 0:width, :],
+                            0.5, widget.image[0:height, 0:width, :],
                             1-0, 0)
 
         video.frame[pos_y:pos_y+height,
@@ -33,8 +33,8 @@ class Composition():
     @staticmethod
     def draw_expand(expand, video):
         """
-        Draw the shift widget.
-        :param shift: an expandable widget
+        Draw the expandeble widget.
+        :param widget: an expandable widget
         :param video: the video stream
         :return: None
         """
