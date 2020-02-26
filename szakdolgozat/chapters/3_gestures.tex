@@ -81,11 +81,11 @@ A \textit{lépésköz} érték segítségével határozhatjuk meg a pontok helyz
 
 \Section{Hőtérkép}
 
-A vektormező egyes pontjait vizsgálva szerkeszthetünk egy ún. \textit{Hőtérkép}-et, amelyben különböző intenzitásértékekkel jelöljük az egyes vektorok hosszait. A \textit{Hőtérkép} egy $n*m$-es mátrix, ahol $n$ a vektormező sorainak, $m$ pedig az oszlopainak a száma. A \textit{Hőtérkép} minden eleme egy BGR (blue, green, red) hármas értékkel van ellátva. Ezen értékek jelölik az egyes elemek színét.\\
+A vektormező egyes pontjait vizsgálva szerkeszthetünk egy ún. \textit{Hőtérkép}-et, amelyben különböző intenzitásértékekkel jelöljük az egyes vektorok hosszait. A \textit{Hőtérkép} egy $n \times m$-es mátrix, ahol $n$ a vektormező sorainak, $m$ pedig az oszlopainak a száma. A \textit{Hőtérkép} minden eleme egy BGR (blue, green, red) hármas értékkel van ellátva. Ezen értékek jelölik az egyes elemek színét.\\
 Az értékek a következőképpen kerülnek kiszámításra:\\
 \newline
 \noindent \textbf{Hőtérkép$\_$kiszámítása}(@vektormező, érzékenység, @hőtérkép)\\ 
-Input paraméter: vektormező (n*m-es mátrix), érzékenység\\
+Input paraméter: vektormező (n$\times$m-es mátrix), érzékenység\\
 Output paraméter: hőtérkép\\
 \textbf{FOR} i $\leftarrow$ 1 \textbf{TO} Hossz(vektor$_n$) \textbf{DO}\\
 \indent \textbf{FOR} j $\leftarrow$ 1 \textbf{TO} Hossz(vektor$_m$) \textbf{DO}\\
@@ -168,7 +168,7 @@ Mivel a \textit{Drag}-et előreláthatólag a prezentáló csak rövid időszaka
 
 \SubSection{Blink}
 
-A \textit{Blink} gesztusok felismerésére először egy ún. \textit{Frame differencing} technikát kell alkalmaznunk.
+A \textit{Blink} gesztusok felismerésére elsősorban egy ún. \textit{Frame differencing} technikát kell alkalmaznunk.
 Ehhez a videófolyam aktuális képkockájának és az egyel korábbi képkockájának abszolút különbségét kell meghatározni, majd az így kapott képen küszöbölést kell végrehajtani. Eredményképp egy olyan képet kapunk, amelyen az elmozdulás figyelhető meg fehér színnel jelölve. A keletkezett képen különféle alakzatok alakulhatnak ki. Az egyes mozdulatok hasonló nyomot hagynak maguk után. Így tehát egy \textit{Blink} mozdulat leadásakor jellegzetes mintázat rajzolódik ki.
 
 \begin{figure}[h]
@@ -178,9 +178,11 @@ Ehhez a videófolyam aktuális képkockájának és az egyel korábbi képkocká
 \label{fig:blink}
 \end{figure}
 
-A pontosabb becslés érdekében felhasználhatjuk a vektormező adatait is. A \textit{Blink} terüetére eső vektorok irányvektorait figyelve a mozgásról bővebb információt kapunk.
+A \textit{Frame differencing} technika a teljes képtartományra vonatkozik, minden iterációban elvégezhetjük, hogy a videfolyamon történő mozgásról információkat kapjunk. A \ref{fig:blink} ábrán megfigyelhető, hogy nem csupán a legfrissebb két képkocka adatai vannak jelen a képen. Ezt a jelenséget egy keverési technikával érhetjük el. A korábbi mozdulatok rajzolatai alacsonyabb intenzitás értékekkel jelennek meg, míg a legfrissebb értékek 255 intenzitással vannak jelölve.
 
-Tervek, ötletek...
+A gesztus detektálásához rögzített hosszúságú jellegvektorokra lesz szükségünk. A \textit{Frame differencing} technika képének dimenzió megegyeznek a videófolyam felbontásával. Így például 640$\times$480 felbontás mellett 307200 hosszúságú jellegvektorokat kapunk. A gesztus ily módon történő detektálása nem a legoptimálisabb megoldás. A \textit{Frame differencing} kép felbontásának csökkentésével pedig romolhat az információ minősége is.
+A \textit{Blink} gesztusról feltételezhetjük, hogy a videófolyam egy kis területén fog jelentkezni. A vizsgálandó terület méretének, a jellegvektorok fix hosszai miatt, előre meghatározottnak kell lennie. A pontosabb becslés érdekében felhasználhatjuk a vektormező adatait is. A \textit{Blink} területére eső vektorok irányvektorait figyelve a mozgásról bővebb információt kapunk. Tapasztalati eredmények alapján a 16-os rácssűrűségű vektormezőn 5$\times$5-ös tartományon belül számíthatunk \textit{Blink} gesztus adataira. Mivel a \textit{Hőtérkép} segítségével meghatároztuk az összefüggő vektorok csoportjait, a csoport súlypontját tekinthetjük a \textit{Blink} gesztus középpontjának. Ezután a középpontot felhasználva meghatározandó az 5$\times$5-ös csoport a vektormező mátrixára nézve. A mátrix szélein és a sarkoknál, az indexelés helyessége miatt meg kell szabnunk, hogy a középpont minimum 2 lépés távolságra lehet a szélektől. Ha esetleg ez nem teljesülne, a legközelebbi helyes pontot jelöljük ki középpontnak. Ha sikeresen meghatároztuk a \textit{Blink}-re eső vektorok indexeit, a vektormező indexelt kezdőpontjainak értékeit felhasználva kiemelhetjük a \textit{Frame differencing} képből a \textit{Blink} gesztus tartományát. Az eredeti képből kivágott kép jóval kisebb lesz, a felesleges értékekből is kevesebb jelentkezik majd.
+A kapott kép dimenzióit skálázással tovább csökkenthetjük egy bizonyos pontig, hogy a detektálás minél kevesebb memóriát vegyen igénybe. Szintén empirikus értékek szerint a gesztus képét egy 16$\times$16-os mátrixra csökkenthetjük. Ebben az esetben a jellegvektorok hossza 256-ra csökken. A vektormező értékeit is felhsználhatjuk a pontosabb detektálás érdekében. Mivel 5$\times$5-ös területet szabtunk meg, ez további 25 jellegvektort jelent. Érdemes irányvektorokat használni, így a gesztus a videófolyamon megfigyelhető helyzete nem befolyásolja a végeredményt.
 
 \SubSection{Rotation}
 
@@ -219,12 +221,12 @@ A prezentáló személy bizonyos mozdulatokat elvégezve további funkciókat é
 Az ilyen típusú gesztusok felismeréséhez felhasználhatjuk az \textit{OCR}, vagyis az \textit{Optical Character recognition} (Optikai karakter felismerés) módszert is, mely írott karakterek felismerésére szolgál. 
 Az OCR kipróbálásához rendelkezésre áll egy ingyenes adatkészlet is, a MNIST, amely 70.000 kisfelbontású képet tartalmaz írott számokról 0-9-ig. Segítségével különféle osztályozók taníthatók be, illetve az osztáyozók tejesítményének egyik mérőeszközévé vált az idők során. Az osztályozómodell betanításához a jellegvektorok értékeit a szürkeárnyalatosképek intenzitásértékei adják. Ha egy új osztályozó rendszert fejlesztenek, valószínűleg a MNIST adatkészlettel is kipróbálják azt. \cite{geron2019hands}
 
-Mivel a probléma hasonlít az OCR-hez, hasonló megoldást alkalmazhatunk a levegőben leírt gesztusok felismeréséhez is. A mozdulat képét egy, a \textit{Hőtérképpel} megegyező vászonra rajzolja rá a program. A vászon mérete 16-os rácssűrűség mellett 11*15-ös, vagyis megegyezik a \textit{Hőtérkép} dimenzióival. A vászon alapszíne fehér, vagyis 255 inenzitás értékekkel van ellátva. A gesztus képét a \textit{Hőtérkép} elemzésénel kinyert kontrollpontok rajzolják a vászonra: A vektorcsoportnak meghatározandó a súlypontja, mely a virtuális ecset hegyét jelenti. A súlypont elmozdulását a vásznon 0 intenzitásértékek követik, vagyis az elvégzett mozdulatok képei fekete színnel jelennek meg a vásznon. Mivel az egyes mozdulatok hasonló mintázatot követnek, a vásznon megjelenő képük is hasonló lesz.
+Mivel a probléma hasonlít az OCR-hez, hasonló megoldást alkalmazhatunk a levegőben leírt gesztusok felismeréséhez is. A mozdulat képét egy, a \textit{Hőtérképpel} megegyező vászonra rajzolja rá a program. A vászon mérete 16-os rácssűrűség mellett 11$\times$15-ös, vagyis megegyezik a \textit{Hőtérkép} dimenzióival. A vászon alapszíne fehér, vagyis 255 inenzitás értékekkel van ellátva. A gesztus képét a \textit{Hőtérkép} elemzésénel kinyert kontrollpontok rajzolják a vászonra: A vektorcsoportnak meghatározandó a súlypontja, mely a virtuális ecset hegyét jelenti. A súlypont elmozdulását a vásznon 0 intenzitásértékek követik, vagyis az elvégzett mozdulatok képei fekete színnel jelennek meg a vásznon. Mivel az egyes mozdulatok hasonló mintázatot követnek, a vásznon megjelenő képük is hasonló lesz.
 
 \begin{figure}[h]
 \centering
 \frame{\includegraphics[width=10truecm, height=7.33truecm]{images/OCR-Gesture.png}}
-\caption{Egy levegőbe leírt kör mintázata a 11*15-ös vásznon}
+\caption{Egy levegőbe leírt kör mintázata a 11$\times$15-ös vásznon}
 \label{fig:ocr-gesture}
 \end{figure}
 
