@@ -7,14 +7,14 @@ from arpt.canvas import Canvas
 from arpt.window import Window
 from arpt.heat_map import HeatMap
 from arpt.swirl import Swirl
-from arpt.shift import Shift
-from arpt.expand import Expand
-from arpt.widget import Widget
 from arpt.composition import Composition
 from arpt.ocr_gesture import Ocr_gesture
 from arpt.grab import Grab
 from arpt.event_handler import Event_handler
+from arpt.shift import Shift
+from arpt.expand import Expand
 from arpt.button import Button
+from arpt.grabbable import Grabbable
 
 # NOTE: Probably it is enought to import only the arpt package.
 # from arpt import *
@@ -84,20 +84,21 @@ class Controller(object):
         self.scene = [
             {
                 'widgets': [
-                    Button((40, 350), (100, 100), "./src/button.png")
+                    Button((40, 350), (100, 100), "./src/button.png"),
+                    Grabbable((360, 90), (150, 150), "./src/test.png")
                 ]
             },
             {
                 'widgets': [
                     Button((510, 40), (100, 100), "./src/button.png"),
-                    Shift((60, 40), (200, 256), "./src/test.png"),
+                    Shift((60, 40), (120, 156), "./src/test.png"),
                     Expand((10, 10), (200, 300), "./src/expand.png")
                 ],
             },
             {
                 'widgets': [
                     Expand((400, 150), (200, 300), "./src/expand.png"),
-                    Widget((140, 50), (100, 100), "./src/test.png")
+                    Grabbable((140, 50), (150, 150), "./src/test.png")
                 ],
             }
         ]
@@ -150,6 +151,11 @@ class Controller(object):
                                self._canvasses['framediff'],
                                self.grid)
         self._grab.predict(self.heat_map)
+        if self._grab.grabbed:
+            self._grab.calc_grab_position(self._video)
+            x, y = self._grab.position.ravel()
+            cv2.circle(self._video.frame, (int(x), int(y)),
+                       3, (0, 0, 255), 4)
 
     def event_control(self):
         """
@@ -187,6 +193,13 @@ class Controller(object):
         if button_widget._pushed:
             self.current_scene += 1
 
+    def grabbable_control(self, grabbable_widget):
+        """
+        Controlling the grabbable widget.
+        """
+        if self._grab.grabbed:
+            grabbable_widget.update_position(self._grab, self._video)
+
     def update_widgets(self):
         """
         Updating the widgets
@@ -201,6 +214,9 @@ class Controller(object):
 
             if type(widget).__name__ == "Button":
                 self.button_control(widget)
+
+            if type(widget).__name__ == "Grabbable":
+                self.grabbable_control(widget)
 
     def composing_output_video(self):
         """
@@ -217,6 +233,9 @@ class Controller(object):
                 self._composition.draw_widget(widget, self._video)
 
             if type(widget).__name__ == "Button":
+                self._composition.draw_widget(widget, self._video)
+
+            if type(widget).__name__ == "Grabbable":
                 self._composition.draw_widget(widget, self._video)
 
     def view_control(self):
@@ -252,7 +271,7 @@ class Controller(object):
                 self.ocr_gesture_control()
                 self.grab_control()
 
-                self.event_control()
+                # self.event_control()
 
                 self.update_widgets()
 

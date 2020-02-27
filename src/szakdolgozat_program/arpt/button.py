@@ -73,7 +73,6 @@ class Button(Widget):
             cv2.circle(video.frame, (int(x), int(y)),
                        3, (0, 255, 0), 4)
 
-            if time.time() - self.push_time >= 0.5:
-                print("Pushed")
+            if time.time() - self.push_time >= 0.2:
                 self.about_to_push = False
                 self._pushed = True

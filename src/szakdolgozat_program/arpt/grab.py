@@ -14,13 +14,18 @@ class Grab(object):
         self.rect_area = 0
         self._center = []
         self._state = ""
-
+        self._grabbed = False
         self.loaded_model = \
             pickle.load(open("./src/ML/trained_models/grab_model.sav", 'rb'))
 
         self.j = 0
         self.time = datetime.now().strftime("%Y%m%d_%H%M%S")
         self.dirname = "./src/grab_datas/"+self.time
+        self.lk_params = \
+            dict(winSize=(50, 50),
+                 maxLevel=2,
+                 criteria=(cv2.TERM_CRITERIA_EPS | cv2.TERM_CRITERIA_COUNT,
+                           10, 0.03))
 
     def create_data(self, heat_map, frame_diff_canv, grid):
         """
@@ -57,10 +62,9 @@ class Grab(object):
                 tuple(np.uint32(grid.old_points_3D[self._center[0],
                                                    self._center[1]]))
             image = new_canvas[pt1[1]:pt2[1], pt1[0]:pt2[0]]
-            cv2.imshow("Grab image", image)
+            # cv2.imshow("Grab image", image)
             image = cv2.resize(image, (16, 16),
                                interpolation=cv2.INTER_AREA)
-            # cv2.circle(frame_diff_canv.canvas, self._center_point, 5, 255, 3)
 
             local_direction_vectors = \
                 np.subtract(grid.new_points_3D[self.y:self.y+self.h,
@@ -98,8 +102,24 @@ class Grab(object):
             X = self.data.reshape(1, -1)
             score = self.loaded_model.predict(X)
             self._state = score[0]
-            # print(score)
             self.rect_area = 0
+
+            if self._state == "grab":
+                self._grabbed = not self._grabbed
+                x, y = self._center_point
+                self._position = np.array([[x, y]], dtype=np.float32)
+
+    def calc_grab_position(self, video):
+        """
+        Calculating the new position of the point with optical-flow
+        """
+        new_pos, status, error = \
+            cv2.calcOpticalFlowPyrLK(video.old_gray_frame,
+                                     video.gray_frame,
+                                     self._position,
+                                     None,
+                                     **self.lk_params)
+        self._position = new_pos
 
     @property
     def center(self):
@@ -112,3 +132,15 @@ class Grab(object):
     @property
     def state(self):
         return self._state
+
+    @property
+    def grabbed(self):
+        return self._grabbed
+
+    @grabbed.setter
+    def grabbed(self, new_state):
+        self._grabbed = new_state
+
+    @property
+    def position(self):
+        return self._position

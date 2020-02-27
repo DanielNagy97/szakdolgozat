@@ -48,8 +48,8 @@ class Ocr_gesture(object):
             heat_map.motion_points_roots = np.empty((0, 2), dtype=np.uint8)
 
             # Showing what gesture got predicted
-            im = cv2.imread("./src/"+score[0]+".png", 0)
-            cv2.imshow("Detected gesture", im)
+            # im = cv2.imread("./src/"+score[0]+".png", 0)
+            # cv2.imshow("Detected gesture", im)
 
     def save_data(self, heat_map, canvas):
         if (len(heat_map.motion_points_roots) > 20 and not
