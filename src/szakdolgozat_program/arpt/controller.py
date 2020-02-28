@@ -11,10 +11,11 @@ from arpt.composition import Composition
 from arpt.ocr_gesture import Ocr_gesture
 from arpt.grab import Grab
 from arpt.event_handler import Event_handler
-from arpt.shift import Shift
-from arpt.expand import Expand
-from arpt.button import Button
-from arpt.grabbable import Grabbable
+from arpt.widgets.shift import Shift
+from arpt.widgets.expand import Expand
+from arpt.widgets.button import Button
+from arpt.widgets.grabbable import Grabbable
+# from arpt.widgets.button import Button
 
 # NOTE: Probably it is enought to import only the arpt package.
 # from arpt import *
