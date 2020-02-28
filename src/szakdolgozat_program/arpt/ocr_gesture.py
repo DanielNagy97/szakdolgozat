@@ -10,6 +10,9 @@ class Ocr_gesture(object):
     OCR-Gesture Recognition class
     """
     def __init__(self):
+        """
+        Initalize the OCR-Gesture function
+        """
         self._state = ""
         self.loaded_model = \
             pickle.load(open("./src/ML/trained_models/ocr_model.sav", 'rb'))
@@ -52,6 +55,11 @@ class Ocr_gesture(object):
             # cv2.imshow("Detected gesture", im)
 
     def save_data(self, heat_map, canvas):
+        """
+        Saving data to disk
+        :param heat_map: The Heat-map object
+        :param canvas: The OCR-canvas
+        """
         if (len(heat_map.motion_points_roots) > 20 and not
            heat_map.bounding_rects.any()):
             if self.j == 0:

@@ -15,7 +15,7 @@ from arpt.widgets.shift import Shift
 from arpt.widgets.expand import Expand
 from arpt.widgets.button import Button
 from arpt.widgets.grabbable import Grabbable
-# from arpt.widgets.button import Button
+from arpt.widgets.tuner import Tuner
 
 # NOTE: Probably it is enought to import only the arpt package.
 # from arpt import *
@@ -86,7 +86,8 @@ class Controller(object):
             {
                 'widgets': [
                     Button((40, 350), (100, 100), "./src/button.png"),
-                    Grabbable((360, 90), (150, 150), "./src/test.png")
+                    Grabbable((360, 90), (150, 150), "./src/test.png"),
+                    Tuner((420, 300), (150, 150), "./src/tuner.png", 0, 100)
                 ]
             },
             {
@@ -200,6 +201,14 @@ class Controller(object):
         """
         grabbable_widget.update_position(self._grab, self._video)
 
+    def tuner_control(self, tuner_widget):
+        """
+        Controlling the grabbable widget.
+        """
+        # tuner_widget.update_position(self._grab, self._video)
+        tuner_widget.update_value(self.swirl)
+        pass
+
     def update_widgets(self):
         """
         Updating the widgets
@@ -217,6 +226,9 @@ class Controller(object):
 
             if type(widget).__name__ == "Grabbable":
                 self.grabbable_control(widget)
+
+            if type(widget).__name__ == "Tuner":
+                self.tuner_control(widget)
 
     def composing_output_video(self):
         """
@@ -236,6 +248,9 @@ class Controller(object):
                 self._composition.draw_widget(widget, self._video)
 
             if type(widget).__name__ == "Grabbable":
+                self._composition.draw_widget(widget, self._video)
+
+            if type(widget).__name__ == "Tuner":
                 self._composition.draw_widget(widget, self._video)
 
     def view_control(self):

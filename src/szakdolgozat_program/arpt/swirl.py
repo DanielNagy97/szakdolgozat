@@ -6,6 +6,9 @@ class Swirl(object):
     Swirl class
     """
     def __init__(self):
+        """
+        Initalize the Swirl function
+        """
         self._points = np.empty((0, 2), dtype=np.int32)
 
     def calc_swirl(self, grid, motion_blobs, video, eps=2):

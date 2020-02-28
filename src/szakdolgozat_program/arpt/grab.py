@@ -11,6 +11,9 @@ class Grab(object):
     """
 
     def __init__(self):
+        """
+        Initalize the Grab function
+        """
         self.rect_area = 0
         self._center = []
         self._state = ""
@@ -82,6 +85,7 @@ class Grab(object):
     def save_data(self, heat_map):
         """
         Saving the data to file
+        :param heat_map: The Heat-map object
         """
         if self.rect_area != 0 and not heat_map.bounding_rects.any():
             if self.j == 0:
@@ -96,6 +100,7 @@ class Grab(object):
     def predict(self, heat_map):
         """
         Make prediction for the data
+        :param heat_map: The Heat-map object
         """
         self._state = ""
         if self.rect_area != 0 and not heat_map.bounding_rects.any():
@@ -112,6 +117,7 @@ class Grab(object):
     def calc_grab_position(self, video):
         """
         Calculating the new position of the point with optical-flow
+        :param video: The video object
         """
         new_pos, status, error = \
             cv2.calcOpticalFlowPyrLK(video.old_gray_frame,

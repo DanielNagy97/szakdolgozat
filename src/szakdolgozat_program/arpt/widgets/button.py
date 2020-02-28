@@ -9,6 +9,12 @@ class Button(Widget):
     Button widget representation
     """
     def __init__(self, position, dimension, image):
+        """
+        Initialize new button widget.
+        :param position: position of the element tuple of (x,y)
+        :param dimension: dimension of the element tuple of (width, height)
+        :param image: source of the image file
+        """
         super().__init__(position, dimension, image)
         self._center_point = np.empty((2, ), dtype=np.float32)
         self._control_position = np.empty((2, ), dtype=np.float32)
@@ -27,6 +33,9 @@ class Button(Widget):
         A tracking point will be following the palm.
         If the point get outside of the button in a given time, nothing happens
         If it stays there, the button will be pushed!
+        :param heat_map: The Heat-map object
+        :param grid: The grid object
+        :param video: The Video object
         """
         # NOTE: Center of hmap's rects are calc-ed elsewhere too (f.e: in grab)
         if len(heat_map.bounding_rects) == 1 and not self.about_to_push:

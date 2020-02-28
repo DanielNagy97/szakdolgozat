@@ -20,6 +20,16 @@ class Expand(Widget):
         self._actual_height = self.min_height
 
     def calc_expand(self, grid, dimensions_of_frame, speed, attenuation):
+        """
+        Calculate the expand's behaviour.
+        :param grid: grid object
+        :param dimensions_of_frame: dimension of frame, tuple of (w, h)
+        :param speed: the speed of the element. \
+            Value bellow 1 means slower speed.
+        :param attenuation: attenuation of the element. \
+            The value should be smaller than 1 and not negative.
+        :return: None
+        """
         x, y, w, h = np.uint8(np.floor(np.divide((*self._position,
                                                   self._dimension[0],
                                                   self._actual_height),

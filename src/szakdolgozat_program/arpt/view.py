@@ -37,7 +37,7 @@ class View(object):
                                 2)
         # NOTE: The intersection points here is for testing only!
         if swirl.points.any():
-            for point in swirl._points:
+            for point in swirl.points:
                 cv2.circle(canvas.canvas, tuple(point), 10, (0, 0, 255), 5)
 
         self.show_canvas(win, canvas)

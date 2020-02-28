@@ -6,6 +6,12 @@ class Grabbable(Widget):
     Grabbable widget representation
     """
     def __init__(self, position, dimension, image):
+        """
+        Initialize new Grabbable widget.
+        :param position: position of the element tuple of (x,y)
+        :param dimension: dimension of the element tuple of (width, height)
+        :param image: source of the image file
+        """
         super().__init__(position, dimension, image)
         self.grabbed = False
         self.offset_x = 0
@@ -14,6 +20,8 @@ class Grabbable(Widget):
     def update_position(self, grab, video):
         """
         Updating widget's position by the grab-position
+        :param grab: The Grab object
+        :param video: The Video object
         """
         if grab.grabbed:
             g_pos_x, g_pos_y = self._position
