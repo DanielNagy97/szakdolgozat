@@ -197,8 +197,7 @@ class Controller(object):
         """
         Controlling the grabbable widget.
         """
-        if self._grab.grabbed:
-            grabbable_widget.update_position(self._grab, self._video)
+        grabbable_widget.update_position(self._grab, self._video)
 
     def update_widgets(self):
         """

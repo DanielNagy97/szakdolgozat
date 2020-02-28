@@ -15,33 +15,37 @@ class Grabbable(Widget):
         """
         Updating widget's position by the grab-position
         """
-        g_pos_x, g_pos_y = self._position
-        g_w, g_h = self._dimension
-        x, y = grab.position.ravel()
-        if not self.grabbed:
-            if ((x > g_pos_x and
-                    y > g_pos_y) and
-                    (x < g_pos_x + g_w) and
-                    y < g_pos_y + g_h):
-                self.grabbed = True
-                self.offset_x = x-g_pos_x
-                self.offset_y = y-g_pos_y
-            else:
-                grab.grabbed = False
-        else:
-            self._position = (x-self.offset_x, y-self.offset_y)
-
-            pos_x, pos_y = self._position
+        if grab.grabbed:
+            g_pos_x, g_pos_y = self._position
             g_w, g_h = self._dimension
-            vid_w, vid_h = video.dimension
+            x, y = grab.position.ravel()
 
-            if pos_x < 0:
-                pos_x = 0
-            if pos_y < 0:
-                pos_y = 0
-            if pos_x+g_w > vid_w:
-                pos_x = vid_w-g_w
-            if pos_y+g_h > vid_h:
-                pos_y = vid_h-g_h
+            if not self.grabbed:
+                if ((x > g_pos_x and
+                        y > g_pos_y) and
+                        (x < g_pos_x + g_w) and
+                        y < g_pos_y + g_h):
+                    self.grabbed = True
+                    self.offset_x = x-g_pos_x
+                    self.offset_y = y-g_pos_y
+                else:
+                    grab.grabbed = False
+            else:
+                self._position = (x-self.offset_x, y-self.offset_y)
 
-            self._position = (pos_x, pos_y)
+                pos_x, pos_y = self._position
+                g_w, g_h = self._dimension
+                vid_w, vid_h = video.dimension
+
+                if pos_x < 0:
+                    pos_x = 0
+                if pos_y < 0:
+                    pos_y = 0
+                if pos_x+g_w > vid_w:
+                    pos_x = vid_w-g_w
+                if pos_y+g_h > vid_h:
+                    pos_y = vid_h-g_h
+
+                self._position = (pos_x, pos_y)
+        else:
+            self.grabbed = False
