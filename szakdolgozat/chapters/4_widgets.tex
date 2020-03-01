@@ -1,2 +1,43 @@
 \Chapter{Interaktív grafikus elemek}
 
+\Section{Widget-ek}
+
+A program használata során a felhasználó különféle virtuális interaktív grafikus elemekkel léphet kapcsolatba, segítségükkel irányíthatja a programot, befolyásolhatja a prezentáció menetét. Az elemek más-más funkcióval rendelkeznek. Megjelenítés szempontjából minden grafikus elem képek segítségével jelenik meg.
+
+\begin{itemize}
+	\item \textbf{Nyomógomb}: Az egyik legegyszerűbb interaktív elem, egy virtuális gomb, melyet megnyomva egy meghatározott funkciót érhetünk el.
+	\item \textbf{Megfogható objektum}: A prezentáló személy egy \textit{Blink} gesztus segítségével megtudja fogni az ilyen tulajdonsággal rendelkező elemeket, majd kívánt új pozíciójába helyezheti azt.
+	\item \textbf{Tologatható elem}: A felhasználó \textit{Shift} gesztus segítségével léphet kapcsolataba az ilyen típusú elemekkel.
+	\item \textbf{Kinyitható elem}: Ezen elemek nyithatóak, zárhatóak.
+	\item \textbf{Tekerhető elem}: Hosszú elem, amelynek csak egy rész látszik (mint a diavetítőnél). A felhasználónak lehetősége van az ablakon keresztül megváltoztatni a megjelenítendő képrészletet.
+	\item \textbf{Csúszka, skálán}: Két képből áll össze, segítségével értékeket állíthatunk be.
+	\item \textbf{Tuner}: A \textit{Rotation} gesztussal léphetünk kapcsolatba vele és értékeket állíthatunk be egy meghatározott tartományon.
+\end{itemize} 
+
+\SubSection{Nyomógomb}
+
+A \textit{Nyomógomb} működtetése rendkívül egyszerű. Aktiválásához a felhasználónak egyszerűen csak a gomb területére kell emelnie például a kézfejét, a gomb pedig egy bizonyos idő elteltével reagál.
+
+A gombon belüli mozgás figyelésére segítségül hívhatjuk a \textit{Hőtérkép} csoportjait. Ha egy csoport súlypontja a gombon belül helyezkedik el, majd ha megszűnik (vagyis ha a csoporthoz tartozó valódi objektum abbahagyja a mozgását), akkor a megszűnt csoport súlypontjának a koordinátáira egy figyelendő pontot helyezünk. Ha a vizsgálandó pont kilép a gomb tartományából egy előre meghatározott időn belül, akkor nem történik semmi. Ha viszont a vizsgálandó pont a gomb területén belül marad, a gomb aktiválódik. 
+Vagyis ez egy valós helyzetben a következőképpen nézhet ki: A felhasználó a gomb területére irányítja a kézfejét, a kézfejének apró mozdulatai (melyek nem figyelhetőek meg a \textit{Hőtérképen} a képzaj kiküszöbölése miatt) egy vizsgálandó pont segítségével lesznek követve, amely a már ismert \textit{Optical-Flow} technikával valósul meg.
+
+A véletlen gombnyomás, nem kívánt viselkedés elkerülése érdekében időkeretet kell megszabnunk a vizsgálandó pont a gombon belül töltött idejére. Ezen időintervallumnak viszonylag rövidnek kell lennie, hogy a felhasználói élmény ne romoljon (ne kelljen várni a gombnyomásra), viszont nem lehet túl rövid ahhoz, hogy egy esetleges véletlen mozdulat aktiválni tudja. A helyes időkeret megválasztása a gomb méretétől is függhet. Tapasztalati adatok szerint 0.2-0.5 másodperc közötti időkeret használata megfelelőnek tűnik.
+
+\SubSection{Megfogható objektum}
+
+A megfogható tulajdonsággal rendelkező objektumokat a felhasználó a képtartományon belül szabadon áthelyezheti kedve szerint. A művelethez egy \textit{Blink} gesztust kell végrehajtani az elem területén belül. A \textit{Blink} gesztus kiadásakor minden esetben számolódik egy pozíció érték, amely a kézfej helyzetét kívánja megbecsülni. Ha ezen pont az elem területére esik, akkor a pontot innentől kezdve vizsgálandó pontnak kell tekintenünk. A pont helyzetének frissítése az \textit{Optical-Flow} technikával történik. Az elem új pozíciója a ponthoz képest módosul, vagyis az elem a felhasználó kézfejét követi.
+Amint elnavigálta a kívánt pozícióba az új elemet a felhasználó, eg újabb \textit{Blink} gesztussal a helyére teheti azt.
+
+Hogy az elem véletlenül se lépjen ki a videófolyamból, korlátoznunk kell a lehetséges mozgásterét a képtartományra. Vagyis az elem szélei nem mehetnek túl a kép szélein. Ezen megszorítás a többi elemre is vonatkozik.
+
+\SubSection{Tologatható elem}
+
+A tologatható elemekkel \textit{Shift} gesztus segítségével léphetünk kapcsolatba. Az irányukba történő mozgásra megeggyező irányú mozgással reagálnak. Működésére olyan hatás jellemző, mintha az elemet tologathatnánk.
+
+\SubSection{Kinyitható elem}
+
+\SubSection{Tekerhető elem}
+
+\SubSection{Csúszka, skálán}
+
+\SubSection{Tuner}
