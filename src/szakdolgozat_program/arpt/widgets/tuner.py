@@ -27,11 +27,12 @@ class Tuner(Widget):
             width, height = self._dimension
             pos_x, pos_y = self._position
 
-            for point in swirl.points:
-                rot_x, rot_y = point
+            for i in range(len(swirl.points)):
+                rot_x, rot_y = swirl.points[i]
 
                 if ((rot_x > pos_x and
                         rot_y > pos_y) and
                         (rot_x < pos_x + width) and
                         rot_y < pos_y + height):
-                    print(point)
+                    print(swirl.points[i])
+                    print(swirl.angles_of_rotation[i])
