@@ -1,4 +1,7 @@
 import cv2
+import sys
+import json
+
 from arpt.grid import Grid
 from arpt.video import Video
 from arpt.view import View
@@ -26,9 +29,11 @@ class Controller(object):
     Controller class
     """
 
-    def __init__(self, demo=False):
+    def __init__(self, source_path, demo=False):
         """
         Initialize the controller.
+        :param source_path: The path of the project file
+        :demo: When True, only the output will be shown
         """
         self.demo = demo
 
@@ -82,30 +87,33 @@ class Controller(object):
 
         self.view = View()
 
-        self.scene = [
-            {
-                'widgets': [
-                    Button((40, 350), (100, 100), "./src/button.png"),
-                    Grabbable((360, 90), (150, 150), "./src/test.png"),
-                    Tuner((420, 300), (150, 150), "./src/tuner.png", 0, 100)
-                ]
-            },
-            {
-                'widgets': [
-                    Button((510, 40), (100, 100), "./src/button.png"),
-                    Shift((60, 40), (120, 156), "./src/test.png"),
-                    Expand((10, 10), (200, 300), "./src/expand.png")
-                ],
-            },
-            {
-                'widgets': [
-                    Expand((400, 150), (200, 300), "./src/expand.png"),
-                    Grabbable((140, 50), (150, 150), "./src/test.png")
-                ],
-            }
-        ]
+        self.scene = self.build_scene_from_project_file(source_path)
 
         self.current_scene = 0
+
+    def build_scene_from_project_file(self, path):
+        """
+        Building the scene from project file
+        :param path: The path of the project's folder
+        :return: Scene as list of objects of dicts
+        """
+        with open(path+'/scene.json', 'r') as scenefile:
+            scene_data = json.load(scenefile)
+
+        scene = []
+
+        for i in range(len(scene_data)):
+            slide = []
+            for widget in scene_data[i]['widgets']:
+                widget_class = \
+                    getattr(sys.modules[__name__],
+                            widget['type'])(tuple(widget['position']),
+                                            tuple(widget['dimension']),
+                                            path+widget['image'])
+                slide.append(widget_class)
+            scene.append({'widgets': slide})
+
+        return scene
 
     def frame_diff_control(self):
         """

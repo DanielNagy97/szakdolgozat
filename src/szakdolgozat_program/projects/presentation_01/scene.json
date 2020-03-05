@@ -1,0 +1,63 @@
+[
+    {
+        "widgets": [
+            {
+                "type": "Button",
+                "position": [40, 350],
+                "dimension": [100, 100],
+                "image": "images/button.png"
+            },
+            {
+                "type": "Grabbable",
+                "position": [360, 90],
+                "dimension": [150, 150],
+                "image": "images/test.png"
+            },
+            {
+                "type": "Tuner",
+                "position": [420, 300],
+                "dimension": [150, 150],
+                "image": "images/tuner.png"
+            }
+        ]
+    },
+    {
+        "widgets": [
+            {
+                "type": "Button",
+                "position": [510, 40],
+                "dimension": [100, 100],
+                "image": "images/button.png"
+            },
+            {
+                "type": "Shift",
+                "position": [60, 40],
+                "dimension": [120, 156],
+                "image": "images/test.png"
+            },
+            {
+                "type": "Expand",
+                "position": [10, 10],
+                "dimension": [200, 300],
+                "image": "images/expand.png"
+            }
+        ]
+    },
+    {
+        "widgets": [
+            {
+                "type": "Expand",
+                "position": [400, 150],
+                "dimension": [200, 300],
+                "image": "images/expand.png"
+            },
+            {
+                "type": "Grabbable",
+                "position": [140, 50],
+                "dimension": [150, 150],
+                "image": "images/test.png"
+            }
+        ]
+    }
+]
+
