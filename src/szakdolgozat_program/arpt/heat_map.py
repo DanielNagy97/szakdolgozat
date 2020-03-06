@@ -9,22 +9,31 @@ class HeatMap(object):
     Heatmap class
     """
 
-    def __init__(self, grid):
+    def __init__(self, grid, sensitivity=10, min_area=2):
+        """
+        Initialize the Heat Map
+        :param grid: the grid object
+        :param sensitivity: sensitivity value \
+            for displaying motion vector lengths
+        :param min_area: minimum area of motion blob to analyse
+        """
         self._map_shape = list(grid.old_points_3D.shape)
         self._map_shape[-1] = 3
         self._map_shape = tuple(self._map_shape)
 
         self._motion_points_roots = np.empty((0, 2), dtype=np.uint8)
 
-    def calc_heat_map(self, grid, sensitivity=10):
+        self.sensitivity = sensitivity
+        self.min_area = min_area
+
+    def calc_heat_map(self, grid):
         """
         Calculate the heatmap from the grid.
         :param grid: the grid object
-        :param sensitivity: sensitivity value \
-            for displaying motion vector lengths
         :return: None
         """
-        heat_values = np.int32(np.multiply(grid.vector_lengths, sensitivity))
+        heat_values = np.int32(np.multiply(grid.vector_lengths,
+                                           self.sensitivity))
         heat_values = np.where(heat_values > 255, 255, heat_values)
         self._map = np.zeros(len(heat_values), dtype=np.uint8)
         self._map = np.dstack((np.subtract(255, heat_values),
@@ -33,11 +42,10 @@ class HeatMap(object):
         self._map = self._map.reshape(self._map_shape)
         self._map = np.uint8(self._map)
 
-    def get_motion_points(self, grid, min_area=2):
+    def get_motion_points(self, grid):
         """
         Get the motion points.
         :param grid: the grid object
-        :param min_area: minimum area of motion blob to analyse
         :return: None
         """
         gray_map = cv2.cvtColor(self._map, cv2.COLOR_BGR2GRAY)
@@ -55,7 +63,7 @@ class HeatMap(object):
         for contour in contours:
             (x, y, w, h) = cv2.boundingRect(contour)
             rect_area = w * h
-            if rect_area >= min_area:
+            if rect_area >= self.min_area:
                 count += 1
 
                 direction_vectors = np.reshape(grid.direction_vectors,

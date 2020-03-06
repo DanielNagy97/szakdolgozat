@@ -1,24 +1,17 @@
 import cv2
-import sys
-import json
 
 from arpt.grid import Grid
 from arpt.video import Video
 from arpt.view import View
 from arpt.frame_difference import FrameDifference
-from arpt.canvas import Canvas
 from arpt.window import Window
 from arpt.heat_map import HeatMap
 from arpt.swirl import Swirl
 from arpt.composition import Composition
 from arpt.ocr_gesture import Ocr_gesture
-from arpt.grab import Grab
 from arpt.event_handler import Event_handler
-from arpt.widgets.shift import Shift
-from arpt.widgets.expand import Expand
-from arpt.widgets.button import Button
-from arpt.widgets.grabbable import Grabbable
-from arpt.widgets.tuner import Tuner
+from arpt.grab import Grab
+from arpt.dataparser import DataParser
 
 # NOTE: Probably it is enought to import only the arpt package.
 # from arpt import *
@@ -37,90 +30,51 @@ class Controller(object):
         """
         self.demo = demo
 
-        self._video = Video(-1, (640, 480), True)
+        data_parser = DataParser()
+
+        stgs = data_parser.read_json(source_path,
+                                     'preferences/settings.json')
+
+        self._video = Video(stgs['video']['source'],
+                            stgs['video']['dimension'],
+                            stgs['video']['to_flip'])
 
         if self.demo:
-            self._windows = {
-                'v_stream':      Window("v_stream", cv2.WINDOW_NORMAL, (0, 0))
-            }
-            cv2.setWindowProperty("v_stream", cv2.WND_PROP_FULLSCREEN,
+            self._windows = {'v_stream': Window("v_stream",
+                                                cv2.WINDOW_NORMAL,
+                                                (0, 0))}
+            cv2.setWindowProperty("v_stream",
+                                  cv2.WND_PROP_FULLSCREEN,
                                   cv2.WINDOW_FULLSCREEN)
-            self._canvasses = {
-                'framediff':   Canvas(self._video.dimension, 1),
-                'ocr':         Canvas((15, 11), 1)
-            }
         else:
-            self._windows = {
-                'v_stream':    Window("v_stream", cv2.WINDOW_NORMAL,
-                                      (0, 0)),
-                'vectorfield': Window("vectorField", cv2.WINDOW_NORMAL,
-                                      (840, 0)),
-                'framediff':   Window("frameDiff", cv2.WINDOW_NORMAL,
-                                      (420, 0)),
-                'heatmap':     Window("HeatMap", cv2.WINDOW_NORMAL,
-                                      (840, 350)),
-                'resultplot':  Window("ResultsPlot", cv2.WINDOW_NORMAL,
-                                      (0, 350)),
-                # 'ocr':         Window("OCR", cv2.WINDOW_NORMAL)
-            }
-            self._windows['resultplot'].resize(576, 331)
+            self._windows = data_parser.build_windows_from_pref(source_path)
+            self._canvasses = \
+                data_parser.build_canvasses_from_pref(self._video, source_path)
 
-            self._canvasses = {
-                'framediff':   Canvas(self._video.dimension, 1),
-                'vectorfield': Canvas(self._video.dimension, 1, 255),
-                'resultplot':  Canvas((700, 700), 3),
-                'ocr':         Canvas((15, 11), 1)
-            }
+        self.grid = Grid(stgs['grid']['gridstep'], self._video.dimension)
+        self.frame_diff = FrameDifference(self._video)
 
-        self.grid = Grid(16, self._video.dimension)
-        self.frame_diff = FrameDifference()
-        self.heat_map = HeatMap(self.grid)
+        self.heat_map = HeatMap(self.grid,
+                                stgs['heatmap']['sensitivity'],
+                                stgs['heatmap']['min_area'])
         self.swirl = Swirl()
 
-        self._composition = Composition()
-
         self._ocr = Ocr_gesture()
-
         self._grab = Grab()
 
         self._event = Event_handler()
 
+        self._composition = Composition()
         self.view = View()
 
-        self.scene = self.build_scene_from_project_file(source_path)
-
+        self.scene = data_parser.build_scene_from_project_file(source_path)
         self.current_scene = 0
-
-    def build_scene_from_project_file(self, path):
-        """
-        Building the scene from project file
-        :param path: The path of the project's folder
-        :return: Scene as list of objects of dicts
-        """
-        with open(path+'/scene.json', 'r') as scenefile:
-            scene_data = json.load(scenefile)
-
-        scene = []
-
-        for i in range(len(scene_data)):
-            slide = []
-            for widget in scene_data[i]['widgets']:
-                widget_class = \
-                    getattr(sys.modules[__name__],
-                            widget['type'])(tuple(widget['position']),
-                                            tuple(widget['dimension']),
-                                            path+widget['image'])
-                slide.append(widget_class)
-            scene.append({'widgets': slide})
-
-        return scene
 
     def frame_diff_control(self):
         """
         Controlling the frame differencing function.
         """
-        self.frame_diff.apply_frame_difference(self._video,
-                                               self._canvasses['framediff'])
+        self.frame_diff.apply_frame_difference(self._video)
 
     def grid_control(self):
         """
@@ -135,8 +89,8 @@ class Controller(object):
         """
         Controlling the motion heat-map function.
         """
-        self.heat_map.calc_heat_map(self.grid, 10)
-        self.heat_map.get_motion_points(self.grid, 7)
+        self.heat_map.calc_heat_map(self.grid)
+        self.heat_map.get_motion_points(self.grid)
         self.heat_map.analyse_two_largest_points()
 
     def swirl_control(self):
@@ -150,15 +104,15 @@ class Controller(object):
         """
         Controlling the motion gesture recognition
         """
-        self._ocr.draw_gesture(self.heat_map, self._canvasses['ocr'])
-        self._ocr.predict_motion(self._canvasses['ocr'], self.heat_map)
+        self._ocr.draw_gesture(self.heat_map, self._ocr.canvas)
+        self._ocr.predict_motion(self._ocr.canvas, self.heat_map)
 
     def grab_control(self):
         """
         Controlling the grab function
         """
         self._grab.create_data(self.heat_map,
-                               self._canvasses['framediff'],
+                               self.frame_diff.canvas,
                                self.grid)
         self._grab.predict(self.heat_map)
         if self._grab.grabbed:
@@ -171,26 +125,19 @@ class Controller(object):
         """
         Controlling the event handler
         """
-        self._event.grab(self._grab)
-        self._event.ocr_gesture(self._ocr)
-
-        if self._event.grabbed:
-            self._event.calc_grab_position(self._video)
-            x, y = self._event.position.ravel()
-            cv2.circle(self._video.frame, (int(x), int(y)),
-                       3, (0, 0, 255), 4)
+        pass
 
     def shift_control(self, shift_widget):
         """
         Controlling the shift function.
         """
-        shift_widget.calc_shift(self.grid, self._video.dimension, 1.8, 0.8)
+        shift_widget.calc_shift(self.grid, self._video.dimension)
 
     def expand_control(self, expand_widget):
         """
         Controlling the expand function.
         """
-        expand_widget.calc_expand(self.grid, self._video.dimension, 1.8, 0.8)
+        expand_widget.calc_expand(self.grid, self._video.dimension)
 
     def button_control(self, button_widget):
         """
@@ -213,15 +160,12 @@ class Controller(object):
         """
         Controlling the grabbable widget.
         """
-        # tuner_widget.update_position(self._grab, self._video)
         tuner_widget.update_value(self.swirl)
-        pass
 
     def update_widgets(self):
         """
         Updating the widgets
         """
-
         for widget in self.scene[self.current_scene]['widgets']:
             if type(widget).__name__ == "Shift":
                 self.shift_control(widget)
@@ -269,15 +213,18 @@ class Controller(object):
         if not self.demo:
             self.view.show_heat_map(self._windows['heatmap'], self.heat_map)
             self.view.show_canvas(self._windows['framediff'],
-                                  self._canvasses['framediff'])
+                                  self.frame_diff.canvas)
             self.view.show_vector_field(self.grid, self.swirl,
                                         self._windows['vectorfield'],
                                         self._canvasses['vectorfield'])
             self.view.show_global_vector_results(self.grid,
                                                  self._windows['resultplot'],
                                                  self._canvasses['resultplot'])
-            # self.view.show_canvas(self._windows['ocr'],
-            #                       self._canvasses['ocr'])
+            self.view.show_canvas(self._windows['ocr'], self._ocr.canvas)
+            self.view.show_image(self._windows['ocr-pred'],
+                                 self._ocr.predicted_gest)
+            self.view.show_image(self._windows['grab-im'],
+                                 self._grab.grab_image)
 
     def main_loop(self):
         """

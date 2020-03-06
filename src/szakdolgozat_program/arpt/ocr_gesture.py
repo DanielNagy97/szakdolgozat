@@ -3,6 +3,7 @@ import pickle
 import numpy as np
 from datetime import datetime
 import os
+from arpt.canvas import Canvas
 
 
 class Ocr_gesture(object):
@@ -13,12 +14,15 @@ class Ocr_gesture(object):
         """
         Initalize the OCR-Gesture function
         """
+        self._canvas = Canvas((15, 11), 1)
         self._state = ""
         self.loaded_model = \
             pickle.load(open("./src/ML/trained_models/ocr_model.sav", 'rb'))
         self.j = 0
         self.time = datetime.now().strftime("%Y%m%d_%H%M%S")
         self.dirname = "./src/ocr_datas/"+self.time
+
+        self._predicted_gest = np.empty((11, 15))
 
     def draw_gesture(self, heat_map, canvas):
         """
@@ -51,7 +55,8 @@ class Ocr_gesture(object):
             heat_map.motion_points_roots = np.empty((0, 2), dtype=np.uint8)
 
             # Showing what gesture got predicted
-            # im = cv2.imread("./src/"+score[0]+".png", 0)
+            im = cv2.imread("./src/"+score[0]+".png", 0)
+            self._predicted_gest = im
             # cv2.imshow("Detected gesture", im)
 
     def save_data(self, heat_map, canvas):
@@ -106,3 +111,11 @@ class Ocr_gesture(object):
     @property
     def state(self):
         return self._state
+
+    @property
+    def canvas(self):
+        return self._canvas
+
+    @property
+    def predicted_gest(self):
+        return self._predicted_gest

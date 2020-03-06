@@ -18,6 +18,7 @@ class Grab(object):
         self._center = []
         self._state = ""
         self._grabbed = False
+        self._grab_image = np.empty((16, 16))
         self.loaded_model = \
             pickle.load(open("./src/ML/trained_models/grab_model.sav", 'rb'))
 
@@ -65,10 +66,10 @@ class Grab(object):
                 tuple(np.uint32(grid.old_points_3D[self._center[0],
                                                    self._center[1]]))
             image = new_canvas[pt1[1]:pt2[1], pt1[0]:pt2[0]]
-            # cv2.imshow("Grab image", image)
+
             image = cv2.resize(image, (16, 16),
                                interpolation=cv2.INTER_AREA)
-
+            self._grab_image = image
             local_direction_vectors = \
                 np.subtract(grid.new_points_3D[self.y:self.y+self.h,
                                                self.x:self.x+self.w],
@@ -150,3 +151,7 @@ class Grab(object):
     @property
     def position(self):
         return self._position
+
+    @property
+    def grab_image(self):
+        return self._grab_image

@@ -1,0 +1,15 @@
+{
+    "video":{
+        "source": -1,
+        "dimension": [640, 480],
+        "to_flip": true
+    },
+    "grid":{
+        "gridstep": 16
+    },
+    "heatmap":{
+        "sensitivity": 10,
+        "min_area": 7
+    }
+}
+

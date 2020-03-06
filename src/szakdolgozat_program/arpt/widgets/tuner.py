@@ -1,3 +1,4 @@
+import cv2
 from arpt.widget import Widget
 
 
@@ -5,7 +6,7 @@ class Tuner(Widget):
     """
     Tuner widget representation
     """
-    def __init__(self, position, dimension, image, min_value, max_value):
+    def __init__(self, position, dimension, image, min_value=0, max_value=100):
         """
         Initialize new Tuner widget.
         :param position: position of the element tuple of (x,y)
@@ -17,6 +18,10 @@ class Tuner(Widget):
         super().__init__(position, dimension, image)
         self.min_value = min_value
         self.max_value = max_value
+        self.value = min_value
+
+        self.change = 360/(max_value-min_value)
+        self.angle = 0
 
     def update_value(self, swirl):
         """
@@ -34,5 +39,17 @@ class Tuner(Widget):
                         rot_y > pos_y) and
                         (rot_x < pos_x + width) and
                         rot_y < pos_y + height):
-                    print(swirl.points[i])
-                    print(swirl.angles_of_rotation[i])
+
+                    self.value += swirl.angles_of_rotation[i]/9
+                    if self.value < self.min_value:
+                        self.value = self.min_value
+                    if self.value > self.max_value:
+                        self.value = self.max_value
+
+                    angell = self.value*self.change
+
+                    center = (width/2, height/2)
+
+                    M = cv2.getRotationMatrix2D(center, -angell, 1.0)
+                    proba = cv2.warpAffine(self._image, M, (height, width))
+                    cv2.imshow("sdq", proba)

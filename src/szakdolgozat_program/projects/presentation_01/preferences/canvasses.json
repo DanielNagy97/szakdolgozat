@@ -1,0 +1,14 @@
+[
+    {
+        "name": "vectorfield",
+        "dimension": "video",
+        "channels": 1,
+        "fill": 255
+    },
+    {
+        "name": "resultplot",
+        "dimension": [700, 700],
+        "channels": 3
+    }
+]
+
