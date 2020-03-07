@@ -5,9 +5,10 @@ class Swirl(object):
     """
     Swirl class
     """
+    
     def __init__(self):
         """
-        Initalize the Swirl function
+        Initalize the Swirl function.
         """
         self._points = np.empty((0, 2), dtype=np.int32)
         self._angles_of_rotation = np.empty((0, 1), dtype=np.int32)

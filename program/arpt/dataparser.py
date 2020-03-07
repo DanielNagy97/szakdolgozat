@@ -1,4 +1,5 @@
 import json
+import os
 
 from arpt.canvas import Canvas
 from arpt.window import Window
@@ -21,9 +22,8 @@ class DataParser(object):
         :param file_path: The path of the file in the project's folder
         :return: data as dictionary
         """
-        with open(project_path+file_path, 'r') as cfile:
+        with open(os.path.join(project_path, file_path), 'r') as cfile:
             data = json.load(cfile)
-
         return data
 
     def build_canvasses_from_pref(self, video, path):

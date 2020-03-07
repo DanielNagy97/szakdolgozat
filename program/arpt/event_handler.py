@@ -6,14 +6,15 @@ class Event_handler(object):
     """
     Event handler class
     """
+    
     def __init__(self):
         self._grabbed = False
         self._position = []
-        self.lk_params = \
-            dict(winSize=(50, 50),
-                 maxLevel=2,
-                 criteria=(cv2.TERM_CRITERIA_EPS | cv2.TERM_CRITERIA_COUNT,
-                           10, 0.03))
+        self.lk_params = {
+            "winSize": (50, 50),
+            "maxLevel": 2,
+            "criteria": (cv2.TERM_CRITERIA_EPS | cv2.TERM_CRITERIA_COUNT, 10, 0.03)
+        }
 
     def calc_grab_position(self, video):
         """
@@ -30,7 +31,7 @@ class Event_handler(object):
 
     def grab(self, grab):
         """
-        The Grab event handler
+        Handle the Grab events.
         """
         if grab.state == "grab":
             self.change_state()
@@ -39,7 +40,7 @@ class Event_handler(object):
 
     def ocr_gesture(self, ocr_gesture):
         """
-        The OCR-Gesture handler
+        Handle the OCR gestures.
         """
         if ocr_gesture.state != "":
             # print(ocr_gesture.state)
@@ -47,7 +48,7 @@ class Event_handler(object):
 
     def change_state(self):
         """
-        Changing states
+        Toggle the grabbed state.
         """
         self._grabbed = not self._grabbed
 
