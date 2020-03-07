@@ -19,6 +19,7 @@ class Tuner(Widget):
         self.min_value = min_value
         self.max_value = max_value
         self.value = min_value
+        self._original_image = self._image
 
         self.change = 360/(max_value-min_value)
         self.angle = 0
@@ -46,10 +47,10 @@ class Tuner(Widget):
                     if self.value > self.max_value:
                         self.value = self.max_value
 
-                    angell = self.value*self.change
+    def rotate_widget(self):
+        angle = self.value*self.change
 
-                    center = (width/2, height/2)
-
-                    M = cv2.getRotationMatrix2D(center, -angell, 1.0)
-                    proba = cv2.warpAffine(self._image, M, (height, width))
-                    cv2.imshow("sdq", proba)
+        center = (self._dimension[0]/2, self._dimension[1]/2)
+        M = cv2.getRotationMatrix2D(center, -angle, 1.0)
+        self._image = cv2.warpAffine(self._original_image,
+                                     M, self._dimension)

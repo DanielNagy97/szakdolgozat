@@ -40,7 +40,7 @@ class DataParser(object):
             if canvas['dimension'] == "video":
                 dimension = video.dimension
             else:
-                dimension = canvas['dimension']
+                dimension = tuple(canvas['dimension'])
 
             if 'fill' in canvas:
                 canvasses[canvas['name']] = Canvas(dimension,
@@ -64,7 +64,7 @@ class DataParser(object):
         for window in windows_data:
             windows[window['name']] = Window(window['title'],
                                              window['mode'],
-                                             window['position'])
+                                             tuple(window['position']))
             if 'dimension' in window:
                 windows[window['name']].resize(*window['dimension'])
 
@@ -84,28 +84,28 @@ class DataParser(object):
             slide = []
             for widget in scene_data[i]['widgets']:
                 if widget['type'] == 'Button':
-                    widget_class = Button(widget['position'],
-                                          widget['dimension'],
+                    widget_class = Button(tuple(widget['position']),
+                                          tuple(widget['dimension']),
                                           path+widget['image'])
                 if widget['type'] == 'Tuner':
-                    widget_class = Tuner(widget['position'],
-                                         widget['dimension'],
+                    widget_class = Tuner(tuple(widget['position']),
+                                         tuple(widget['dimension']),
                                          path+widget['image'])
                 if widget['type'] == 'Shift':
-                    widget_class = Shift(widget['position'],
-                                         widget['dimension'],
+                    widget_class = Shift(tuple(widget['position']),
+                                         tuple(widget['dimension']),
                                          path+widget['image'],
                                          widget['speed'],
                                          widget['attenuation'])
                 if widget['type'] == 'Expand':
-                    widget_class = Expand(widget['position'],
-                                          widget['dimension'],
+                    widget_class = Expand(tuple(widget['position']),
+                                          tuple(widget['dimension']),
                                           path+widget['image'],
                                           widget['speed'],
                                           widget['attenuation'])
                 if widget['type'] == 'Grabbable':
-                    widget_class = Grabbable(widget['position'],
-                                             widget['dimension'],
+                    widget_class = Grabbable(tuple(widget['position']),
+                                             tuple(widget['dimension']),
                                              path+widget['image'])
 
                 slide.append(widget_class)

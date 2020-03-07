@@ -21,7 +21,6 @@ class Controller(object):
     """
     Controller class
     """
-
     def __init__(self, source_path, demo=False):
         """
         Initialize the controller.
@@ -161,6 +160,7 @@ class Controller(object):
         Controlling the grabbable widget.
         """
         tuner_widget.update_value(self.swirl)
+        tuner_widget.rotate_widget()
 
     def update_widgets(self):
         """
@@ -209,22 +209,34 @@ class Controller(object):
         """
         Controlling the View.
         """
-        self.view.show_image(self._windows['v_stream'], self._video.frame)
         if not self.demo:
-            self.view.show_heat_map(self._windows['heatmap'], self.heat_map)
-            self.view.show_canvas(self._windows['framediff'],
-                                  self.frame_diff.canvas)
-            self.view.show_vector_field(self.grid, self.swirl,
-                                        self._windows['vectorfield'],
-                                        self._canvasses['vectorfield'])
-            self.view.show_global_vector_results(self.grid,
-                                                 self._windows['resultplot'],
-                                                 self._canvasses['resultplot'])
-            self.view.show_canvas(self._windows['ocr'], self._ocr.canvas)
-            self.view.show_image(self._windows['ocr-pred'],
-                                 self._ocr.predicted_gest)
-            self.view.show_image(self._windows['grab-im'],
-                                 self._grab.grab_image)
+            for window in self._windows:
+                if window == 'v_stream':
+                    self.view.show_image(self._windows['v_stream'],
+                                         self._video.frame)
+                if window == 'heatmap':
+                    self.view.show_heat_map(self._windows['heatmap'],
+                                            self.heat_map)
+                if window == 'framediff':
+                    self.view.show_canvas(self._windows['framediff'],
+                                          self.frame_diff.canvas)
+                if window == 'vectorfield':
+                    self.view.show_vector_field(self.grid, self.swirl,
+                                                self._windows['vectorfield'],
+                                                self._canvasses['vectorfield'])
+                if window == 'resultplot':
+                    self.view.show_result_plot(self.grid,
+                                               self._windows['resultplot'],
+                                               self._canvasses['resultplot'])
+                if window == 'ocr':
+                    self.view.show_canvas(self._windows['ocr'],
+                                          self._ocr.canvas)
+                if window == 'ocr-pred':
+                    self.view.show_image(self._windows['ocr-pred'],
+                                         self._ocr.predicted_gest)
+                if window == 'grab-im':
+                    self.view.show_image(self._windows['grab-im'],
+                                         self._grab.grab_image)
 
     def main_loop(self):
         """

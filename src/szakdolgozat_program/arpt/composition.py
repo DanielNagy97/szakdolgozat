@@ -18,9 +18,6 @@ class Composition():
         pos_x, pos_y = np.uint16(widget.position)
         width, height = np.uint16(widget.dimension)
 
-        widget.image = cv2.resize(widget.image, (width, height),
-                                  interpolation=cv2.INTER_CUBIC)
-
         added_image = \
             cv2.addWeighted(video.frame[pos_y:pos_y+height,
                                         pos_x:pos_x+width, :],
@@ -41,9 +38,6 @@ class Composition():
         pos_x, pos_y = np.uint16(expand.position)
         width, height = np.uint16(expand.dimension)
         act_h = np.uint16(expand.actual_height)
-
-        expand.image = cv2.resize(expand.image, (width, height),
-                                  interpolation=cv2.INTER_CUBIC)
 
         added_image = \
             cv2.addWeighted(video.frame[pos_y:pos_y+act_h,

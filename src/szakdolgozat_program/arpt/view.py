@@ -90,7 +90,7 @@ class View(object):
                     cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0), 1, cv2.LINE_AA)
         self.show_image(win, resized_heat_map)
 
-    def show_global_vector_results(self, grid, win, canvas):
+    def show_result_plot(self, grid, win, canvas):
         """
         Show the global vector results.
         """
