@@ -237,6 +237,9 @@ class Controller(object):
                 if window == 'grab-im':
                     self.view.show_image(self._windows['grab-im'],
                                          self._grab.grab_image)
+        else:
+            self.view.show_image(self._windows['v_stream'],
+                                 self._video.frame)
 
     def main_loop(self):
         """

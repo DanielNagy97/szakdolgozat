@@ -66,14 +66,14 @@ class HeatMap(object):
             if rect_area >= self.min_area:
                 count += 1
 
-                direction_vectors = np.reshape(grid.direction_vectors,
+                euclidean_vectors = np.reshape(grid.euclidean_vectors,
                                                grid.old_points_3D.shape)
-                local_direction_vector = \
-                    np.mean(direction_vectors[y:y+h, x:x+w].reshape((-1, 2)),
+                local_euclidean_vector = \
+                    np.mean(euclidean_vectors[y:y+h, x:x+w].reshape((-1, 2)),
                             axis=0)
 
-                local_normalized_direction_vector = \
-                    v.get_normalized_vector(local_direction_vector)
+                local_normalized_euclidean_vector = \
+                    v.get_normalized_vector(local_euclidean_vector)
 
                 self._motion_points_roots = \
                     np.append(self._motion_points_roots,
@@ -83,7 +83,7 @@ class HeatMap(object):
 
                 self._motion_points_direction = \
                     np.append(self._motion_points_direction,
-                              np.array([local_normalized_direction_vector]),
+                              np.array([local_normalized_euclidean_vector]),
                               axis=0)
 
                 self._bounding_rects = np.append(self._bounding_rects,

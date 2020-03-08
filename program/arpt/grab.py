@@ -25,11 +25,12 @@ class Grab(object):
         self.j = 0
         self.time = datetime.now().strftime("%Y%m%d_%H%M%S")
         self.dirname = "./src/grab_datas/"+self.time
-        self.lk_params = \
-            dict(winSize=(50, 50),
-                 maxLevel=2,
-                 criteria=(cv2.TERM_CRITERIA_EPS | cv2.TERM_CRITERIA_COUNT,
-                           10, 0.03))
+        self.lk_params = {
+            "winSize": (50, 50),
+            "maxLevel": 2,
+            "criteria": (cv2.TERM_CRITERIA_EPS |
+                         cv2.TERM_CRITERIA_COUNT, 10, 0.03)
+        }
 
     def create_data(self, heat_map, frame_diff_canv, grid):
         """
@@ -70,7 +71,7 @@ class Grab(object):
             image = cv2.resize(image, (16, 16),
                                interpolation=cv2.INTER_AREA)
             self._grab_image = image
-            local_direction_vectors = \
+            local_euclidean_vectors = \
                 np.subtract(grid.new_points_3D[self.y:self.y+self.h,
                                                self.x:self.x+self.w],
                             grid.old_points_3D[self.y:self.y+self.h,
@@ -80,7 +81,7 @@ class Grab(object):
             # Second 50 feature is the direction vectors (25 pair)
             self.data = \
                 np.concatenate((image.flatten(),
-                                local_direction_vectors.flatten()),
+                                local_euclidean_vectors.flatten()),
                                axis=None)
 
     def save_data(self, heat_map):

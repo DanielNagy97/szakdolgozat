@@ -35,11 +35,13 @@ class Grid(object):
         # QUEST: Where has it used?
         self._old_points_3D = self._old_points.reshape(cols, rows, 2)
         self._avg_vector_lengths = []
-        self._global_direction_vectors = np.empty((0, 2), dtype=np.float32)
-        self.lk_params = dict(winSize=(50, 50),
-                              maxLevel=2,
-                              criteria=(cv2.TERM_CRITERIA_EPS |
-                              cv2.TERM_CRITERIA_COUNT, 10, 0.03))
+        self._global_euclidean_vectors = np.empty((0, 2), dtype=np.float32)
+        self.lk_params = {
+            "winSize": (50, 50),
+            "maxLevel": 2,
+            "criteria": (cv2.TERM_CRITERIA_EPS |
+                         cv2.TERM_CRITERIA_COUNT, 10, 0.03)
+        }
 
     def calc_optical_flow(self, video):
         """
@@ -65,31 +67,31 @@ class Grid(object):
         Update the vector lengths.
         Updating the direction vectors.
         """
-        self._direction_vectors = \
+        self._euclidean_vectors = \
             np.subtract(self._new_points, self._old_points)
         self._vector_lengths = \
-            np.sqrt(np.sum(np.power(self._direction_vectors, 2),
+            np.sqrt(np.sum(np.power(self._euclidean_vectors, 2),
                            axis=1))
 
     def calc_global_resultant_vector(self):
         """
         Calculate the global resultant vector.
         """
-        self._global_direction_vector = np.mean(self._direction_vectors,
+        self._global_euclidean_vector = np.mean(self._euclidean_vectors,
                                                 axis=0)
 
         average_vector_length = \
-            v.get_vector_length(self._global_direction_vector)
+            v.get_vector_length(self._global_euclidean_vector)
 
         self._avg_vector_lengths.append(average_vector_length)
         self._avg_vector_lengths = self._avg_vector_lengths[-30:]
 
-        self._global_direction_vectors =\
-            np.append(self._global_direction_vectors,
-                      np.array([self._global_direction_vector],
+        self._global_euclidean_vectors =\
+            np.append(self._global_euclidean_vectors,
+                      np.array([self._global_euclidean_vector],
                                dtype=np.float32),
                       axis=0)
-        self._global_direction_vectors = self._global_direction_vectors[-30:]
+        self._global_euclidean_vectors = self._global_euclidean_vectors[-30:]
 
     @property
     def old_points(self):
@@ -151,25 +153,25 @@ class Grid(object):
         return self._avg_vector_lengths
 
     @property
-    def global_direction_vector(self):
+    def global_euclidean_vector(self):
         """
         Get the global direction vector from the vector field
         :return: np ndarray with two elements
         """
-        return self._global_direction_vector
+        return self._global_euclidean_vector
 
     @property
-    def global_direction_vectors(self):
+    def global_euclidean_vectors(self):
         """
         Get the global direction vectors for the last 30 frame
         :return: np ndarray
         """
-        return self._global_direction_vectors
+        return self._global_euclidean_vectors
 
     @property
-    def direction_vectors(self):
+    def euclidean_vectors(self):
         """
         Get the direction vectors of the vector field
         :return: np ndarray with float values
         """
-        return self._direction_vectors
+        return self._euclidean_vectors

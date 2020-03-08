@@ -177,12 +177,12 @@ class View(object):
 
         cv2.arrowedLine(canvas.canvas,
                         (0+600, 0+120),
-                        (int(grid.global_direction_vector[0]*10) + 600,
-                         int(grid.global_direction_vector[1]*10) + 120),
+                        (int(grid.global_euclidean_vector[0]*10) + 600,
+                         int(grid.global_euclidean_vector[1]*10) + 120),
                         (0, 0, 0),
                         2)
 
-        x_axis, y_axis = np.hsplit(np.multiply(grid.global_direction_vectors,
+        x_axis, y_axis = np.hsplit(np.multiply(grid.global_euclidean_vectors,
                                                10),
                                    2)
 

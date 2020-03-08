@@ -20,11 +20,12 @@ class Button(Widget):
         self._control_position = np.empty((2, ), dtype=np.float32)
         self.about_to_push = False
         self._pushed = False
-        self.lk_params = \
-            dict(winSize=(50, 50),
-                 maxLevel=2,
-                 criteria=(cv2.TERM_CRITERIA_EPS | cv2.TERM_CRITERIA_COUNT,
-                           10, 0.03))
+        self.lk_params = {
+            "winSize": (50, 50),
+            "maxLevel": 2,
+            "criteria": (cv2.TERM_CRITERIA_EPS |
+                         cv2.TERM_CRITERIA_COUNT, 10, 0.03)
+        }
 
     def inspect_button(self, heat_map, grid, video):
         """
