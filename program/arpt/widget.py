@@ -2,6 +2,10 @@ import cv2
 
 
 class Widget(object):
+    """
+    Base class of the widgets
+    """
+
     def __init__(self, position, dimension, image):
         """
         Initialize new widget.
