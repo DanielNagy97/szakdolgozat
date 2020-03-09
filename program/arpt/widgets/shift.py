@@ -36,14 +36,14 @@ class Shift(Widget):
 
         # NOTE: reducing computation time by using the grid's direction vectors
         # Calculating the local resultant vector for the Widget
-        direction_vectors = np.reshape(grid.direction_vectors,
+        euclidean_vectors = np.reshape(grid.euclidean_vectors,
                                        grid.old_points_3D.shape)
-        local_direction_vector = \
-            np.mean(direction_vectors[y:y+h, x:x+w].reshape((-1, 2)),
+        local_euclidean_vector = \
+            np.mean(euclidean_vectors[y:y+h, x:x+w].reshape((-1, 2)),
                     axis=0)
 
         self.velocity = np.add(self.velocity,
-                               np.multiply(local_direction_vector, self.speed))
+                               np.multiply(local_euclidean_vector, self.speed))
 
         self._position = np.add(self._position, self.velocity)
 

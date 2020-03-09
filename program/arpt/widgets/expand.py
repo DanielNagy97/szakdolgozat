@@ -42,12 +42,12 @@ class Expand(Widget):
                       grid.new_points_3D[y:y+h, x:x+w].sum(axis=0)],
                      dtype=np.float32).sum(axis=1)
 
-        local_direction_vector = v.get_direction_vector(local_vector_sum)
+        local_euclidean_vector = v.get_euclidean_vector(local_vector_sum)
 
         vector_count = len(grid.old_points_3D[y:y+h, x:x+w].reshape(-1, 2))
 
         self.velocity = np.add(self.velocity,
-                               np.multiply(np.divide(local_direction_vector[1],
+                               np.multiply(np.divide(local_euclidean_vector[1],
                                                      vector_count),
                                            self.speed))
 
