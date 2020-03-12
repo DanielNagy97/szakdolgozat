@@ -9,7 +9,7 @@ A program használata során a felhasználó különféle virtuális interaktív
 	\item \textbf{Megfogható objektum}: A prezentáló személy egy \textit{Blink} gesztus segítségével megtudja fogni az ilyen tulajdonsággal rendelkező elemeket, majd kívánt új pozíciójába helyezheti azt.
 	\item \textbf{Tologatható elem}: A felhasználó \textit{Shift} gesztus segítségével léphet kapcsolataba az ilyen típusú elemekkel.
 	\item \textbf{Kinyitható elem}: Ezen elemek nyithatóak, zárhatóak.
-	\item \textbf{Tekerhető elem}: Hosszú elem, amelynek csak egy rész látszik (mint a diavetítőnél). A felhasználónak lehetősége van az ablakon keresztül megváltoztatni a megjelenítendő képrészletet.
+	\item \textbf{Tekerhető elem}: Hosszú elem, amelynek csak egy része látszik és egy elképzelt ablakon keresztül láthatjuk a tartalmát. A felhasználónak lehetősége van megváltoztatnia a megjelenítendő képrészletet.
 	\item \textbf{Csúszka, skálán}: Két képből áll össze, segítségével értékeket állíthatunk be.
 	\item \textbf{Tuner}: A \textit{Rotation} gesztussal léphetünk kapcsolatba vele és értékeket állíthatunk be egy meghatározott tartományon.
 \end{itemize} 
@@ -36,8 +36,35 @@ A tologatható elemekkel \textit{Shift} gesztus segítségével léphetünk kapc
 
 \SubSection{Kinyitható elem}
 
+Ezen virtuális elemek megjelenés szempontjából hasonlítanak egy pargamen tekercshez, belső tartalmuk kezdetben rejtett, azonban a felhasználónak lehetősége van kinyitni, megmutatva a belső tartalmát, majd becsukni az adott elemet.
+
+A \textit{Tologatható elemekhez} hasonlóan, \textit{Shift} gesztussal léphetünk kapcsolatba az ilyen tulajdonságokkal ellátott elemekkel, viszont az ilyen típusú elemek mozgása egy bizonyos tengelyre korlátozódik, kezdőpozícióját megtartja és a megjelenítendő képrészlet nagysága változik csupán. Az elemhez definiálnunk kell a \textit{header} szekció méretét, ami az elem minimum méretét fogja megadni. Mivel az elem viselkedését a vektormező adataiból számoljuk, ezért a \textit{header} mérete nem lehet kisebb a rács sűrűségéből számított lépésköznél, hiszen ilykor bizonyos esetekben az elem becsukott állapotban egyetlen kontrollpontot sem fedne le, így a felhasználó nem tudna interakcióba lépni vele.
+Az elem tényleges mérete pedig a teljesen kinyitott állapototára vonatkozik.
+
 \SubSection{Tekerhető elem}
+
+Néhány gondolat a \textit{Tekerhető elemekről}.
 
 \SubSection{Csúszka, skálán}
 
+Néhány gondolat a \textit{Csúszkákról}.
+
 \SubSection{Tuner}
+
+A \textit{Tuner} widget-et működése és megjelenése szempontjából egy potméter gombnak képzelhetjük el. Segítségével a felhasználó különböző értékeket állíthat be.
+Az ilyen típisú widgeteket a \textit{Rotation} gesztus segítségével érhetjük el. Ha a \textit{Rotation} becsült forgási középpontja az adott elem belsejébe esik, az aktiválódik és a gesztus feldolgozása során további információkat figyelembe véve változik meg az állapota. A gesztus adataiból számolhatunk forgási szöget is. Ezt legegyszerűbben az \textit{arctg2} függgvénnyel tehetjük meg, amely segítségével a síkvektorok $y$ és $x$ koordinátáiból meghatározhatjuk az $x$-tengellyel bezárt szögüket.
+\begin{align*}
+		\text{arctg2$(y,x)$} =
+  			\begin{cases}
+    			\text{arctg$\left(\frac{y}{x}\right)$} & \text{, ha $x\geq \vert y \vert$,} \\
+    			\frac{\pi}{2}-\text{arctg$\left(\frac{x}{y}\right)$} & \text{, ha $y\geq \vert x \vert$,}\\
+    			-\frac{\pi}{2}-\text{arctg$\left(\frac{x}{y}\right)$} & \text{, ha $y\leq -\vert x \vert$,}\\
+    			\pi+\text{arctg$\left(\frac{y}{x}\right)$} & \text{, ha $x \leq -y \leq 0$,}\\
+    			-\pi+\text{arctg$\left(\frac{y}{x}\right)$} & \text{, ha $x \leq y \leq 0$}\\
+  			\end{cases}
+\end{align*}
+% forrás? Wiki
+A \textit{Rotation} számolásához a \textit{Hőtérkép} segítségével meghatározott elmozdulásvektorok csoportjait használjuk fel, így a vizsgált vektorokra elvégézhetjük az \textit{arctg2}-t, majd átlagot vonva a kapott értékekből egy átlagos forgási szöget kapunk.
+
+A felhasználó definiálhatja, hogy az egyes ilyen típusú widget-ek értékei milyen tartományon szerepelhetnek, vagyis meg kell határoznia a legkisebb és legnagyobb értéket, amelyet a widget felvehet. Az értékek számítása a forgási szög függvényében történik. A widget élete során kapott elfordulás szögei szummázódnak és a widget értéke ezen szummázott szög alapján számolódik. A szummázott összegre vonatkozik egy olyan megszorítás, hogy értéke, fokokban nézve, nem lehet 0 alatt és 360 fölött. Egy tomptó értéket is be kell vezetnünk, amellyel a szummázás előtt az eredeti szög értékét csökkentjük. Ez az érték tapasztalata alapokon 10, vagyis a tényleges becsült forgási szög tizedét vesszük csak figyelembe a finomabb működés érdekében.
+Megjelenés szempontjából a \textit{Tuner} widget valóban elfordul. A hatás eléréséhez minden iterációban a widget súlypontját és a szummázott szöget felhasználva affin transzormációval elforgatjuk a widget eredeti képét.
