@@ -28,9 +28,11 @@
 
 ---
 
-# Similar Works
+# Related Works
 
 ## Gesture recognition with the help of Kinect
+
+* [Structured dynamic time warping for continuous hand trajectory gesture recognition](https://www.uni-miskolc.hu/~qgenagyd/publication_references/tang2018.pdf)
 
 * [Gesture recognition using microsoft kinect](https://www.uni-miskolc.hu/~qgenagyd/publication_references/biswas2011gesture.pdf)
 
