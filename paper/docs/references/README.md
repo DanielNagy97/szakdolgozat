@@ -1,4 +1,11 @@
 # References
+
+Paper should have among 15-25 references.
+
+70% of them issued after 2000.
+
+50% of references belong to authors that published their papers in ISI journals.
+
 ---
 
 ## OCR
@@ -54,11 +61,16 @@
 
 * [Recognizing movement using motion histograms](https://www.uni-miskolc.hu/~qgenagyd/publication_references/RecognizingMovementusingMotionHistograms.pdf)
 
----
 
-Paper should have among 15-25 references.
+## Articles from ISI journals
 
-70% of them issued after 2000.
+* [A Precise Technique for Hand Gesture Recognition](https://www.uni-miskolc.hu/~qgenagyd/publication_references/A-Precise-Technique-for-Hand-Gesture-Recognition.pdf)
 
-50% of references belong to authors that published their papers in ISI journals.
+* [Robust Mouse Control based on Dynamic Template Matching of Hand Gestures](https://www.uni-miskolc.hu/~qgenagyd/publication_references/Robust-Mouse-Control-based-on-Dynamic-Template.pdf)
+
+* [A Survey on Virtual Reality, Augmented Reality and Mixed Reality Techniques for Liver Surgical Operations and Training](https://www.uni-miskolc.hu/~qgenagyd/publication_references/AR-Liver-Surgical-Operations.pdf)
+
+* [Rotational invariant Real Time Text Recognition](https://www.uni-miskolc.hu/~qgenagyd/publication_references/Rotational-invariant-Real-Time-Text-Recognition.pdf)
+
+* [Measuring Classifier Performance with Risk and Error Matrix Charts](https://www.uni-miskolc.hu/~qgenagyd/publication_references/Measuring-classifier-performance.pdf)
 
