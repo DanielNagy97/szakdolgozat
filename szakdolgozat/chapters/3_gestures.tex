@@ -17,9 +17,30 @@ A szoftver használata közben a prezentáló személy különféle gesztusok se
 
 Az elmozdulás becslésére az ún. \textit{Motion-Flow} technikák tűntek a legalkalmasabbnak. Egy kiemelkedő és széles körben elterjedt eljárás a Bruce D. Lucas és Takeo Kanade által kidolgozott módszer, melynek implementálása az \textit{OpenCV}-ben is megtalálható.
 
-A Lucas-Kanade módszer dedikált pontok követésére hivatott. Ha a videófomlyaból kiemelünk két képkockát, melyek között az eltelt idő kicsi, a módszer képes megbecsülni a két képkockán elhelyezkedő kijelölt pontok pozíciójának a változását, vagyis megadja a pontok elmozdulását. A módszer azon a megállapításon alapszik, hogy a videófolyamon egy kijelölt pont és a körülötte lévő pixelek halmaza közel azonos intenzitású a vizsgált időintervallumban. Ha a ponthoz tartozó valós objektum elmozdul a korábbi helyzetéről és az általa képviselt új pont a vizsgálandó pont bizonyos tartományába esik, akkor a módszer képes becslést adni a pont új helyzetére a videófolyamon. A módszer használatánál feltételezzük azt is, hogy a videófolyamon megfigyelhető mozgás viszonylag lassú, vagyis két képkockát vizsgálva az új pont nem eshet kívül a vizsgált pont tartományából. A módszer tetszőleges pontok halmazára alkalmazható. \cite{lucas1981iterative} 
+A Lucas-Kanade módszer dedikált pontok követésére hivatott. Ha a videófomlyaból kiemelünk két képkockát, melyek között az eltelt idő kicsi, a módszer képes megbecsülni a két képkockán elhelyezkedő kijelölt pontok pozíciójának a változását, vagyis megadja a pontok elmozdulás vektorát. A módszer azon a megállapításon alapszik, hogy a videófolyamon egy kijelölt pont és a körülötte lévő pixelek halmaza közel azonos intenzitású $(I)$ a vizsgált időintervallumban. Ha a ponthoz tartozó valós objektum elmozdul a korábbi helyzetéről és az általa képviselt új pont a vizsgálandó pont bizonyos tartományába esik, akkor a módszer képes becslést adni a pont új helyzetére a videófolyamon. A módszer használatánál feltételezzük azt is, hogy a videófolyamon megfigyelhető mozgás viszonylag lassú, vagyis két képkockát vizsgálva az új pont nem eshet kívül a vizsgált pont tartományából. A módszer tetszőleges pontok halmazára alkalmazható. Elsősorban szürkeárnyalatos képekre használatos, mivel az intenzitás értékek ilyen esetekben jóval konzisztensebbek, de a megfelelő paraméterek megválasztása mellett színes képekre is alkalmazható.  
 
-Az \textit{OpenCV}-ben található implementáció ún. \textit{Gauss képpiramis}-ok használatával próbálja kiküszöbölni a nagy mozdulatok esetén fellépő hibás eredményeket, vagyis a vizsgálandó képeknek különböző felbontású változatait vizsgálja iteratívan a kisebb felbontástól az eredeti felbontásig haladva. A piramis mélysége tetszőleges, a legkisebb szint egyetlen pixelből is állhat. Kis felbontások mellett a nagyobb mozdulatok könnyebben azonosíthatóak, a piramis szélesebb szintjeihez közelítve, nagyobb felbontások mellett pedig a becslés pontosítása történik.
+Vegyünk egy pixelt az összehasonlítandó két képkocka egyikéből és jelöljük $I(x,y,t)$-vel, ahol $x,y \in \mathbb{R}$ a pixel pozíciója, $t$ pedig az idő. A vizsgálandó pixel $(dx, dy)$ távolsággal elmozdul a következő képkockán megfigyelve $dt$ idővel később. Mivel ezek a pixelek ugyanannak a valós objektumnak a vetületei, ezért feltételezzük, hogy az intenzitásértékük nem változott. Így
+\begin{align*}
+I(x,y,t) = I(x+dx,y+dy,t+dt)
+\end{align*}
+Ezután vegyük a jobboldali kifejezés Taylor-sor közelítését, távolítsuk el a közös kifejezéseket, majd osszunk $dt$-vel. Így a következő egyenletet kapjuk:
+\begin{align*}
+f_xu+f_yv+f_t=0
+\end{align*}
+ahol:
+\begin{align*}
+f_x = \frac{\partial f}{\partial x} &; f_y = \frac{\partial f}{\partial y}\\
+u = \frac{dx}{dt} &; v = \frac{dy}{dt}
+\end{align*}
+A fenti egyenlet \textit{Optical Flow egyenlet}nek hívjuk, melyben $f_x$ és $f_y$ kép gradiensek. Hasonlóan, $f_t$ az idő gradiense. De $(u,v)$, vagyis az elmozdulás vektorok ismeretlenek. Ezen kétismeretlenes egyenlet megoldására számos módszer létezik, ezek egyike a \textit{Lucas-Kanade} módszer.
+
+Korábban említettük, hogy a vizsgálandó pont és az őt körülvevő pontok halmazai közel azonos intenzitásértékekkel rendelkeznek a megfigyelés időtartamában. Vegyünk például egy $3 \times 3$-as foltot a vizsgálandó pixel körül. A megállapítás alapján feltételezhetjük, hogy ezen tartományba eső pixelek elmozdulása hasonló lesz. Megkereshetjük az $(f_x,f_y,f_t)$-ket ezekre a pontokra. Így 9 darab kétismeretlenes egyenletet kapunk, amely túlhatározott.
+
+Egy jobb megoldás kapható a \textit{Legkisebb négyzetek módszerének} segítségével. A végső megoldást a következő egyenlettel szemléltethetjük, amely egy két egyeletes-kétismeretlenes probléma:
+\begin{align*}
+\bmatrix u \\ v \endbmatrix = {\bmatrix \sum_{i}(f_{x_i})^2 & \sum_{i}f_{x_i}f_{y_i}\\ \sum_{i}f_{x_i}f_{y_i} & \sum_{i}(f_{y_i})^2 \endbmatrix}^{-1} \cdot \bmatrix -\sum_{i}f_{x_i}f_{t_i} \\ -\sum_{i}f_{y_i}f_{t_i} \endbmatrix
+\end{align*}
+Az \textit{OpenCV}-ben található implementáció ún. \textit{Gauss képpiramis}-ok használatával próbálja kiküszöbölni a nagy mozdulatok esetén fellépő hibás eredményeket, vagyis a vizsgálandó képeknek különböző felbontású változatait vizsgálja iteratívan a kisebb felbontástól az eredeti felbontásig haladva. A piramis mélysége tetszőleges, a legkisebb szint egyetlen pixelből is állhat. Kis felbontások mellett a nagyobb mozdulatok könnyebben azonosíthatóak, a piramis szélesebb szintjeihez közelítve, nagyobb felbontások mellett pedig a becslés pontosítása történik. \cite{lucas1981iterative} \cite{bradski2008learning}
 
 \begin{figure}[h]
 \centering
@@ -27,27 +48,6 @@ Az \textit{OpenCV}-ben található implementáció ún. \textit{Gauss képpirami
 \caption{Gauss piramis}
 \label{fig:gausspyramid}
 \end{figure}
-
-A módszer elsősorban szürkeárnyalatos képekre használatos, mivel az intenzitás értékek ilyen esetekben jóval konzisztensebbek, de a megfelelő paraméterek megválasztása mellett színes képekre is alkalmazható. \cite{bradski2008learning} 
-
-\textit{Flow Motion} működésének a leírása a cikk alapján...\\
-Elmozdulás becslésének módja...\\
-Részletezés képletekkel, ábrákkal...\\
-Néhány képlet az \textit{OpenCV} dokumentációjából kimásolva:
-% https://docs.opencv.org/4.1.1/d4/dee/tutorial_optical_flow.html
-\begin{align*}
-I(x,y,t) = I(x+dx,y+dy,t+dt)
-\end{align*}
-\begin{align*}
-f_xu+f_yv+f_t=0
-\end{align*}
-\begin{align*}
-f_x = \frac{\partial f}{\partial x} &; f_y = \frac{\partial f}{\partial y}\\
-u = \frac{dx}{dt} &; v = \frac{dy}{dt}
-\end{align*}
-\begin{align*}
-\bmatrix u \\ v \endbmatrix = {\bmatrix {\sum_{i}f_{x_i}}^2 & \sum_{i}f_{x_i}f_{y_i}\\ \sum_{i}f_{x_i}f_{y_i} & {\sum_{i}f_{y_i}}^2 \endbmatrix}^{-1} \bmatrix -\sum_{i}f_{x_i}f_{t_i} \\ -\sum_{i}f_{y_i}f_{t_i} \endbmatrix
-\end{align*}
 
 A módszer \textit{Spare Optical-Flow}-t valósít meg, vagyis egymástól különálló pontokat vizsgál, ellentétben a \textit{Dense Optical-Flow} módszerekkel, melyek a teljes kép vizsgálatával számolják ki az elmozdulás vektorokat. \cite{bradski2008learning} Az utóbbi módszerek számításigénye kifejezetten magas. Valós idejű alkalmazás esetén problémákba ütközhetünk gyengébb hardverek esetében. A mozgás valós idejű detektálására a \textit{Spare Optical-Flow} módszerek is kielégítő eredményekkel szolgálnak, néhány trükk alkalmazása mellett. Ilyenek például a már említett \textit{kép-piramisok} használata a gyors mozgások pontos követésére és a vizsgálandó pontok kijelölésének a stratégiája is. A pontok kijelöléséhez egy rácsszerkezet használatát gondoltam a legmegfelelőbbnek, ahol a pontok a rács metszéspontjaiban helyezkednek el. A képtartományt ily módon egyenletesen fedik le a pontok.
 
