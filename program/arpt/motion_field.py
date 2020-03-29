@@ -29,5 +29,22 @@ def calc_optical_flow(prev_image, next_image, grid_resolution):
         for j in range(grid_resolution[1]):
             motion_vectors[i][j][0] = next_points[k][1] - prev_points[k][1]
             motion_vectors[i][j][1] = next_points[k][0] - prev_points[k][0]
+            if np.isnan(motion_vectors[i][j][0]):
+                motion_vectors[i][j][0] = 0.0
+            if np.isnan(motion_vectors[i][j][1]):
+                motion_vectors[i][j][1] = 0.0
             k += 1
     return motion_vectors
+
+
+def calc_lengths(motion_vectors):
+    """
+    Calculate the lengths of the motion vectors.
+    """
+    n_rows, n_columns, _ = motion_vectors.shape
+    lengths = np.empty((n_rows, n_columns), dtype=np.float32)
+    for i in range(n_rows):
+        for j in range(n_columns):
+            dy, dx = motion_vectors[i][j][0], motion_vectors[i][j][1]
+            lengths[i][j] = np.sqrt(dx * dx + dy * dy)
+    return lengths
