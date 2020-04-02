@@ -52,19 +52,7 @@ Néhány gondolat a \textit{Csúszkákról}.
 \SubSection{Tuner}
 
 A \textit{Tuner} widget-et működése és megjelenése szempontjából egy potméter gombnak képzelhetjük el. Segítségével a felhasználó különböző értékeket állíthat be.
-Az ilyen típisú widgeteket a \textit{Rotation} gesztus segítségével érhetjük el. Ha a \textit{Rotation} becsült forgási középpontja az adott elem belsejébe esik, az aktiválódik és a gesztus feldolgozása során további információkat figyelembe véve változik meg az állapota. A gesztus adataiból számolhatunk forgási szöget is. Ezt legegyszerűbben az \textit{arctg2} függgvénnyel tehetjük meg, amely segítségével a síkvektorok $y$ és $x$ koordinátáiból meghatározhatjuk az $x$-tengellyel bezárt szögüket.
-\begin{align*}
-		\text{arctg2$(y,x)$} =
-  			\begin{cases}
-    			\text{arctg$\left(\frac{y}{x}\right)$} & \text{, ha $x\geq \vert y \vert$,} \\
-    			\frac{\pi}{2}-\text{arctg$\left(\frac{x}{y}\right)$} & \text{, ha $y\geq \vert x \vert$,}\\
-    			-\frac{\pi}{2}-\text{arctg$\left(\frac{x}{y}\right)$} & \text{, ha $y\leq -\vert x \vert$,}\\
-    			\pi+\text{arctg$\left(\frac{y}{x}\right)$} & \text{, ha $x \leq -y \leq 0$,}\\
-    			-\pi+\text{arctg$\left(\frac{y}{x}\right)$} & \text{, ha $x \leq y \leq 0$}\\
-  			\end{cases}
-\end{align*}
-% forrás? Wiki
-A \textit{Rotation} számolásához a \textit{Hőtérkép} segítségével meghatározott elmozdulásvektorok csoportjait használjuk fel, így a vizsgált vektorokra elvégézhetjük az \textit{arctg2}-t, majd átlagot vonva a kapott értékekből egy átlagos forgási szöget kapunk.
+Az ilyen típisú widgeteket a \textit{Rotation} gesztus segítségével érhetjük el. Ha a \textit{Rotation} becsült forgási középpontja az adott elem belsejébe esik, az aktiválódik és a gesztus feldolgozása során további információkat figyelembe véve változik meg az állapota.
 
 A felhasználó definiálhatja, hogy az egyes ilyen típusú widget-ek értékei milyen tartományon szerepelhetnek, vagyis meg kell határoznia a legkisebb és legnagyobb értéket, amelyet a widget felvehet. Az értékek számítása a forgási szög függvényében történik. A widget élete során kapott elfordulás szögei szummázódnak és a widget értéke ezen szummázott szög alapján számolódik. A szummázott összegre vonatkozik egy olyan megszorítás, hogy értéke, fokokban nézve, nem lehet 0 alatt és 360 fölött. Egy tomptó értéket is be kell vezetnünk, amellyel a szummázás előtt az eredeti szög értékét csökkentjük. Ez az érték tapasztalata alapokon 10, vagyis a tényleges becsült forgási szög tizedét vesszük csak figyelembe a finomabb működés érdekében.
 Megjelenés szempontjából a \textit{Tuner} widget valóban elfordul. A hatás eléréséhez minden iterációban a widget súlypontját és a szummázott szöget felhasználva affin transzormációval elforgatjuk a widget eredeti képét.
