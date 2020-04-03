@@ -75,11 +75,22 @@ class HeatMap(object):
                 local_normalized_euclidean_vector = \
                     v.get_normalized_vector(local_euclidean_vector)
 
-                self._motion_points_roots = \
-                    np.append(self._motion_points_roots,
-                              np.array([(x + w/2, y + h/2)],
-                                       dtype=np.uint8),
-                              axis=0)
+                m_diff_eps = 4
+                if len(self.motion_points_roots) == 0:
+                    self._motion_points_roots = \
+                        np.append(self._motion_points_roots,
+                                  np.array([(x + w/2, y + h/2)],
+                                           dtype=np.uint8),
+                                  axis=0)
+                else:
+                    x_diff = abs(x+w/2 - self.motion_points_roots[-1][0])
+                    y_diff = abs(y+h/2 - self.motion_points_roots[-1][1])
+                    if x_diff <= m_diff_eps and y_diff <= m_diff_eps:
+                        self._motion_points_roots = \
+                            np.append(self._motion_points_roots,
+                                      np.array([(x + w/2, y + h/2)],
+                                               dtype=np.uint8),
+                                      axis=0)
 
                 self._motion_points_direction = \
                     np.append(self._motion_points_direction,
