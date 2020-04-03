@@ -9,6 +9,7 @@ from arpt.widgets.expand import Expand
 from arpt.widgets.button import Button
 from arpt.widgets.grabbable import Grabbable
 from arpt.widgets.tuner import Tuner
+from arpt.widgets.rollable import Rollable
 
 
 class DataParser(object):
@@ -107,6 +108,13 @@ class DataParser(object):
                     widget_class = Grabbable(tuple(widget['position']),
                                              tuple(widget['dimension']),
                                              path+widget['image'])
+                if widget['type'] == 'Rollable':
+                    widget_class = Rollable(tuple(widget['position']),
+                                            tuple(widget['dimension']),
+                                            path+widget['image'],
+                                            widget['speed'],
+                                            widget['attenuation'],
+                                            tuple(widget['box_dimension']))
 
                 slide.append(widget_class)
             scene.append({'widgets': slide})

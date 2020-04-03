@@ -2,6 +2,19 @@
     {
         "widgets": [
             {
+                "type": "Rollable",
+                "position": [20, 100],
+                "dimension": [400, 1574],
+                "image": "images/rollable.jpg",
+                "speed": 1.8,
+                "attenuation": 0.8,
+                "box_dimension": [400, 200]
+            }
+        ]
+    },
+    {
+        "widgets": [
+            {
                 "type": "Button",
                 "position": [40, 350],
                 "dimension": [100, 100],

@@ -162,6 +162,12 @@ class Controller(object):
         tuner_widget.update_value(self.swirl)
         tuner_widget.rotate_widget()
 
+    def rollable_control(self, rollable_widget):
+        """
+        Controlling the rollable widget.
+        """
+        rollable_widget.calc_roll(self.grid, self._video.dimension)
+
     def update_widgets(self):
         """
         Updating the widgets
@@ -181,6 +187,9 @@ class Controller(object):
 
             if type(widget).__name__ == "Tuner":
                 self.tuner_control(widget)
+
+            if type(widget).__name__ == "Rollable":
+                self.rollable_control(widget)
 
     def composing_output_video(self):
         """
@@ -203,6 +212,9 @@ class Controller(object):
                 self._composition.draw_widget(widget, self._video)
 
             if type(widget).__name__ == "Tuner":
+                self._composition.draw_widget(widget, self._video)
+
+            if type(widget).__name__ == "Rollable":
                 self._composition.draw_widget(widget, self._video)
 
     def view_control(self):
