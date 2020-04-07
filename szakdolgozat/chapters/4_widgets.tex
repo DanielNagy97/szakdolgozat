@@ -7,9 +7,9 @@ A program használata során a felhasználó különféle virtuális interaktív
 \begin{itemize}
 	\item \textbf{Button}: Az egyik legegyszerűbb interaktív elem, egy virtuális nyomógomb, melyet megnyomva egy meghatározott funkciót érhetünk el.
 	\item \textbf{Grabbable}: A prezentáló személy a \textit{Drag and Drop} gesztus-sorozat segítségével megtudja fogni az ilyen tulajdonsággal rendelkező elemeket, majd kívánt új pozíciójába helyezheti azt.
-	\item \textbf{Shiftable}: A felhasználó \textit{Shift} gesztus segítségével léphet kapcsolataba az ilyen típusú elemekkel.
+	\item \textbf{Shiftable}: A felhasználó \textit{Shift} gesztus segítségével léphet kapcsolatba az ilyen típusú elemekkel, a képtartományon belül tologathatja azokat.
 	\item \textbf{Openable}: Ezen elemek nyithatóak, zárhatóak.
-	\item \textbf{Rollable}: Hosszú elem, amelynek csak egy része látszik és egy elképzelt ablakon keresztül láthatjuk a tartalmát. A felhasználónak lehetősége van megváltoztatnia a megjelenítendő képrészletet.
+	\item \textbf{Rollable}: Egy rögzített ablakon keresztül vizsgálhatunk egy hosszú kép részletét. A felhasználónak lehetősége van megváltoztatnia a megjelenítendő képrészletet a virtuális elem görgetésével.
 	\item \textbf{Scale}: Két képből áll össze, segítségével értékeket állíthatunk be.
 	\item \textbf{Tuner}: Virtuális "potméter". A \textit{Rotation} gesztussal léphetünk kapcsolatba vele és értékeket állíthatunk be egy meghatározott tartományon.
 \end{itemize} 
@@ -32,7 +32,7 @@ Hogy az elem véletlenül se lépjen ki a videófolyamból, korlátoznunk kell a
 
 \SubSection{Shiftable}
 
-A tologatható elemekkel \textit{Shift} gesztus segítségével léphetünk kapcsolatba. Az irányukba történő mozgásra megeggyező irányú mozgással reagálnak. Működésére olyan hatás jellemző, mintha az elemet tologathatnánk.
+A tologatható elemekkel \textit{Shift} gesztus segítségével léphetünk kapcsolatba. Az irányukba történő mozgásra megeggyező irányú mozgással reagálnak. Működésére olyan hatás jellemző, mintha az elemet tologatnánk.
 
 \SubSection{Openable}
 
@@ -43,7 +43,18 @@ Az elem tényleges mérete pedig a teljesen kinyitott állapototára vonatkozik.
 
 \SubSection{Rollable}
 
-Néhány gondolat a \textit{Tekerhető elemekről}.
+A \textit{Rollable} virtuális elemek rögzített pozíciójú, fix méretű widgetek.
+
+Működés szempontjából hasonlítanak egy diavetítőre, hiszen a hozzá tartozó nagy méretű képet egy ablakon keresztül szemlélhetjük, a megjelenítendő képrészletet pedig a felhasználó kedve szerint változtathatja, vagyis úgy tűnik, mintha görgetné az adott ablakon található tartalmat.
+
+Az ilyen típusú widgeteket is a \textit{Shift} gesztus segítségével vezérelhetjük. A gesztus végrehajtása során kiszámolódik a megjelenítendő képrészlet \textit{kezdőpozíciója}, ami alapján, az \textit{ablak méretét} figyelembe véve meghatározható az eredeti képből kivágandó képrészlet.
+A helyes működés érdekében a képrészlet kezdőpozíciójának értékét korlátoznunk kell. Az értéke nem lehet nullánál kisebb, illetve nem lehet nagyobb a hozzá tartozó kép magasságának és az ablakméret magasságának különbségénél ($y$ tengelyen görgethető \textit{Rollable} widget esetében).
+\begin{align*}
+	0 \leq \textit{képrészlet kezdőpozíciója} \leq (\textit{képmagasság} - \textit{ablakmagasság})
+\end{align*}
+
+Így elkerülhetők a hibás vágások, illetve megakadályozható a kép kicsúszása az ablakból.
+A megjelenítendő kép
 
 \SubSection{Scale}
 
