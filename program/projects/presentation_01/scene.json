@@ -9,6 +9,13 @@
                 "speed": 1.8,
                 "attenuation": 0.8,
                 "box_dimension": [400, 200]
+            },
+            {
+                "type": "Button",
+                "position": [500, 40],
+                "dimension": [100, 100],
+                "image": "images/button.png",
+                "action": "action01"
             }
         ]
     },
@@ -18,13 +25,14 @@
                 "type": "Button",
                 "position": [40, 350],
                 "dimension": [100, 100],
-                "image": "images/button.png"
+                "image": "images/button.png",
+                "action": "action01"
             },
             {
                 "type": "Grabbable",
-                "position": [360, 90],
-                "dimension": [150, 150],
-                "image": "images/test.png"
+                "position": [200, 90],
+                "dimension": [250, 200],
+                "image": "images/transparent.png"
             },
             {
                 "type": "Tuner",
@@ -40,7 +48,8 @@
                 "type": "Button",
                 "position": [510, 40],
                 "dimension": [100, 100],
-                "image": "images/button.png"
+                "image": "images/button.png",
+                "action": "action01"
             },
             {
                 "type": "Shift",
@@ -75,8 +84,14 @@
                 "position": [140, 50],
                 "dimension": [150, 150],
                 "image": "images/test.png"
+            },
+            {
+                "type": "Button",
+                "position": [40, 350],
+                "dimension": [100, 100],
+                "image": "images/button.png",
+                "action": "action02"
             }
         ]
     }
 ]
-

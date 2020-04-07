@@ -23,7 +23,14 @@ class Expand(Widget):
         self.attenuation = attenuation
         self.velocity = 0.0
         self.min_height = 50
-        self._actual_height = self.min_height
+        self.original_image = self._image
+        self.original_height = self._dimension[1]
+        self._dimension = np.asarray(self._dimension)
+        self._dimension[1] = self.min_height
+        self._image = \
+            self.original_image[self.original_height-self._dimension[1]:
+                                self.original_height,
+                                0:self.dimension[0]].copy()
 
     def calc_expand(self, grid, dimensions_of_frame):
         """
@@ -34,7 +41,7 @@ class Expand(Widget):
         """
         x, y, w, h = np.uint8(np.floor(np.divide((*self._position,
                                                   self._dimension[0],
-                                                  self._actual_height),
+                                                  self._dimension[1]),
                                                  grid.grid_step)))
 
         local_vector_sum = \
@@ -51,18 +58,22 @@ class Expand(Widget):
                                                      vector_count),
                                            self.speed))
 
-        self._actual_height += self.velocity
+        self._dimension[1] += int(self.velocity)
 
         self.velocity = np.multiply(self.velocity, self.attenuation)
 
-        width, height = self._dimension
+        height = self.original_height
 
-        if self._actual_height < self.min_height:
-            self._actual_height = self.min_height
+        if self._dimension[1] < self.min_height:
+            self._dimension[1] = self.min_height
 
-        if self._actual_height > height:
-            self._actual_height = height
+        if self._dimension[1] > height:
+            self._dimension[1] = height
+
+        self._image = \
+            self.original_image[height-self._dimension[1]:height,
+                                0:self.dimension[0]].copy()
 
     @property
     def actual_height(self):
-        return self._actual_height
+        return self._dimension[1]

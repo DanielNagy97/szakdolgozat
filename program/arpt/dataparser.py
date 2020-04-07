@@ -87,7 +87,8 @@ class DataParser(object):
                 if widget['type'] == 'Button':
                     widget_class = Button(tuple(widget['position']),
                                           tuple(widget['dimension']),
-                                          path+widget['image'])
+                                          path+widget['image'],
+                                          widget['action'])
                 if widget['type'] == 'Tuner':
                     widget_class = Tuner(tuple(widget['position']),
                                          tuple(widget['dimension']),

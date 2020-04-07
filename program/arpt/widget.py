@@ -15,7 +15,11 @@ class Widget(object):
         """
         self._position = position
         self._dimension = dimension
-        self._image = cv2.imread(image)
+        if image[-3:] == "png" or image[-3:] == "PNG":
+            self._image = cv2.imread(image, -1)
+        else:
+            self._image = cv2.imread(image)
+
         self._image = cv2.resize(self._image, self._dimension,
                                  interpolation=cv2.INTER_CUBIC)
 

@@ -13,6 +13,8 @@ from arpt.event_handler import Event_handler
 from arpt.grab import Grab
 from arpt.dataparser import DataParser
 
+import importlib.util
+
 # NOTE: Probably it is enought to import only the arpt package.
 # from arpt import *
 
@@ -27,6 +29,12 @@ class Controller(object):
         :param source_path: The path of the project file
         :demo: When True, only the output will be shown
         """
+        module_path = source_path+"actions.py"
+        spec = \
+            importlib.util.spec_from_file_location("module.name", module_path)
+        self.actions = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(self.actions)
+
         self.demo = demo
 
         data_parser = DataParser()
@@ -144,10 +152,8 @@ class Controller(object):
         """
         button_widget.inspect_button(self.heat_map, self.grid, self._video)
 
-        # For test purposes
-        # Pushing the button, will take us to the next "slide"
-        if button_widget._pushed:
-            self.current_scene += 1
+        # Actions from project file codes
+        getattr(self.actions, button_widget.action)(self, button_widget)
 
     def grabbable_control(self, grabbable_widget):
         """
@@ -196,26 +202,7 @@ class Controller(object):
         Controlling the composition of the video.
         """
         for widget in self.scene[self.current_scene]['widgets']:
-            if type(widget).__name__ == "Shift":
-                self._composition.draw_widget(widget, self._video)
-
-            if type(widget).__name__ == "Expand":
-                self._composition.draw_expand(widget, self._video)
-
-            if type(widget).__name__ == "Widget":
-                self._composition.draw_widget(widget, self._video)
-
-            if type(widget).__name__ == "Button":
-                self._composition.draw_widget(widget, self._video)
-
-            if type(widget).__name__ == "Grabbable":
-                self._composition.draw_widget(widget, self._video)
-
-            if type(widget).__name__ == "Tuner":
-                self._composition.draw_widget(widget, self._video)
-
-            if type(widget).__name__ == "Rollable":
-                self._composition.draw_widget(widget, self._video)
+            self._composition.draw_widget(widget, self._video)
 
     def view_control(self):
         """

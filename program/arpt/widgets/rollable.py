@@ -26,6 +26,9 @@ class Rollable(Widget):
         self._top = 0
         self.original_image = self._image
         self._dimension = box_dimension
+        self._image = \
+            self.original_image[self._top:self._top+self._dimension[1],
+                                0:self._dimension[0]].copy()
 
     def calc_roll(self, grid, dimensions_of_frame):
         """

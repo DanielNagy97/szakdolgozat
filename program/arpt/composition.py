@@ -18,14 +18,49 @@ class Composition():
         pos_x, pos_y = np.uint16(widget.position)
         width, height = np.uint16(widget.dimension)
 
-        added_image = \
-            cv2.addWeighted(video.frame[pos_y:pos_y+height,
-                                        pos_x:pos_x+width, :],
-                            0.5, widget.image[0:height, 0:width, :],
-                            1-0, 0)
+        cropped_frame = video.frame[pos_y:pos_y+height,
+                                    pos_x:pos_x+width, :]
+
+        if widget.image.shape[2] == 4:
+
+            # Split out the transparency mask from the colour info
+            overlay_img = widget.image[:, :, :3]   # BRG planes
+            overlay_mask = widget.image[:, :, 3:]  # alpha plane
+
+            # Acalculate the inverse mask
+            background_mask = np.subtract(255, overlay_mask)
+
+            # Turn the masks into three channel, so we can use them as weights
+            overlay_mask = cv2.cvtColor(overlay_mask, cv2.COLOR_GRAY2BGR)
+            background_mask = cv2.cvtColor(background_mask, cv2.COLOR_GRAY2BGR)
+
+            # Create a masked out face image, and masked out overlay
+            # We convert the images to floating point in range 0.0 - 1.0
+            background_part =\
+                np.multiply((np.multiply(cropped_frame,
+                                         (1 / 255.0))),
+                            (np.multiply(background_mask,
+                                         (1 / 255.0))))
+
+            overlay_part =\
+                np.multiply((np.multiply(overlay_img,
+                                         (1 / 255.0))),
+                            (np.multiply(overlay_mask,
+                                         (1 / 255.0))))
+
+            # And finally just add them together
+            # and rescale it back to an 8bit integer image
+            blended = np.uint8(cv2.addWeighted(background_part, 255.0,
+                                               overlay_part, 255.0, 0))
+
+        else:
+            # If the widget image is missing the alpha channel
+            blended = cv2.addWeighted(cropped_frame, 0.5,
+                                      widget.image[0:height, 0:width, :],
+                                      1-0, 0)
 
         video.frame[pos_y:pos_y+height,
-                    pos_x:pos_x+width, :] = added_image
+                    pos_x:pos_x+width, :] = blended
 
     @staticmethod
     def draw_expand(expand, video):
@@ -42,7 +77,7 @@ class Composition():
         added_image = \
             cv2.addWeighted(video.frame[pos_y:pos_y+act_h,
                                         pos_x:pos_x+width, :],
-                            0, expand.image[height-act_h:height, 0:width, :],
+                            0, expand.image,
                             1-0, 0)
 
         video.frame[pos_y:pos_y+act_h,
