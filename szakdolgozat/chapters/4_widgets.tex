@@ -2,7 +2,7 @@
 
 \Section{Widget-ek}
 
-A program használata során a felhasználó különféle virtuális interaktív grafikus elemekkel léphet kapcsolatba, segítségükkel irányíthatja a programot, befolyásolhatja a prezentáció menetét. Az elemek más-más funkcióval rendelkeznek. Megjelenítés szempontjából minden grafikus elem képek segítségével jelenik meg.
+A program használata során a felhasználó különféle virtuális interaktív grafikus elemekkel léphet kapcsolatba, segítségükkel irányíthatja a programot, befolyásolhatja a prezentáció menetét. Az elemek más-más funkcióval rendelkeznek. Megjelenítés szempontjából minden grafikus elem képek segítségével jelenik meg. A következőkben néhány lehetséges widgetet kívánok definiálni, melyek segítségével...
 
 \begin{itemize}
 	\item \textbf{Button}: Az egyik legegyszerűbb interaktív elem, egy virtuális nyomógomb, melyet megnyomva egy meghatározott funkciót érhetünk el.
@@ -10,9 +10,69 @@ A program használata során a felhasználó különféle virtuális interaktív
 	\item \textbf{Shiftable}: A felhasználó \textit{Shift} gesztus segítségével léphet kapcsolatba az ilyen típusú elemekkel, a képtartományon belül tologathatja azokat.
 	\item \textbf{Openable}: Ezen elemek nyithatóak, zárhatóak.
 	\item \textbf{Rollable}: Egy rögzített ablakon keresztül vizsgálhatunk egy hosszú kép részletét. A felhasználónak lehetősége van megváltoztatnia a megjelenítendő képrészletet a virtuális elem görgetésével.
-	\item \textbf{Scale}: Két képből áll össze, segítségével értékeket állíthatunk be.
 	\item \textbf{Tuner}: Virtuális "potméter". A \textit{Rotation} gesztussal léphetünk kapcsolatba vele és értékeket állíthatunk be egy meghatározott tartományon.
-\end{itemize} 
+\end{itemize}
+
+\Section{Képek hozzáadása a videófolyamhoz}
+
+A programban elérhető interaktív grafikus elemek mindegyike képek segítségével jelenik meg. A videófolyam képkockáira az úgynevezett \textit{Alpha blending} technikával helyzehetünk el átlátszóság értékkel képeket. A módszerhez két képre van szükségünk. Esetünkben ezen képek a videófolyam aktuális képkockája és az adott widget képe lesz. Mivel az eljárás egy mátrixművelet, ezért a képeknek hasonló tulajdonságokkal kell rendelkezniük. Egyeznie kell a felbontásnak, és a csatornák számának is. A megjelenítendő widgetek a videófolyam felbontásától különbözni fognak, ezért a videófolyam egy kiragadott képrészletét kell használnunk, hogy a felbontásra vonatkozó megkötés is teljesüljön.
+
+Két esetet különíthetünk el. Az első esetben azt az esetet(?) nézzük, amikor mindkét kép három csatornával rendelkezik, vagyis a három alapszínek intenzitásértékeit tartalmazzák. Ebben az esetben az \textit{Alpha blending} technika segítségével az egyes képek átlátszóságát állíthatjuk. Ha nem szeretnénk ilyen hatást elérni, akkor egyszerűen csak kicserélhetnénk a videófolyam widget területére eső pixeleit a widget pixeleire. De a program kezelése szempontjából indokolt egy kis átlátszóság alkalmazása, hogy a prezentáló személy lássa, hogy a widget mögött mi helyezkedik el.
+
+A módszerhez definiálnunk kell az $\alpha$, $\beta$ és súlyokat és a $\gamma$ értékét.
+\begin{align*}
+	\text{kimenet}_{x,y} = \alpha \cdot \text{kép1}_{x,y} + \beta \cdot \text{kép2}_{x,y} + \gamma
+\end{align*}
+Ha $0<\alpha<1$ és $\beta = 1 - \alpha$ és $\gamma = 0$, akkor a \textit{sztenderd alpha blend egyenletet}\cite{bradski2008learning} kapjuk:
+\begin{align*}
+		\text{kimenet}_{x,y} = \alpha \cdot \text{kép1}_{x,y} + (1-\alpha) \cdot \text{kép2}_{x,y}
+\end{align*}
+Az $\alpha$ súly helyes megválasztásával módosíthatuk a cél képre helyezendő kép átlátszóságánal mértékét.
+
+A második esetben olyan képeket szeretnénk illeszteni, az általánosan háromcsatornás videófolyamra, melyek $\alpha$ csatornával is rendelkeznek, azaz egy egyes pixelek átlátszóságáról is hordoznak információkat. A legelterjettebb ilyen tulajdonsággal rendelkező képformátum a PNG (\textit{Portable Network Graphics}). Hogy az ilyen típusú képeket az \textit{Alpha blending} elvégzéhez előtt a következőképpen kell feldolgoznunk:\\
+Jelöljük a háttérképet $\boldsymbol H$-val, a ráillesztendő 4 csatornás képet pedig $\boldsymbol E$-vel. Feltételezzük, hogy az intenzitásértékek 0 és 255 közötti tartományon vehetnek fel értékeket.
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=6.82truecm, height=3.41truecm]{images/blending_01.png}
+	\caption{Az eredeti képek ($\boldsymbol H$ és  $\boldsymbol E$)}
+	\label{fig:blend01}
+\end{figure}	
+\begin{enumerate}
+	\item Vegyük az $\boldsymbol E$ képet és válaszuk két felé: $\boldsymbol E_{sz}$ (szín) és $\boldsymbol E_\alpha$ ($\alpha$) csatornákra.
+	\item Határozzuk meg a $\boldsymbol E_{\alpha H}$ háttérmaszkot az $\boldsymbol E_\alpha$ inverzével.
+		\begin{align*}
+			\boldsymbol E_{\alpha H} = 255 - \boldsymbol E_\alpha
+		\end{align*}
+		\begin{figure}[h]
+			\centering
+			\includegraphics[width=10.24truecm, height=3.41truecm]{images/blending_02.png}
+			\caption{$\boldsymbol E_{sz}$, $\boldsymbol E_\alpha$, $\boldsymbol E_{\alpha H}$}
+			\label{fig:blend02}
+		\end{figure}	
+	\item Alakítsuk át a $\boldsymbol E_{\alpha H}$ háttérmaszkot és az eredeti $\boldsymbol E_\alpha$ maszkot háromcsatornássá, hogy a következő számításokat el tudjuk végezni.
+	\item Számoljuk ki az összemosandó képeket a maszkok segítségével. Itt áttérünk 0 és 1 közötti intenzitásértékekre.
+		\begin{align*}
+				\boldsymbol H_m &= \left(\frac{\boldsymbol H}{255}\right) \cdot \left(\frac{\boldsymbol E_{\alpha H}}{255}\right)\\
+				\boldsymbol E_m &= \left(\frac{\boldsymbol E}{255}\right) \cdot \left(\frac{\boldsymbol E_\alpha}{255}\right)
+		\end{align*}
+\end{enumerate}
+Az \textit{Alpha blendig}-et pedig ebben az esetben a következőképpen hajtjuk végre:
+\begin{align*}
+	\text{kimenet} = 255 \cdot \boldsymbol H_m + 255 \cdot \boldsymbol E_m
+\end{align*}
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=10.24truecm, height=3.41truecm]{images/blending_03.png}
+	\caption{$\boldsymbol E_m$, $\boldsymbol H_m$ és a kimeneti kép}
+	\label{fig:blend02}
+\end{figure}	
+		
+% Forrás??? Stackoverflow
+% https://stackoverflow.com/questions/36921496/how-to-join-png-with-alpha-transparency-in-a-frame-in-realtime/37198079#37198079
+
+% Képeken keresztül szemléltetni, hogy mi is történik!!!
+
+\Section{Widgetek tulajdonságai}
 
 \SubSection{Button}
 
@@ -55,10 +115,6 @@ A helyes működés érdekében a képrészlet kezdőpozíciójának értékét 
 
 Így elkerülhetők a hibás vágások, illetve megakadályozható a kép kicsúszása az ablakból.
 A megjelenítendő kép
-
-\SubSection{Scale}
-
-Néhány gondolat a \textit{Csúszkákról}.
 
 \SubSection{Tuner}
 
