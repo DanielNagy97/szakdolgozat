@@ -112,7 +112,6 @@ Output paraméter: hőtérkép\\
 \newline
 0 pixel hosszúság esetén az adott indexű elem (255, 0, 0) értéket kap, vagyis kék színnel jelöljük. Ha egy adott vektor számított hőértéke eléri a 255-öt, a hozzá tartozó \textit{hőtérkép-érték} (0, 0, 255) intenzitásértéket kap, vagyis tiszta piros színnel fog megjelenni.
 A \textit{érzékenység} értékkel állíthatjuk be, hogy mely vektorhosszakat vegyen a program figyelembe. Az érték megadja, hogy milyen mértékű legyen a vektorok nagyítása, befolyásolva ezzel a számított \textit{hőértéket}.
-
 \begin{figure}[h]
 \centering
 \includegraphics[width=11.2truecm, height=6.3truecm]{images/HeatMap_screenshot.png}
@@ -127,7 +126,7 @@ A \ref{fig:heatmap} ábrán megfigyelhető, hogy az összetartozó értékek feh
 
 \SubSection{Sweep}
 
-A \textit{Sweep} gesztus két tulajdonsággal írható le: A mozgás irányával és hosszával. A mozgás irányát egy $\vec{v}\in\Bbb R^2$ irányvektorral határozhatunk meg, amelyet a \textit{vektormező} globális eredővektoraként kapunk meg.
+A \textit{Sweep} gesztus két tulajdonsággal írható le: A mozgás irányával és hosszával. A mozgás irányát egy $\vec{v}\in\mathbb{R^2}$ irányvektorral határozhatunk meg, amelyet a \textit{vektormező} globális eredővektoraként kapunk meg.
 \begin{align*}
   \vec{v} = \sum_{i=1}^n\vec{u_i}
 \end{align*}
@@ -237,7 +236,7 @@ A vizsgált vektorokra elvégézhetjük az \textit{arctg2}-t, majd átlagot vonv
 A \textit{Hőtérkép}-et vizsgálva azonosíthatunk és elkülöníthetünk vektorok halmazait egymástól. Az így kapott csoportokat vizsgálva további funkciókat valósíthatunk meg. A több ponttal irányítható funkciók közé tartozhatnak a \textit{Widget}-eken végrehajtható különféle manipulációk, mint például a skálázás is. További komplexebb gesztusok felismeréséhez is felhasználhatnánk a pontok egymáshoz képesti vizsgálatából kapott eredményeket.
 Minden vektorcsoporthoz tartozik egy-egy lokális eredővektorból számított irányvektor, mely a vektorcsoport elmozdulásának irányát mutatja.
 A skálázás műveletéhez két vektorcsoportot feltételezve az alábbi módon vizsgálhatjuk a két pont egymáshoz képesti elmozdulását.
-Irányok esetében $\vec{u},\vec{v}\in \Bbb R^2$ esetén
+Irányok esetében $\vec{u},\vec{v}\in \mathbb{R^2}$ esetén
 \begin{align*}
 \vmatrix \vec{u}+\vec{v} \endvmatrix &< \varepsilon_{\text{irány}}\\
 &\approx \vec{0}

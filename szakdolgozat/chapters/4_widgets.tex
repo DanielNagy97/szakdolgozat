@@ -3,7 +3,6 @@
 \Section{Widget-ek}
 
 A program használata során a felhasználó különféle virtuális interaktív grafikus elemekkel léphet kapcsolatba, segítségükkel irányíthatja a programot, befolyásolhatja a prezentáció menetét. Az elemek más-más funkcióval rendelkeznek. Megjelenítés szempontjából minden grafikus elem képek segítségével jelenik meg. A következőkben néhány lehetséges widgetet kívánok definiálni, melyek segítségével...
-
 \begin{itemize}
 	\item \textbf{Button}: Az egyik legegyszerűbb interaktív elem, egy virtuális nyomógomb, melyet megnyomva egy meghatározott funkciót érhetünk el.
 	\item \textbf{Grabbable}: A prezentáló személy a \textit{Drag and Drop} gesztus-sorozat segítségével megtudja fogni az ilyen tulajdonsággal rendelkező elemeket, majd kívánt új pozíciójába helyezheti azt.
@@ -64,13 +63,11 @@ Az \textit{Alpha blendig}-et pedig ebben az esetben a következőképpen hajtjuk
 	\centering
 	\includegraphics[width=10.24truecm, height=3.41truecm]{images/blending_03.png}
 	\caption{$\boldsymbol E_m$, $\boldsymbol H_m$ és a kimeneti kép}
-	\label{fig:blend02}
+	\label{fig:blend03}
 \end{figure}	
 		
 % Forrás??? Stackoverflow
 % https://stackoverflow.com/questions/36921496/how-to-join-png-with-alpha-transparency-in-a-frame-in-realtime/37198079#37198079
-
-% Képeken keresztül szemléltetni, hogy mi is történik!!!
 
 \Section{Widgetek tulajdonságai}
 
@@ -86,7 +83,7 @@ A véletlen gombnyomás, nem kívánt viselkedés elkerülése érdekében idők
 \SubSection{Grabbable}
 
 A megfogható tulajdonsággal rendelkező objektumokat a felhasználó a képtartományon belül szabadon áthelyezheti kedve szerint. A művelethez egy \textit{Drag and Drop} gesztust-sorozatot kell végrehajtania. A \textit{Blink} gesztus kiadásakor minden esetben számolódik egy pozíció érték, amely a kézfej helyzetét kívánja megbecsülni. Ha ezen pont az elem területére esik, akkor a pontot innentől kezdve vizsgálandó pontnak kell tekintenünk. A pont helyzetének frissítése az \textit{Optical-Flow} technikával történik. Az elem új pozíciója a ponthoz képest módosul, vagyis az elem a felhasználó kézfejét követi.
-Amint elnavigálta a kívánt pozícióba az új elemet a felhasználó, eg újabb \textit{Blink} gesztussal a helyére teheti azt.
+Amint elnavigálta a kívánt pozícióba az új elemet a felhasználó, egy újabb \textit{Blink} gesztussal a helyére teheti azt.
 
 Hogy az elem véletlenül se lépjen ki a videófolyamból, korlátoznunk kell a lehetséges mozgásterét a képtartományra. Vagyis az elem szélei nem mehetnek túl a kép szélein. Ezen megszorítás a többi elemre is vonatkozik.
 
