@@ -6,7 +6,8 @@ class Tuner(Widget):
     """
     Tuner widget representation
     """
-    def __init__(self, position, dimension, image, min_value=0, max_value=100):
+    def __init__(self, position, dimension, image, min_value, max_value,
+                 action):
         """
         Initialize new Tuner widget.
         :param position: position of the element tuple of (x,y)
@@ -16,6 +17,7 @@ class Tuner(Widget):
         :param max_value: Maximum value of the widget
         """
         super().__init__(position, dimension, image)
+        self.action = action
         self.min_value = min_value
         self.max_value = max_value
         self.value = min_value
@@ -41,7 +43,8 @@ class Tuner(Widget):
                         (rot_x < pos_x + width) and
                         rot_y < pos_y + height):
 
-                    self.value += swirl.angles_of_rotation[i]/9
+                    self.value += \
+                        swirl.angles_of_rotation[i]/(360)*(self.max_value/3)
                     if self.value < self.min_value:
                         self.value = self.min_value
                     if self.value > self.max_value:

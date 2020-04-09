@@ -3,50 +3,16 @@
         "widgets": [
             {
                 "type": "Rollable",
-                "position": [20, 100],
-                "dimension": [400, 1574],
+                "position": [320, 20],
+                "dimension": [300, 1574],
                 "image": "images/rollable.jpg",
                 "speed": 1.8,
                 "attenuation": 0.8,
-                "box_dimension": [400, 200]
+                "box_dimension": [300, 200]
             },
             {
                 "type": "Button",
-                "position": [500, 40],
-                "dimension": [100, 100],
-                "image": "images/button.png",
-                "action": "action01"
-            }
-        ]
-    },
-    {
-        "widgets": [
-            {
-                "type": "Button",
-                "position": [40, 350],
-                "dimension": [100, 100],
-                "image": "images/button.png",
-                "action": "action01"
-            },
-            {
-                "type": "Grabbable",
-                "position": [200, 90],
-                "dimension": [250, 200],
-                "image": "images/transparent.png"
-            },
-            {
-                "type": "Tuner",
-                "position": [420, 300],
-                "dimension": [150, 150],
-                "image": "images/tuner.png"
-            }
-        ]
-    },
-    {
-        "widgets": [
-            {
-                "type": "Button",
-                "position": [510, 40],
+                "position": [20, 20],
                 "dimension": [100, 100],
                 "image": "images/button.png",
                 "action": "action01"
@@ -58,7 +24,11 @@
                 "image": "images/test.png",
                 "speed": 1.8,
                 "attenuation": 0.8
-            },
+            }
+        ]
+    },
+    {
+        "widgets": [
             {
                 "type": "Expand",
                 "position": [10, 10],
@@ -66,6 +36,33 @@
                 "image": "images/expand.png",
                 "speed": 1.8,
                 "attenuation": 0.8
+            },
+            {
+                "type": "Button",
+                "position": [40, 350],
+                "dimension": [100, 100],
+                "image": "images/button.png",
+                "action": "action01"
+            }
+        ]
+    },
+    {
+        "widgets": [
+            {
+                "type": "Tuner",
+                "position": [420, 300],
+                "dimension": [150, 150],
+                "image": "images/tuner.png",
+                "min_value": 80,
+                "max_value": 200,
+                "action": "threshold_tuner"
+            },
+            {
+                "type": "Button",
+                "position": [20, 20],
+                "dimension": [100, 100],
+                "image": "images/button.png",
+                "action": "action01"
             }
         ]
     },

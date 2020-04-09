@@ -168,6 +168,8 @@ class Controller(object):
         tuner_widget.update_value(self.swirl)
         tuner_widget.rotate_widget()
 
+        getattr(self.actions, tuner_widget.action)(self, tuner_widget)
+
     def rollable_control(self, rollable_widget):
         """
         Controlling the rollable widget.

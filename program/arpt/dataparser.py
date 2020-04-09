@@ -92,7 +92,10 @@ class DataParser(object):
                 if widget['type'] == 'Tuner':
                     widget_class = Tuner(tuple(widget['position']),
                                          tuple(widget['dimension']),
-                                         path+widget['image'])
+                                         path+widget['image'],
+                                         widget['min_value'],
+                                         widget['max_value'],
+                                         widget['action'])
                 if widget['type'] == 'Shift':
                     widget_class = Shift(tuple(widget['position']),
                                          tuple(widget['dimension']),
