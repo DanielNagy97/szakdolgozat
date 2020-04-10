@@ -118,5 +118,20 @@ A megjelenítendő kép
 A \textit{Tuner} widget-et működése és megjelenése szempontjából egy potméter gombnak képzelhetjük el. Segítségével a felhasználó különböző értékeket állíthat be.
 Az ilyen típisú widgeteket a \textit{Rotation} gesztus segítségével érhetjük el. Ha a \textit{Rotation} becsült forgási középpontja az adott elem belsejébe esik, az aktiválódik és a gesztus feldolgozása során további információkat figyelembe véve változik meg az állapota.
 
-A felhasználó definiálhatja, hogy az egyes ilyen típusú widget-ek értékei milyen tartományon szerepelhetnek, vagyis meg kell határoznia a legkisebb és legnagyobb értéket, amelyet a widget felvehet. Az értékek számítása a forgási szög függvényében történik. A widget élete során kapott elfordulás szögei szummázódnak és a widget értéke ezen szummázott szög alapján számolódik. A szummázott összegre vonatkozik egy olyan megszorítás, hogy értéke, fokokban nézve, nem lehet 0$^{\circ}$ alatt és 360$^{\circ}$ fölött. Egy tomptó értéket is be kell vezetnünk, amellyel a szummázás előtt az eredeti szög értékét csökkentjük. Ez az érték tapasztalata alapokon 10, vagyis a tényleges becsült forgási szög tizedét vesszük csak figyelembe a finomabb működés érdekében.
-Megjelenés szempontjából a \textit{Tuner} widget valóban elfordul. A hatás eléréséhez minden iterációban a widget súlypontját és a szummázott szöget felhasználva affin transzormációval elforgatjuk a widget eredeti képét.
+A felhasználó definiálhatja, hogy az egyes ilyen típusú widget-ek értékei milyen tartományon szerepelhetnek, vagyis meg kell határoznia a legkisebb és legnagyobb értéket, amelyet a widget felvehet. Amennyiben a \textit{Rotation} gesztus becsült forgási szöge a \textit{Tuner} widget területére esik a widget értékét a következőképpen határozhatjuk meg:
+Jelöljük $\alpha$-val a \textit{Rotation} gesztus feldolgozása során kiszámolt forgási szöget, $\boldsymbol V$-vel az aktuális értéket, ($\boldsymbol V_{\max}; \boldsymbol V_{\min}$)-el pedig a felhasználó által definiált maximálisan, illetve minimálisan felvehető értékeket, vagyis $\boldsymbol V_{\min} \leq \boldsymbol V \leq \boldsymbol V_{\max}$.
+\begin{align*}
+	\boldsymbol V = \boldsymbol V + 0.3\left(\boldsymbol V_{\max} - \boldsymbol V_{\min}\right) \cdot \left( \frac{\alpha}{360}\right)
+\end{align*}
+Megjelenés szempontjából a \textit{Tuner} widget valóban elfordul. A hatás eléréséhez meg kell határoznunk a $\gamma$ elfordulás szöget a widget aktuális $\boldsymbol V$ értéke alapján.
+\begin{align*}
+	\gamma = \boldsymbol V \cdot \left(\frac{360}{\boldsymbol V_{\max} - \boldsymbol V_{\min}}\right)
+\end{align*}
+Az így kapott $\gamma$ szög segítségével pedig affin transzormációval elforgatjuk a widget eredeti képét a középpontja körül és az így kapott képet helyezzük el a videófolyamon.\\
+A forgatás a következő mátrixal lehetséges, ahol $\boldsymbol C$ a kép középpontját jelöli \cite{bradski2008learning}:
+\begin{align*}
+	\begin{bmatrix}
+		\cos(\alpha) & \sin(\alpha) & (1-cos(\alpha))\cdot \boldsymbol C_x-\sin(\alpha)\cdot \boldsymbol C_y\\
+		-\sin(\alpha) & \cos(\alpha) & sin(\alpha)\cdot \boldsymbol C_x+(1-cos(\alpha))\cdot \boldsymbol C_y\\
+	\end{bmatrix}
+\end{align*}
