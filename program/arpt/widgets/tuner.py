@@ -43,8 +43,9 @@ class Tuner(Widget):
                         (rot_x < pos_x + width) and
                         rot_y < pos_y + height):
 
-                    self.value += \
-                        swirl.angles_of_rotation[i]/(360)*(self.max_value/3)
+                    self.value += (swirl.angles_of_rotation[i]/(360)
+                                   * ((self.max_value-self.min_value)*0.3))
+
                     if self.value < self.min_value:
                         self.value = self.min_value
                     if self.value > self.max_value:
