@@ -7,7 +7,7 @@ class Tuner(Widget):
     Tuner widget representation
     """
     def __init__(self, position, dimension, image, min_value, max_value,
-                 action):
+                 transparent, action):
         """
         Initialize new Tuner widget.
         :param position: position of the element tuple of (x,y)
@@ -16,7 +16,7 @@ class Tuner(Widget):
         :param min_value: Minimum value of the widget
         :param max_value: Maximum value of the widget
         """
-        super().__init__(position, dimension, image)
+        super().__init__(position, dimension, image, transparent)
         self.action = action
         self.min_value = min_value
         self.max_value = max_value

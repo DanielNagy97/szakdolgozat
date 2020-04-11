@@ -5,14 +5,14 @@ class Grabbable(Widget):
     """
     Grabbable widget representation
     """
-    def __init__(self, position, dimension, image):
+    def __init__(self, position, dimension, image, transparent):
         """
         Initialize new Grabbable widget.
         :param position: position of the element tuple of (x,y)
         :param dimension: dimension of the element tuple of (width, height)
         :param image: source of the image file
         """
-        super().__init__(position, dimension, image)
+        super().__init__(position, dimension, image, transparent)
         self.grabbed = False
         self.offset_x = 0
         self.offset_y = 0

@@ -7,7 +7,8 @@ class Expand(Widget):
     """
     Expand widget representation
     """
-    def __init__(self, position, dimension, image, speed, attenuation):
+    def __init__(self, position, dimension, image, speed, attenuation,
+                 transparent):
         """
         Initialize new expandable widget.
         :param position: position of the element tuple of (x,y)
@@ -18,11 +19,11 @@ class Expand(Widget):
         :param attenuation: attenuation of the element. \
             The value should be smaller than 1 and not negative.
         """
-        super().__init__(position, dimension, image)
+        super().__init__(position, dimension, image, transparent)
         self.speed = speed
         self.attenuation = attenuation
         self.velocity = 0.0
-        self.min_height = 50
+        self.min_height = 100
         self.original_image = self._image
         self.original_height = self._dimension[1]
         self._dimension = np.asarray(self._dimension)
@@ -53,10 +54,14 @@ class Expand(Widget):
 
         vector_count = len(grid.old_points_3D[y:y+h, x:x+w].reshape(-1, 2))
 
-        self.velocity = np.add(self.velocity,
-                               np.multiply(np.divide(local_euclidean_vector[1],
-                                                     vector_count),
-                                           self.speed))
+        if local_euclidean_vector[1] != 0.0:
+            self.velocity = \
+                np.add(self.velocity,
+                       np.multiply(np.divide(local_euclidean_vector[1],
+                                             vector_count),
+                                   self.speed))
+        else:
+            self.velocity = 0
 
         self._dimension[1] += int(self.velocity)
 
@@ -69,6 +74,9 @@ class Expand(Widget):
 
         if self._dimension[1] > height:
             self._dimension[1] = height
+
+        if self._position[1]+self._dimension[1] > dimensions_of_frame[1]:
+            self.dimension[1] = dimensions_of_frame[1]-self._position[1]
 
         self._image = \
             self.original_image[height-self._dimension[1]:height,

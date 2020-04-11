@@ -8,14 +8,14 @@ class Button(Widget):
     """
     Button widget representation
     """
-    def __init__(self, position, dimension, image, action):
+    def __init__(self, position, dimension, image, transparent, action):
         """
         Initialize new button widget.
         :param position: position of the element tuple of (x,y)
         :param dimension: dimension of the element tuple of (width, height)
         :param image: source of the image file
         """
-        super().__init__(position, dimension, image)
+        super().__init__(position, dimension, image, transparent)
         self.action = action
         self._center_point = np.empty((2, ), dtype=np.float32)
         self._control_position = np.empty((2, ), dtype=np.float32)

@@ -43,8 +43,11 @@ class Controller(object):
                                      'preferences/settings.json')
 
         self._video = Video(stgs['video']['source'],
-                            stgs['video']['dimension'],
+                            tuple(stgs['video']['dimension']),
+                            tuple(stgs['video']['resize']),
                             stgs['video']['to_flip'])
+
+        self._transparency = stgs['transparency']
 
         if self.demo:
             self._windows = {'v_stream': Window("v_stream",
@@ -184,19 +187,19 @@ class Controller(object):
             if type(widget).__name__ == "Shift":
                 self.shift_control(widget)
 
-            if type(widget).__name__ == "Expand":
+            elif type(widget).__name__ == "Expand":
                 self.expand_control(widget)
 
-            if type(widget).__name__ == "Button":
+            elif type(widget).__name__ == "Button":
                 self.button_control(widget)
 
-            if type(widget).__name__ == "Grabbable":
+            elif type(widget).__name__ == "Grabbable":
                 self.grabbable_control(widget)
 
-            if type(widget).__name__ == "Tuner":
+            elif type(widget).__name__ == "Tuner":
                 self.tuner_control(widget)
 
-            if type(widget).__name__ == "Rollable":
+            elif type(widget).__name__ == "Rollable":
                 self.rollable_control(widget)
 
     def composing_output_video(self):
@@ -204,7 +207,8 @@ class Controller(object):
         Controlling the composition of the video.
         """
         for widget in self.scene[self.current_scene]['widgets']:
-            self._composition.draw_widget(widget, self._video)
+            self._composition.draw_widget(widget, self._video,
+                                          self._transparency)
 
     def view_control(self):
         """
@@ -215,27 +219,27 @@ class Controller(object):
                 if window == 'v_stream':
                     self.view.show_image(self._windows['v_stream'],
                                          self._video.frame)
-                if window == 'heatmap':
+                elif window == 'heatmap':
                     self.view.show_heat_map(self._windows['heatmap'],
                                             self.heat_map)
-                if window == 'framediff':
+                elif window == 'framediff':
                     self.view.show_canvas(self._windows['framediff'],
                                           self.frame_diff.canvas)
-                if window == 'vectorfield':
+                elif window == 'vectorfield':
                     self.view.show_vector_field(self.grid, self.swirl,
                                                 self._windows['vectorfield'],
                                                 self._canvasses['vectorfield'])
-                if window == 'resultplot':
+                elif window == 'resultplot':
                     self.view.show_result_plot(self.grid,
                                                self._windows['resultplot'],
                                                self._canvasses['resultplot'])
-                if window == 'ocr':
+                elif window == 'ocr':
                     self.view.show_canvas(self._windows['ocr'],
                                           self._ocr.canvas)
-                if window == 'ocr-pred':
+                elif window == 'ocr-pred':
                     self.view.show_image(self._windows['ocr-pred'],
                                          self._ocr.predicted_gest)
-                if window == 'grab-im':
+                elif window == 'grab-im':
                     self.view.show_image(self._windows['grab-im'],
                                          self._grab.grab_image)
         else:

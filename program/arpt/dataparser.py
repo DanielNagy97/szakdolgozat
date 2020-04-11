@@ -4,6 +4,7 @@ import os
 from arpt.canvas import Canvas
 from arpt.window import Window
 
+from arpt.widget import Widget
 from arpt.widgets.shift import Shift
 from arpt.widgets.expand import Expand
 from arpt.widgets.button import Button
@@ -88,37 +89,48 @@ class DataParser(object):
                     widget_class = Button(tuple(widget['position']),
                                           tuple(widget['dimension']),
                                           path+widget['image'],
+                                          widget['transparent'],
                                           widget['action'])
-                if widget['type'] == 'Tuner':
+                elif widget['type'] == 'Tuner':
                     widget_class = Tuner(tuple(widget['position']),
                                          tuple(widget['dimension']),
                                          path+widget['image'],
                                          widget['min_value'],
                                          widget['max_value'],
+                                         widget['transparent'],
                                          widget['action'])
-                if widget['type'] == 'Shift':
+                elif widget['type'] == 'Shift':
                     widget_class = Shift(tuple(widget['position']),
                                          tuple(widget['dimension']),
                                          path+widget['image'],
                                          widget['speed'],
-                                         widget['attenuation'])
-                if widget['type'] == 'Expand':
+                                         widget['attenuation'],
+                                         widget['transparent'])
+                elif widget['type'] == 'Expand':
                     widget_class = Expand(tuple(widget['position']),
                                           tuple(widget['dimension']),
                                           path+widget['image'],
                                           widget['speed'],
-                                          widget['attenuation'])
-                if widget['type'] == 'Grabbable':
+                                          widget['attenuation'],
+                                          widget['transparent'])
+                elif widget['type'] == 'Grabbable':
                     widget_class = Grabbable(tuple(widget['position']),
                                              tuple(widget['dimension']),
-                                             path+widget['image'])
-                if widget['type'] == 'Rollable':
+                                             path+widget['image'],
+                                             widget['transparent'])
+                elif widget['type'] == 'Rollable':
                     widget_class = Rollable(tuple(widget['position']),
                                             tuple(widget['dimension']),
                                             path+widget['image'],
                                             widget['speed'],
                                             widget['attenuation'],
-                                            tuple(widget['box_dimension']))
+                                            tuple(widget['box_dimension']),
+                                            widget['transparent'])
+                elif widget['type'] == 'Widget':
+                    widget_class = Widget(tuple(widget['position']),
+                                          tuple(widget['dimension']),
+                                          path+widget['image'],
+                                          widget['transparent'])
 
                 slide.append(widget_class)
             scene.append({'widgets': slide})

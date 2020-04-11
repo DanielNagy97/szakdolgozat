@@ -6,7 +6,7 @@ class Widget(object):
     Base class of the widgets
     """
 
-    def __init__(self, position, dimension, image):
+    def __init__(self, position, dimension, image, transparent=True):
         """
         Initialize new widget.
         :param position: position of the element tuple of (x,y)
@@ -15,6 +15,7 @@ class Widget(object):
         """
         self._position = position
         self._dimension = dimension
+        self._transparent = transparent
         if image[-3:] == "png" or image[-3:] == "PNG":
             self._image = cv2.imread(image, -1)
         else:
@@ -46,3 +47,7 @@ class Widget(object):
     @image.setter
     def image(self, new_image):
         self._image = new_image
+
+    @property
+    def transparent(self):
+        return self._transparent

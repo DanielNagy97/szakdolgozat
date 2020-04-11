@@ -7,7 +7,8 @@ class Shift(Widget):
     Shift widget representation
     """
 
-    def __init__(self, position, dimension, image, speed, attenuation):
+    def __init__(self, position, dimension, image, speed, attenuation,
+                 transparent):
         """
         Initialize new shift widget.
         :param position: position of the element tuple of (x,y)
@@ -18,7 +19,7 @@ class Shift(Widget):
         :param attenuation: attenuation of the element. \
             The value should be smaller than 1 and not negative.
         """
-        super().__init__(position, dimension, image)
+        super().__init__(position, dimension, image, transparent)
         self.speed = speed
         self.attenuation = attenuation
         self.velocity = [0.0, 0.0]
