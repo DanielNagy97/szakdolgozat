@@ -12,5 +12,5 @@
         "sensitivity": 10,
         "min_area": 7
     },
-    "transparency": 0
+    "transparency": 0.2
 }
