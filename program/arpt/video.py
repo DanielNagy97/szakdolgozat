@@ -7,7 +7,7 @@ class Video(object):
     Class for providing a more convenient access for the video capture device
     """
 
-    def __init__(self, source, dimension, to_flip=False):
+    def __init__(self, source, dimension, resize, to_flip=False):
         """
         Initialize the video
         :param source: index of the device, or file name in string
@@ -16,7 +16,7 @@ class Video(object):
         """
         self._capture = CaptureDevice(source, dimension)
         self._to_flip = to_flip
-        self._dimension = dimension
+        self._dimension = resize
 
         self._ret, self._frame = self._capture.read()
         if self._to_flip:

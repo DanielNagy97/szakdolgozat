@@ -14,7 +14,7 @@ class CaptureDevice(object):
         tuple of (width, height)
         """
         self._camera = cv2.VideoCapture(index)
-        self._dimension = desired_dimension
+        self.dimension = desired_dimension
 
     @property
     def dimension(self):
