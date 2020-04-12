@@ -8,7 +8,7 @@ class Expand(Widget):
     Expand widget representation
     """
     def __init__(self, position, dimension, image, speed, attenuation,
-                 transparent):
+                 header_size, transparent):
         """
         Initialize new expandable widget.
         :param position: position of the element tuple of (x,y)
@@ -23,7 +23,7 @@ class Expand(Widget):
         self.speed = speed
         self.attenuation = attenuation
         self.velocity = 0.0
-        self.min_height = 100
+        self.min_height = header_size
         self.original_image = self._image
         self.original_height = self._dimension[1]
         self._dimension = np.asarray(self._dimension)

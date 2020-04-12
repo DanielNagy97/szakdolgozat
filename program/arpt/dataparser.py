@@ -112,6 +112,7 @@ class DataParser(object):
                                           path+widget['image'],
                                           widget['speed'],
                                           widget['attenuation'],
+                                          widget['header_size'],
                                           widget['transparent'])
                 elif widget['type'] == 'Grabbable':
                     widget_class = Grabbable(tuple(widget['position']),
