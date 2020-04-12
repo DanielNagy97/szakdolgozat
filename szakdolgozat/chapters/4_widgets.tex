@@ -128,7 +128,7 @@ Megjelenés szempontjából a \textit{Tuner} widget valóban elfordul. A hatás 
 	\gamma = \boldsymbol V \cdot \left(\frac{360}{\boldsymbol V_{\max} - \boldsymbol V_{\min}}\right)
 \end{align*}
 Az így kapott $\gamma$ szög segítségével pedig affin transzormációval elforgatjuk a widget eredeti képét a középpontja körül és az így kapott képet helyezzük el a videófolyamon.\\
-A forgatás a következő mátrixal lehetséges, ahol $\boldsymbol C$ a kép középpontját jelöli \cite{bradski2008learning}:
+A forgatás a következő mátrixal lehetséges \cite{bradski2008learning}, ahol $\boldsymbol C \in \mathbb{R}^2$ a kép középpontját jelöli:
 \begin{align*}
 	\begin{bmatrix}
 		\cos(\alpha) & \sin(\alpha) & (1-cos(\alpha))\cdot \boldsymbol C_x-\sin(\alpha)\cdot \boldsymbol C_y\\

@@ -2,6 +2,56 @@
 
 % TODO: Tutorial jelleggel leírni, és bemutatni, hogy hogy lehet használni az alkalmazást.
 
+A program jelenlegi verziójához nincs mellékelve grafikus felülettel ellátott projekt-szerkesztő, viszont a projekt sturktúraszabályait követve létrehozhatunk új prezentáció leíró állományokat.
+
+\bigskip
+
+\dirtree{%
+.1 /presentation\_project01.
+.2 /images.
+.3 button.png.
+.3 tuner.png.
+.3 \ldots.
+.2 /preferences.
+.3 canvasses.json.
+.3 settings.json.
+.3 windows.json.
+.2 scene.json.
+}
+
+\bigskip
+
+\noindent A projekt fájl \textit{JSON} állományokból, képekből és egy \texttt{actions.py} modulból áll, amelyben leírásokat adhatunk a \textit{Button} és a \textit{Tuner} widgetek viselkedésére.
+
+A \texttt{/preferences} jegyzékben pedig általános beállításokra vonatkozó leírásokat adhatunk meg. A \texttt{settings.json}-ben a \textit{videófolyam}, a \textit{Rács} és a \textit{Hőtérkép} paramétereit adhatjuk meg.
+\texttt{canvasses.json}-ben pedig, ha igényt taratunk rá, a \textit{Vektormező} és a \textit{Globális eredővektor grafikon} vásznak tulajdoságait állíthatjuk be.
+\texttt{windows.json}-ben pedig az OpenCV által megjelenítendő ablakokat állíthatjuk be. A prezentációs során csak egy teljesképernyős ablakra van szükségünk, melyben a kimeneti képet láthatjuk. Ha csak az eredmény érdekel bennünket és nem tartunk igényt a program működésének megfigyelésére, akkor az utóbbi két fájl üresen hagyható.
+
+A \textit{DataParser} egység feldolgozza a felhasználó projekt fájlait és a bennük található leírások szerint futtatja a programot.
+
+A \texttt{scene.json} állományban definiálhatjuk az egyes diák tartalmát. Az állomány egy lista, melynek elemei a \textit{JSON} objektummal leírt diák. A jelenlegi verzióban csupán egyetlen mezőt tartalmaznak a diákat leíró objektumok, a \texttt{widgets}-et. Ha később további információkkal szeretnénk ellátni a diákat (például metadatokat, egyéb leírásokat, további funkciókat szeretnénk jelölni), ezen a szinten tehetjük meg. A \texttt{widgets}-en belül pedig a widgetek listáját találjuk. Az egyes widget típusok különféle paraméterekkel rendelkeznek.\\
+Példaként tekintsünk egy egyetlen diával rendelkező \texttt{scene.json} állományt, melyen egyetlen \textit{Tuner} widget helyezkedik el:
+\begin{verbatim}
+[
+    {
+        "widgets": [
+            {
+                "type":      "Tuner",
+                "position":  [420, 300],
+                "dimension": [150, 150],
+                "image":     "images/tuner.png",
+                "min_value": 80,
+                "max_value": 200,
+                "action":    "sample_action"
+            }
+        ]
+    }
+]
+\end{verbatim}
+Jól látható, hogy a widgeteket \textit{JSON} objektumokként írhatjuk le, \texttt{type} mezőben jelöljük a widget típusát, az utána következő mezőkben pedig a widget paramétereinek értékeit adhatjuk meg. Az \texttt{action} mezőben pedig a widget-hez tartozó függvény nevét jelölhetjük, az \texttt{actions.py}-ból.
+
+A következőkben két példa prezentáción keresztül szeretném bemutatni a program használatát, az elkészült állapotok lehetőségeit kihasználva. Az első téma \ldots
+
 \Section{Téma 1}
 
 
