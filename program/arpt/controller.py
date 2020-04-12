@@ -58,8 +58,9 @@ class Controller(object):
                                   cv2.WINDOW_FULLSCREEN)
         else:
             self._windows = data_parser.build_windows_from_pref(source_path)
-            self._canvasses = \
-                data_parser.build_canvasses_from_pref(self._video, source_path)
+
+        self._canvasses = \
+            data_parser.build_canvasses_from_pref(self._video, source_path)
 
         self.grid = Grid(stgs['grid']['gridstep'], self._video.dimension)
         self.frame_diff = FrameDifference(self._video)
@@ -69,7 +70,7 @@ class Controller(object):
                                 stgs['heatmap']['min_area'])
         self.swirl = Swirl()
 
-        self._ocr = Ocr_gesture()
+        self._ocr = Ocr_gesture(self.grid.old_points_3D.shape)
         self._grab = Grab()
 
         self._event = Event_handler()
@@ -227,12 +228,17 @@ class Controller(object):
                                           self.frame_diff.canvas)
                 elif window == 'vectorfield':
                     self.view.show_vector_field(self.grid, self.swirl,
-                                                self._windows['vectorfield'],
                                                 self._canvasses['vectorfield'])
+
+                    self.view.show_canvas(self._windows['vectorfield'],
+                                          self._canvasses['vectorfield'])
+
                 elif window == 'resultplot':
                     self.view.show_result_plot(self.grid,
-                                               self._windows['resultplot'],
                                                self._canvasses['resultplot'])
+
+                    self.view.show_canvas(self._windows['resultplot'],
+                                          self._canvasses['resultplot'])
                 elif window == 'ocr':
                     self.view.show_canvas(self._windows['ocr'],
                                           self._ocr.canvas)

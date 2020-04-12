@@ -20,7 +20,7 @@ class View(object):
         """
         cv2.imshow(win.name, image)
 
-    def show_vector_field(self, grid, swirl, win, canvas, eps=2):
+    def show_vector_field(self, grid, swirl, canvas, eps=2):
         """
         Show the vector field.
         """
@@ -40,7 +40,7 @@ class View(object):
             for point in swirl.points:
                 cv2.circle(canvas.canvas, tuple(point), 10, (0, 0, 255), 5)
 
-        self.show_canvas(win, canvas)
+        # self.show_canvas(win, canvas)
 
     def show_heat_map(self, win, heat_map):
         """
@@ -90,7 +90,7 @@ class View(object):
                     cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0), 1, cv2.LINE_AA)
         self.show_image(win, resized_heat_map)
 
-    def show_result_plot(self, grid, win, canvas):
+    def show_result_plot(self, grid, canvas):
         """
         Show the global vector results.
         """
@@ -295,4 +295,4 @@ class View(object):
                         1,
                         cv2.LINE_AA)
 
-        self.show_canvas(win, canvas)
+        # self.show_canvas(win, canvas)
