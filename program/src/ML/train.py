@@ -5,9 +5,8 @@ import pickle
 import matplotlib.pyplot as plt
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import cross_val_score
-from sklearn.model_selection import cross_val_predict
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import confusion_matrix
+from sklearn.metrics import plot_confusion_matrix
 
 
 class Model(object):
@@ -124,49 +123,23 @@ class Performance(object):
         return scores
 
     @staticmethod
-    def calc_confusion_matrix(clf, X, Y, folding=3):
+    def calc_confusion_matrix(model):
         """
         Calculating confusion matrix
         """
-        y_pred = cross_val_predict(clf, X, Y, cv=3)
-        confusion = confusion_matrix(Y, y_pred)
-        return confusion
+        titles_options = [("Confusion matrix, without normalization", None),
+                          ("Normalized confusion matrix", 'true')]
+        for title, normalize in titles_options:
+            disp = plot_confusion_matrix(model.clf, model.X_test, model.Y_test,
+                                         display_labels=model._labels,
+                                         cmap=plt.cm.Blues,
+                                         normalize=normalize)
+            disp.ax_.set_title(title)
 
-    @staticmethod
-    def normalize_confusion_matrix(conf_mx):
-        """
-        Normalising confusion matrix
-        """
-        row_sums = conf_mx.sum(axis=1, keepdims=True)
-        norm_conf_mx = conf_mx / row_sums
-        np.fill_diagonal(norm_conf_mx, 0)
-        return norm_conf_mx
+            print(title)
+            print(disp.confusion_matrix, "\n")
 
-    @staticmethod
-    def plot_confusion_matrix(confusion_matrix):
-        """
-        Plotting confusion matrix
-        """
-        plt.matshow(confusion_matrix, cmap=plt.cm.gray)
         plt.show()
-
-    @staticmethod
-    def test_prediction(clf, X_test, index=19):
-        """
-        testing prediction on a specified element
-        """
-        some_element = X_test[index]
-
-        some_element_prediction = clf.predict([some_element])
-        some_element_decision = clf.predict_proba([some_element])
-        print(some_element_prediction)
-        print(some_element_decision)
-        while True:
-            cv2.imshow("se", some_element.reshape(11, 15))
-            k = cv2.waitKey(100) & 0xFF
-            if k == 27:
-                break
-        cv2.destroyAllWindows()
 
 
 if __name__ == "__main__":
@@ -183,34 +156,13 @@ if __name__ == "__main__":
     test_score = grab_perf.cross_val_accuracy(grab.clf,
                                               grab.X_test, grab.Y_test)
 
-    train_conf_mx = grab_perf.calc_confusion_matrix(grab.clf,
-                                                    grab.X_train, grab.Y_train)
-    test_conf_mx = grab_perf.calc_confusion_matrix(grab.clf,
-                                                   grab.X_test, grab.Y_test)
-
-    normalized_train_conf_mx = \
-        grab_perf.normalize_confusion_matrix(train_conf_mx)
-    normalized_test_conf_mx = \
-        grab_perf.normalize_confusion_matrix(test_conf_mx)
-
-    # grab_perf.test_prediction(grab.clf, grab.X_test, 2)
-
-    # grab_perf.plot_confusion_matrix(train_conf_mx)
-    # grab_perf.plot_confusion_matrix(test_conf_mx)
-
     print("\n----grab_performance Measures----")
     print("Cross-validation accuracy scores on training data:\n", train_score,
           "\n")
     print("Cross-validation accuracy scores on test data:\n", test_score,
           "\n")
-    print("Confusion matrix for training data:\n", train_conf_mx, "\n")
-    print("Normalized confusion matrix for training data:\n",
-          normalized_train_conf_mx,
-          "\n")
-    print("Confusion matrix for test data:\n", test_conf_mx, "\n")
-    print("Normalized confusion matrix for test data:\n",
-          normalized_test_conf_mx,
-          "\n")
+
+    grab_perf.calc_confusion_matrix(grab)
 
     to_save = input("Save this model? (y/n)")
     if to_save == "y":
@@ -229,32 +181,13 @@ if __name__ == "__main__":
     train_score = perf.cross_val_accuracy(ocr.clf, ocr.X_train, ocr.Y_train)
     test_score = perf.cross_val_accuracy(ocr.clf, ocr.X_test, ocr.Y_test)
 
-    train_conf_mx = perf.calc_confusion_matrix(ocr.clf,
-                                               ocr.X_train, ocr.Y_train)
-    test_conf_mx = perf.calc_confusion_matrix(ocr.clf,
-                                              ocr.X_test, ocr.Y_test)
-
-    normalized_train_conf_mx = perf.normalize_confusion_matrix(train_conf_mx)
-    normalized_test_conf_mx = perf.normalize_confusion_matrix(test_conf_mx)
-
-    perf.test_prediction(ocr.clf, ocr.X_test)
-
-    # perf.plot_confusion_matrix(train_conf_mx)
-    # perf.plot_confusion_matrix(test_conf_mx)
-
     print("\n----Performance Measures----")
     print("Cross-validation accuracy scores on training data:\n", train_score,
           "\n")
     print("Cross-validation accuracy scores on test data:\n", test_score,
           "\n")
-    print("Confusion matrix for training data:\n", train_conf_mx, "\n")
-    print("Normalized confusion matrix for training data:\n",
-          normalized_train_conf_mx,
-          "\n")
-    print("Confusion matrix for test data:\n", test_conf_mx, "\n")
-    print("Normalized confusion matrix for test data:\n",
-          normalized_test_conf_mx,
-          "\n")
+
+    perf.calc_confusion_matrix(ocr)
 
     to_save = input("Save this model? (y/n)")
     if to_save == "y":
