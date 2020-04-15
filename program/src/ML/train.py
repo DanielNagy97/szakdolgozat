@@ -154,12 +154,21 @@ if __name__ == "__main__":
     train_score = grab_perf.cross_val_accuracy(grab.clf,
                                                grab.X_train, grab.Y_train, 5)
     test_score = grab_perf.cross_val_accuracy(grab.clf,
-                                              grab.X_test, grab.Y_test)
+                                              grab.X_test, grab.Y_test, 5)
 
     print("\n----grab_performance Measures----")
     print("Cross-validation accuracy scores on training data:\n", train_score,
           "\n")
+    print("Accuracy: %0.2f (+/- %0.2f)" % (np.mean(train_score),
+                                           np.std(train_score) /
+                                           np.sqrt(len(train_score))),
+          "\n")
+
     print("Cross-validation accuracy scores on test data:\n", test_score,
+          "\n")
+    print("Accuracy: %0.2f (+/- %0.2f)" % (np.mean(test_score),
+                                           np.std(test_score) /
+                                           np.sqrt(len(test_score))),
           "\n")
 
     grab_perf.calc_confusion_matrix(grab)
@@ -179,12 +188,21 @@ if __name__ == "__main__":
 
     perf = Performance()
     train_score = perf.cross_val_accuracy(ocr.clf, ocr.X_train, ocr.Y_train, 5)
-    test_score = perf.cross_val_accuracy(ocr.clf, ocr.X_test, ocr.Y_test)
+    test_score = perf.cross_val_accuracy(ocr.clf, ocr.X_test, ocr.Y_test, 5)
 
     print("\n----Performance Measures----")
     print("Cross-validation accuracy scores on training data:\n", train_score,
           "\n")
+    print("Accuracy: %0.2f (+/- %0.2f)" % (np.mean(train_score),
+                                           np.std(train_score) /
+                                           np.sqrt(len(train_score))),
+          "\n")
+
     print("Cross-validation accuracy scores on test data:\n", test_score,
+          "\n")
+    print("Accuracy: %0.2f (+/- %0.2f)" % (np.mean(test_score),
+                                           np.std(test_score) /
+                                           np.sqrt(len(test_score))),
           "\n")
 
     perf.calc_confusion_matrix(ocr)
