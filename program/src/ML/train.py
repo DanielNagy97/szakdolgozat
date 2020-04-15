@@ -81,7 +81,7 @@ class Model(object):
         self._clf = RandomForestClassifier(**clf_args)
         self._clf.fit(self._X_train, self._Y_train)
 
-    def save_model(self, filename='./trained_models/grab_model.sav'):
+    def save_model(self, filename):
         """
         Saving the model for later use
         :param filename: Name of the file
@@ -119,7 +119,7 @@ class Performance(object):
         """
         scores = cross_val_score(clf,
                                  X, Y,
-                                 cv=3, scoring="accuracy")
+                                 cv=folding, scoring="accuracy")
         return scores
 
     @staticmethod
@@ -152,7 +152,7 @@ if __name__ == "__main__":
 
     grab_perf = Performance()
     train_score = grab_perf.cross_val_accuracy(grab.clf,
-                                               grab.X_train, grab.Y_train)
+                                               grab.X_train, grab.Y_train, 5)
     test_score = grab_perf.cross_val_accuracy(grab.clf,
                                               grab.X_test, grab.Y_test)
 
@@ -166,7 +166,7 @@ if __name__ == "__main__":
 
     to_save = input("Save this model? (y/n)")
     if to_save == "y":
-        grab.save_model()
+        grab.save_model('./trained_models/grab_model.sav')
 
     # ------------
 
@@ -178,7 +178,7 @@ if __name__ == "__main__":
     ocr.train_classifier(classifier_args)
 
     perf = Performance()
-    train_score = perf.cross_val_accuracy(ocr.clf, ocr.X_train, ocr.Y_train)
+    train_score = perf.cross_val_accuracy(ocr.clf, ocr.X_train, ocr.Y_train, 5)
     test_score = perf.cross_val_accuracy(ocr.clf, ocr.X_test, ocr.Y_test)
 
     print("\n----Performance Measures----")
@@ -191,4 +191,4 @@ if __name__ == "__main__":
 
     to_save = input("Save this model? (y/n)")
     if to_save == "y":
-        ocr.save_model()
+        ocr.save_model('./trained_models/ocr_model.sav')
