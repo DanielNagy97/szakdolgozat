@@ -122,44 +122,51 @@ A \textit{érzékenység} értékkel állíthatjuk be, hogy mely vektorhosszakat
 Az így kapott mátrixból ezután különféle információkat nyerhetünk ki. Az intenzitás értékeket vizsgálva meghatározhatjuk a nagyobb elmozdulások csoportjait. Ehhez küszöbölni kell a mátrixot, majd a kapott képen kontúrok keresésével meg lehet állapítani, hogy mely vektorok tartoznak egy csoportba. A csoportokat egy bizonyos intenzitás érték fölött érdemes keresni, vagyis az olyan vektorok összetartozó halmazai lehetnek érdekesek számunkra, amelyekben a vektorok hossza egy bizonyos határt elér. Az esetlegesen előforduló képzajok és az a videófolyamon megfigyelhető egyéb anomáliák miatt, amelyek a vektormező értékeire is hatással lehetnek, meg kell szabnunk a csoportok minimális területét. A megfelelően megválasztott értékek mellett a képzajból származó hibás értékek nem befolyásolják a program működését.
 A \ref{fig:heatmap} ábrán megfigyelhető, hogy az összetartozó értékek fehér kerettel vannak jelölve. Továbbá a csoportok elmozdulásának irányai sárga nyilakkal vannak ábrázolva. A csoportokat külön-külön vizsgálva további értékes információkhoz juthatunk. Ilyen például az egyes csoportok iránya is, amelyet egy lokális eredővektor számításából kaphatunk meg. A csoportokat felhasználhatjuk további funkciók megvalósítására is, mint például a \textit{Többpontos kezelés}, a \textit{Rotation} és a \textit{Symbol}.
 
-\Section{Gépi tanulásos módszerek, teljesítmény mérések}
+\Section{Gépi tanulásos módszerek, teljesítménymérések}
 
-A modell betanításhoz felügyelt tanítási módszert kívánok alkalmazni, \textit{offline} adatkészlettel. Az ilyen típusú tanító módszererek hátrányai közé sorolhatjuk a rugalmatlanságot is, vagyis az alkalmazóképesség hiányát is. Az \textit{online} tanulásos módszerek ezzel ellentétben sokkal jobban alkalmazkodnak, hiszen működés közben a valós világ éppen aktuális jellegzetességeihez igazítják magukat. Az \textit{online} módszerek előnye lehet a kisebb memória igény is, hiszen kevesebb adatmennyiség van jelen a futás során. Ez egyben a módszerek hátrányát is jelenti, mivel könnyen felejtenek az ilyen megoldások és a drasztikus, hirtelen változásokra rosszabbul reagálnak, mint az \textit{offline} megoldások. \cite{geron2019hands}
+A dolgozatom programjához szükséges modellek betanításhoz felügyelt tanítási módszert kívánok alkalmazni, \textit{offline} adatkészletekkel. Az ilyen típusú tanító módszererek hátrányai közé sorolhatjuk a rugalmatlanságot is, vagyis az alkalmazóképesség hiányát is. Az \textit{online} tanulásos módszerek ezzel ellentétben sokkal jobban alkalmazkodnak, hiszen működés közben a valós világ éppen aktuális jellegzetességeihez igazítják magukat. Az \textit{online} módszerek előnye lehet a kisebb memória igény is, hiszen kevesebb adatmennyiség van jelen a futás során. Ez egyben a módszerek hátrányát is jelenti, mivel könnyen felejtenek az ilyen megoldások és a drasztikus, hirtelen változásokra rosszabbul reagálnak, mint az \textit{offline} megoldások. \cite{geron2019hands}
 
 A tanítómintát két részre szokás bontani, tanító adatkészletre és teszt részre. A tanító adatkészletünk a modell tanítására szolgál, míg a teszt adatkészlet segítségével pedig a már betanított modellünk teljesítményét mérhetjük. A teszt adatkészlet elkülönítése azért szükséges, hogy betanítás után olyan adatokkal is tudjuk vizsgálni a modell teljesítményét, melyek nem egyeznek meg a tanítómintával. Így pontosabb eredményeket kaphatunk a teljesítményről, hiszen feltételezhetjük, hogy "élesben" is hasonlóan eredményeket fog szolgáltatni. Fontos a helyes arány megválasztása a felbontásnál, általánosan 70\% tanító és 30\% teszt adat javasolt. \cite{geron2019hands}
 
 Az adatkészlet helyes mennyiségének meghatározása sok tényezőtől függhet, de belátható, hogy minél több adattal rendelkezünk az adott problémáról, annál kevésbé fognak érvényesülni az egyes osztályozó típusok előnyei. \cite{geron2019hands} Az adatok osztályok közti eloszlása is hatással lehet az osztályozó teljesítményére. Javasolt kiegyensúlyozott adatkészlettel dolgozni. Viszont az osztályozó hibáit bizonyos mértékig orvosolhatjuk az egyes osztályokon belül található adatok számának változtatásával. Az osztályozó teljesítményét tovább növelhetjük automatikus paraméterkereséssel, \textit{Grid-Search}-el is, amelyel az optimális paramétereket kívánjuk megtalálni. \cite{koesmarno2019class}
 
-A program működése során felmerülő feladatokhoz a \textit{Random Forest} típusú osztályozót választottam, amely döntési fákat alkalmaz a részminták halmazán, majd átlagolás segítségével hozza meg a döntéseket. Az egyszerre több osztályozó segítségével történő osztályozást \textit{ensemble}, vagyis együttes \cite{geron2019hands} módszereknek nevezzük.
+A program működése során felmerülő feladatokhoz a \textit{Random Forest} típusú osztályozót választottam, amely döntési fákat alkalmaz a részminták halmazán, majd átlagolás segítségével hozza meg a döntéseket. Az egyszerre több osztályozó segítségével történő osztályozást \textit{ensemble} \cite{geron2019hands}, vagyis együttes módszereknek nevezzük.
 
 A betanított modell teljesítményének mérésére két módszert kívánok alkalmazni, a \textit{Cross-Validatiot} és a \textit{Confusion Matrix} ábrázolást.
 
 \SubSection{Cross-Validation}
 
-A \textit{$k$-hajtásos Cross-Validation} technika a tanítómintát $k$ egyenlő részre osztja, majd egy ciklussal végigmegy a $k$-kon: a minta $k-1$ részével tanítja a modellt, majd a maradékon pedig ellenőrzi és kiértékeli a teljesítményét. Így $k$ darab eredményt kapunk, melyet átlagából következtethetéseket vonhatunk le a modell teljesítményéről.
+A \textit{$k$-hajtásos Cross-Validation} technika a mintát $k$ egyenlő részre osztja, majd egy ciklussal végigmegy a $k$-kon: a minta $k-1$ részével tanítja a modellt, majd a maradékon pedig ellenőrzi és kiértékeli a teljesítményét. Így $k$ darab eredményt kapunk, melyet átlagából következtethetéseket vonhatunk le a modell teljesítményéről.
 
 Például a \textit{Symbol}-hoz készített három osztállyal rendelkező 348 elemű adatkészletem 70\%-os (243 db) tanítómintájára, $k=5$ hajtással elvégzett \textit{Cross-Validation} teljesítménymérése a következő:
 \begin{align*}
-	k_1 &= 0.93877551\\
-	k_2 &= 0.97959184\\
-	k_3 &= 0.95918367\\
-	k_4 &= 0.91666667\\
-	k_5 &= 0.97916667\\
-	\bar{k} &= 0.9546768707482993 
+	k_1 &= 0.9388\\
+	k_2 &= 0.9796\\
+	k_3 &= 0.9592\\
+	k_4 &= 0.9167\\
+	k_5 &= 0.9792\\
+	\bar{k} &= 0.9547
 \end{align*}
+Ahol $\bar{k}$ a minta átlaga.\\
+Az eredményekhez érdemes hibát is számolni, majd segítségével konfidencia intervallumot megadni. Legyen például a konfidenciaintervallum 95\%-os és a hibát Standard hibaként tekintsük.
+\begin{align*}
+	\boldsymbol{CI}(95) = m (+/-) 1.96 \cdot \frac{s}{\sqrt[]{n}}
+\end{align*}
+Ahol $m$ a minta átlaga, $s$ a szórás, $n$ pedig a minta darabszáma.\\
+Az eredmények alapján a betanított modellünk $95.47 (+/- 2.12)$\%-os pontossággal rendelkezik, vagyis ennyi valószínűséggel hoz helyes döntéseket. Hogy megvizsgáljuk, hogy mely esetekben téved a modellünk egy másik teljesítménymérő módszer segítségére lesz szükségünk, a \textit{Confusion Matrix} ábrázolásra.
 
-\SubSection{Confusion-Matrix}
+\SubSection{Confusion Matrix}
 
-A teljesítménymérésnek egy másik módja lehet az úgynevezett \textit{Confusion-Matrix} módszer. Segítségével meg lehet figyelni a helyes és hibás döntések eloszlását egy mátrix formájában.\cite{koesmarno2019class}
-A már betanított modellünket a teszt adatkészlettel ellenőriztetjük, majd az eredmények alapján megszerkeszthetjük a mátrixunkat. Két fajta eredmény keletkezhet minden osztályban: Helyes becslés és hibás becslés. Mátrix soraiban az adatkészletben szerepő osztályok találhatók, míg oszlopaiban a becslések. Az áltanános \textit{Confusion-Matrix} főátlójában a helyes becslések eloszlása figyelhető meg. Az átló alatti és feletti részeken pedig a hibás becslések, vagyis a félre osztályozások számai. A mátrixból jól leolvasható, hogy mely osztályokat kever össze az adott modell. A normalizált mátrix csupán arra szolgál, hogy nagy mennyiségű adatok mellett is jól kiolvashatóak legyenek az egyes osztályokra hozott becslések mértékei.
-
-A \textit{Symbol} adatkészletre betanított osztályozóm \textit{Confusion-Matrix}-ai a következők:
 \begin{figure}[h]
 \centering
 \includegraphics[width=\textwidth]{images/confusion_m.png}
-\caption{Confusion-Matrix-ok a \textit{Symbol} adatkészletre}
+\caption{\textit{Confusion Matrix}-ok a \textit{Symbol} adatkészletre}
 \label{fig:confusionm}
 \end{figure}
+
+A teljesítménymérésnek egy másik módja lehet az úgynevezett \textit{Confusion Matrix} módszer. Segítségével meg lehet figyelni a helyes és hibás döntések eloszlását egy mátrix formájában.\cite{koesmarno2019class}
+A már betanított modellünket a teszt adatkészlettel ellenőriztetjük, majd az eredmények alapján megszerkeszthetjük a mátrixunkat. Két fajta eredmény keletkezhet minden osztályban: Helyes becslés és hibás becslés. Mátrix soraiban az adatkészletben szerepő osztályok találhatók, míg oszlopaiban a becslések. Az általános \textit{Confusion Matrix} főátlójában a helyes becslések eloszlása figyelhető meg. Az átló alatti és feletti részeken pedig a hibás becslések, vagyis a félre osztályozások számai. A mátrixból jól leolvasható, hogy mely osztályokat kever össze az adott modell. A normalizált mátrix csupán arra szolgál, hogy nagy mennyiségű adatok mellett is jól kiolvashatóak legyenek az egyes osztályokra hozott becslések mértékei.
+A \ref{fig:confusionm} ábrán megfigyelhető a \textit{Symbol} adatkészletre betanított modell, teszt mintahalmazzal való ellenőzsése \textit{Confusion Matrix} ábrázolással. Megfigyelhető, hogy milyen esetekben hozott hibás döntést a modellünk.
 
 \Section{Kontrollpontok és vektorok számítása}
 

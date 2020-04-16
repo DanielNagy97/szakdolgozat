@@ -2,6 +2,8 @@
 
 % TODO: Tutorial jelleggel leírni, és bemutatni, hogy hogy lehet használni az alkalmazást.
 
+A program felhasználási területe elsősorban 
+
 A program jelenlegi verziójához nincs mellékelve grafikus felülettel ellátott projekt-szerkesztő, viszont a projekt sturktúraszabályait követve létrehozhatunk új prezentáció leíró állományokat.
 
 \bigskip
@@ -36,23 +38,56 @@ Példaként tekintsünk egy egyetlen diával rendelkező \texttt{scene.json} ál
     {
         "widgets": [
             {
-                "type":      "Tuner",
-                "position":  [420, 300],
-                "dimension": [150, 150],
-                "image":     "images/tuner.png",
-                "min_value": 80,
-                "max_value": 200,
-                "action":    "sample_action"
+                "type":        "Tuner",
+                "position":    [420, 300],
+                "dimension":   [150, 150],
+                "image":       "images/tuner.png",
+                "min_value":   80,
+                "max_value":   200,
+                "transparent": true,
+                "action":      "sample_action"
             }
         ]
     }
 ]
 \end{verbatim}
-Jól látható, hogy a widgeteket \textit{JSON} objektumokként írhatjuk le, \texttt{type} mezőben jelöljük a widget típusát, az utána következő mezőkben pedig a widget paramétereinek értékeit adhatjuk meg. Az \texttt{action} mezőben pedig a widget-hez tartozó függvény nevét jelölhetjük, az \texttt{actions.py}-ból.
+Jól látható, hogy a widgeteket \textit{JSON} objektumokként írhatjuk le, \texttt{type} mezőben jelöljük a widget típusát, az utána következő mezőkben pedig a widget paramétereinek értékeit adhatjuk meg. A \texttt{transparent} mezőben jelölhetjük, hogy kívánjuk-e használni a widget képének $\alpha$ csatornáját. Ha \texttt{true} értékkel látjuk el ezt a mezőt, akkor a program $\alpha$ csatornával eggyütt olvasssa be a képet, \texttt{false} esetén pedig csupán csak a három színcsatornára számít. Az $\alpha$ csatornával ellátott widget képek az $\alpha$ értékeiknek megfelelően rajzolódnak ki.
+Az \texttt{action} mezőben pedig a widget-hez tartozó függvény nevét jelölhetjük, az \texttt{actions.py}-ból.
 
-A következőkben két példa prezentáción keresztül szeretném bemutatni a program használatát, az elkészült állapotok lehetőségeit kihasználva. Az első téma \ldots
+A következőkben két példa prezentáción keresztül szeretném bemutatni a program használatát, az elkészült állapotok lehetőségeit kihasználva.
 
-\Section{Téma 1}
+\Section{Képfeldolgozás, OpenCV bemutatása}
 
+Az első példaprezentáció a képfeldolgozás témakör köré épül és bemutatásra kerül az \textit{OpenCV} is. Összeállításánal igyekeztem kihasználni a programom edddig elkészült állapotainak lehetőségeit. A videófolyamon megjelenő widget-ek képeit \textit{PhotoShop CS5} képszerkesztő segítségével szerkesztettem meg. (Ez is egy további fejlesztési irány lehet, hogy saját widget szerkesztőt is lehetne csinálni hozzá). A widgetek paramétereit a fejezet bevezetésében leírtak alapján állítottam be a \texttt{scene.json} állományban. Az állomány nyolc darab objektuma az nyolc darab diát jelöli.
 
-\Section{Téma 2}
+Három fő részre különíthetjük el a diasor szerkezetét:
+\begin{itemize}
+	\item Bevezetés
+	\item Menü
+	\item Befejezés
+\end{itemize}
+Ezen szerkezeti elemek az első három diát jelölik.
+
+Az első dián szereplő \textit{Rollable} widget tartalmazza a bevezetést, amely egy rövid áttekintés, hogy miről is fog szólni a prezentáció. Egy \textit{Shiftable} típusú \textit{OpenCV} logó is helyet kapott itt, illetve egy \textit{Button} típusú widget, melynek a funkciója a léptetés, melynek függvénye az \texttt{actions.py} modulon belül található meg.
+
+A második diát egy menü rendszernek szántam. A csempeszerűen elhelyezkedő widgetek segítségével érhetjuk el rajtuk jelölt funkciókat. A diavetítés így nem lineáris lesz, hiszen szabad sorrendben lefuttathatjuk azokat. Ezen widgetek \textit{Button} típusúak, a hozzájuk tartozó művelet pedig az aktuális diát jelző pointer értékének változtatása a cél helyre. Ezen diák szintén a \texttt{scene.json} elemei, viszont a logiai utolsó, vagyis a sorrendben harmadik dia után helyezkednek el, tehát elérhetetlenek az utolsó diából.\\
+Öt darab dia nyitható meg a csempék segítségével:
+\begin{itemize}
+	\item Digitális képekről
+	\item Alfa csatorna, \textit{Alpha Blending}
+	\item Küszöbölés technika
+	\item Éldetektálás
+	\item Különböző filterek/szűrők bemutatása
+\end{itemize}
+Az menüből elérhető diák tartalma változó, a hozzájuk tartozó témakör kifejtését tartalmazzák. A dinamikus elemekkel ellátott diákon a témakörnek megfelelően elhelyzetem olyan vezérlőket, melyekkel manipulálhatjuk a kimeneti videófolyamot a témakörök szemléletesebb bemutatása érdekében.
+Például a Küszöbölés technikát bemutató dián a funkciót aktiváló \textit{Button} megnyomása esetén a videófolyamon a \textit{Tuner} értékeinek megfelelően végrehajtódik a küszöbölés művelete. A \textit{Tuner} segítségével állíthatjuk a küszöb alsó határát, az eljárás szemléltetése érdekében.
+Az éldetektálással és \textit{Alpha Blending} technikákkal foglalkozó fóliákon szintén hasonlóan demonstrálhatjuk a technikák működését, \textit{Tuner} widget segítségével értékeket állítva.
+A Digitális képekről és a filterekkel foglalkozó fóliákon pedig \textit{Button}-ok segítségével érhetünk el funkciókat.
+A módszereket bemutató diák mindegyikén elhelyezkedik egy \textit{Button} is, amellyel a Menübe léphetünk vissza.
+
+A menüből pedig szintén egy \textit{Button} segítségével léphetünk tovább a logikailag utolsó diára, ahol egy \textit{Expandable} widget segítségével foglalhatjuk össze a prezentációnkat és köszönhetjük meg a figyelmet.
+
+\Section{Dolgozat bemutatása}
+
+A második példaprezentáció segítségével a dolgozatomat szeretném bemutatni.
+A prezentáció során a videófolyam az általános widgetek mellett valós idejú ábrákkal is kiegészül, melyeket egyébként a program fejlesztői módú futása során láthatnánk. Ilyenek a \textit{Frame Difference}, \textit{Grab}, \textit{Vektormező}, stb\ldots ábrák. Ezen ábrák segítségével\ldots
