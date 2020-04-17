@@ -62,8 +62,24 @@
             },
             {
                 "type": "Button",
-                "position": [30, 380],
-                "dimension": [150, 100],
+                "position": [510, 20],
+                "dimension": [200, 150],
+                "image": "images/placeholder.png",
+                "transparent": false,
+                "action": "canny_slide"
+            },
+            {
+                "type": "Button",
+                "position": [510, 190],
+                "dimension": [200, 150],
+                "image": "images/placeholder.png",
+                "transparent": false,
+                "action": "filter_slide"
+            },
+            {
+                "type": "Button",
+                "position": [30, 360],
+                "dimension": [180, 120],
                 "image": "images/placeholder.png",
                 "transparent": true,
                 "action": "next_slide"
@@ -71,7 +87,7 @@
             {
                 "type": "Button",
                 "position": [30, 40],
-                "dimension": [150, 100],
+                "dimension": [180, 120],
                 "image": "images/placeholder.png",
                 "transparent": true,
                 "action": "prew_slide"
@@ -94,7 +110,7 @@
             {
                 "type": "Button",
                 "position": [30, 40],
-                "dimension": [150, 100],
+                "dimension": [180, 120],
                 "image": "images/placeholder.png",
                 "transparent": true,
                 "action": "prew_slide"
@@ -132,7 +148,7 @@
             {
                 "type": "Button",
                 "position": [30, 40],
-                "dimension": [150, 100],
+                "dimension": [180, 120],
                 "image": "images/placeholder.png",
                 "transparent": true,
                 "action": "go_back_to_menu"
@@ -161,7 +177,7 @@
             {
                 "type": "Button",
                 "position": [30, 40],
-                "dimension": [150, 100],
+                "dimension": [180, 120],
                 "image": "images/placeholder.png",
                 "transparent": true,
                 "action": "go_back_to_menu"
@@ -199,10 +215,140 @@
             {
                 "type": "Button",
                 "position": [30, 40],
-                "dimension": [150, 100],
+                "dimension": [180, 120],
                 "image": "images/placeholder.png",
                 "transparent": true,
                 "action": "go_back_to_menu"
+            }
+        ]
+    },
+    {
+        "__title": "Canny",
+        "widgets": [
+            {
+                "type": "Tuner",
+                "position": [600, 100],
+                "dimension": [180, 180],
+                "image": "images/placeholder.png",
+                "min_value": 0,
+                "max_value": 100,
+                "transparent": true,
+                "action": "edge_tuner"
+            },
+            {
+                "type": "Button",
+                "position": [30, 300],
+                "dimension": [150, 150],
+                "image": "images/placeholder.png",
+                "transparent": true,
+                "action": "toggle_edge"
+            },
+            {
+                "type": "Widget",
+                "position": [610, 460],
+                "dimension": [350, 80],
+                "image": "images/placeholder.png",
+                "transparent": false
+            },
+            {
+                "type": "Button",
+                "position": [30, 40],
+                "dimension": [180, 120],
+                "image": "images/placeholder.png",
+                "transparent": true,
+                "action": "go_back_to_menu"
+            }
+        ]
+    },
+    {
+        "__title": "Filters, ez is egy újabb szintetnyit majd meg",
+        "widgets": [
+            {
+                "type": "Button",
+                "position": [510, 20],
+                "dimension": [200, 150],
+                "image": "images/placeholder.png",
+                "transparent": false,
+                "action": "filter1_slide"
+            },
+            {
+                "type": "Button",
+                "position": [730, 20],
+                "dimension": [200, 150],
+                "image": "images/placeholder.png",
+                "transparent": false,
+                "action": "filter2_slide"
+            },
+            {
+                "type": "Widget",
+                "position": [610, 460],
+                "dimension": [350, 80],
+                "image": "images/placeholder.png",
+                "transparent": false
+            },
+            {
+                "type": "Button",
+                "position": [30, 40],
+                "dimension": [180, 120],
+                "image": "images/placeholder.png",
+                "transparent": true,
+                "action": "go_back_to_menu"
+            }
+        ]
+    },
+    {
+        "__title": "Filter1",
+        "widgets": [
+            {
+                "type": "Button",
+                "position": [660, 20],
+                "dimension": [200, 150],
+                "image": "images/placeholder.png",
+                "transparent": false,
+                "action": "placeholder"
+            },
+            {
+                "type": "Widget",
+                "position": [610, 180],
+                "dimension": [350, 360],
+                "image": "images/placeholder.png",
+                "transparent": false
+            },
+            {
+                "type": "Button",
+                "position": [30, 40],
+                "dimension": [180, 120],
+                "image": "images/placeholder.png",
+                "transparent": true,
+                "action": "filter_slide"
+            }
+        ]
+    },
+    {
+        "__title": "Filter2",
+        "widgets": [
+            {
+                "type": "Button",
+                "position": [660, 20],
+                "dimension": [200, 150],
+                "image": "images/placeholder.png",
+                "transparent": false,
+                "action": "placeholder"
+            },
+            {
+                "type": "Widget",
+                "position": [0, 180],
+                "dimension": [350, 360],
+                "image": "images/placeholder.png",
+                "transparent": false
+            },
+            {
+                "type": "Button",
+                "position": [30, 40],
+                "dimension": [180, 120],
+                "image": "images/placeholder.png",
+                "transparent": true,
+                "action": "filter_slide"
             }
         ]
     }

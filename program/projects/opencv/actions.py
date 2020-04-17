@@ -42,6 +42,30 @@ def threshold_slide(controller, button_widget):
         button_widget._pushed = False
 
 
+def canny_slide(controller, button_widget):
+    if button_widget._pushed:
+        controller.current_scene = 6
+        button_widget._pushed = False
+
+
+def filter_slide(controller, button_widget):
+    if button_widget._pushed:
+        controller.current_scene = 7
+        button_widget._pushed = False
+
+
+def filter1_slide(controller, button_widget):
+    if button_widget._pushed:
+        controller.current_scene = 8
+        button_widget._pushed = False
+
+
+def filter2_slide(controller, button_widget):
+    if button_widget._pushed:
+        controller.current_scene = 9
+        button_widget._pushed = False
+
+
 to_treshold = False
 
 
@@ -111,8 +135,8 @@ def alpha_tuner(controller, tuner_widget):
         value = tuner_widget.value
         controller._transparency = value
         cv2.putText(controller._video.frame,
-                    "Alfa: " + str(format(value, '.2f')),
-                    (100, 100),
+                    "Opacity: " + str(format(value, '.2f')),
+                    (200, 100),
                     cv2.FONT_HERSHEY_TRIPLEX, 2, 255)
 
 
@@ -121,3 +145,23 @@ def toggle_alpha(controller, button_widget):
     if button_widget._pushed:
         to_alpha = not to_alpha
         button_widget._pushed = False
+
+
+to_edge = False
+
+
+def toggle_edge(controller, button_widget):
+    global to_edge
+    if button_widget._pushed:
+        to_edge = not to_edge
+        button_widget._pushed = False
+
+
+def edge_tuner(controller, tuner_widget):
+    global to_edge
+
+    if to_edge:
+        value = tuner_widget.value
+        threshold = cv2.Canny(controller._video.gray_frame, value, 120)
+        threshold = cv2.cvtColor(threshold, cv2.COLOR_GRAY2BGR)
+        controller._video.frame = threshold
