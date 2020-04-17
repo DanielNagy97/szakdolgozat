@@ -78,16 +78,53 @@ A második diát egy menü rendszernek szántam. A csempeszerűen elhelyezkedő 
 	\item Küszöbölés technika
 	\item Éldetektálás
 	\item Különböző filterek/szűrők bemutatása
+	\begin{itemize}
+		\item Szűrő 1
+		\item Szűrő 2
+	\end{itemize}
 \end{itemize}
 Az menüből elérhető diák tartalma változó, a hozzájuk tartozó témakör kifejtését tartalmazzák. A dinamikus elemekkel ellátott diákon a témakörnek megfelelően elhelyzetem olyan vezérlőket, melyekkel manipulálhatjuk a kimeneti videófolyamot a témakörök szemléletesebb bemutatása érdekében.
 Például a Küszöbölés technikát bemutató dián a funkciót aktiváló \textit{Button} megnyomása esetén a videófolyamon a \textit{Tuner} értékeinek megfelelően végrehajtódik a küszöbölés művelete. A \textit{Tuner} segítségével állíthatjuk a küszöb alsó határát, az eljárás szemléltetése érdekében.
 Az éldetektálással és \textit{Alpha Blending} technikákkal foglalkozó fóliákon szintén hasonlóan demonstrálhatjuk a technikák működését, \textit{Tuner} widget segítségével értékeket állítva.
-A Digitális képekről és a filterekkel foglalkozó fóliákon pedig \textit{Button}-ok segítségével érhetünk el funkciókat.
-A módszereket bemutató diák mindegyikén elhelyezkedik egy \textit{Button} is, amellyel a Menübe léphetünk vissza.
+A filtereket bemutató fólia szintén egy menürendszer, melyen két \textit{Button} segítségével érhetejük el a kívánt fóliákat. Az innen elért fóliákból egy \textit{Button} segítségével léphetünk egy szintet vissza.
+A módszereket bemutató diák mindegyikén elhelyezkedik egy-egy \textit{Button} is, amellyel a Menübe léphetünk vissza.
 
 A menüből pedig szintén egy \textit{Button} segítségével léphetünk tovább a logikailag utolsó diára, ahol egy \textit{Expandable} widget segítségével foglalhatjuk össze a prezentációnkat és köszönhetjük meg a figyelmet.
 
 \Section{Dolgozat bemutatása}
 
 A második példaprezentáció segítségével a dolgozatomat szeretném bemutatni.
-A prezentáció során a videófolyam az általános widgetek mellett valós idejú ábrákkal is kiegészül, melyeket egyébként a program fejlesztői módú futása során láthatnánk. Ilyenek a \textit{Frame Difference}, \textit{Grab}, \textit{Vektormező}, stb\ldots ábrák. Ezen ábrák segítségével\ldots
+A prezentáció során a videófolyam az általános widgetek mellett valós időben frissülő ábrákkal is kiegészül, melyeket egyébként a program fejlesztői módú futása során láthatnánk. Ilyenek a \textit{Frame Difference}, \textit{Grab}, \textit{Vektormező}, stb\ldots ábrák. A folyton frissülő ábrák segítségével a dolgozat kulcs elemeit szemléletesebben bemutathatjuk.
+
+A prezentációban a dolgozatomban tárgyalt főbb elemek kerülnek említésre. A fejezetek szerint haladva kerül bemutatásra a témakör és a dolgozat anyaga.
+
+Az első példaprezentációban használt menürendszeres megoldást ennél is szeretném alkalmazni a prezentációk megszokott linearitását megtörve. Természetesen a prezentáció ajánlott menete így is lineáris marad, ez a fajta öszzeállítása az előadásnak csupán azért szükséges, hogy a logikailag egybefüggő részek még jobban elkülönüljenek egymástól. A fő fóliákból további alfóliák érhetők majd el. Nem célom labirintusszerűen felépíteni az előadást, hogy a prezentáló személy se tudjon kiigazodni a saját előadásában, így a lehetséges mélységi szintet minimalizálni fogom.
+
+A prezentáció fő szerkezeti elemei a következők:
+\begin{itemize}
+	\item Bevezetés
+	\item Koncepció
+	\item Gesztusok
+	\item Példa prezentációk
+	\item Összegzés, befejezés
+\end{itemize}
+A szerkezeti elemek követik a dolgozat felépítését\ldots
+
+Bevezetés
+
+Koncepció
+	AR, Prezik, OpenCV, Sklearn részletezése
+
+Gesztusok
+	Objektumkövetés
+	rács
+		ezen belül az ehhez tartozó funkciók
+	hőtérkép
+		az ehhez kapcsolódó megoldások
+	gépi tanulásos módszerek
+	
+Példa prezentációk
+	Opencv-s
+	Dolgozatos-s - itt vissza ugrás a bevezetésre, ahonnan a következő diában a főmenübe kerülünk, szóval nem kell végigkattingatni
+
+Összefoglalás
