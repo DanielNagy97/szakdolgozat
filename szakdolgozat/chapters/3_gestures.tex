@@ -178,19 +178,14 @@ A \textit{Sweep} gesztus két tulajdonsággal írható le: A mozgás irányával
 \end{align*}
 , ahol $\vec{u}$ a teljes képre vett vektormező vektorai.\\
 A mozgás hossza a vektormező vektorainak átlagos hosszában mérhető és pixelszámban fejezhető ki.
-\begin{align*}
-  \overline{x}=\frac{\sum_{i=1}^n \left|\vec{v_i}\right|}{n}
-\end{align*}
-, ahol $n$ a vektormező vektorainak a száma.
-
 \begin{figure}[h]
 \centering
-\frame{\includegraphics[width=11.86truecm, height=5truecm]{images/ResultantPlot_screenshot.png}}
+\frame{\includegraphics[width=8.0truecm]{images/ResultantPlot_screenshot.png}}
 \caption{Képernyőfotó a globális eredővektor grafikonjáról}
 \label{fig:resultantplot}
 \end{figure}
 
-Az ábrán megfigyelhető a globális eredő vektor hosszainak változása egy 30 képkockás \textit{csúszóablakban} és az éppen aktuális irányvektor is.
+Az ábrán megfigyelhető a globális eredő vektor hosszainak változása egy 30 képkockás \textit{csúszóablakban} és az éppen aktuális irányvektor is, valamint az $x$ és $y$ tengelyen megfigyelhető mozgások változásai is.
 
 \SubSection{Shift}
 
@@ -327,6 +322,13 @@ A vászon frissítése két módszerrel történik. Az elmozdulás értékek egy
 A felismerés pillanatát feltételekhez kell kötnünk. A mozdulat rajzolatának végső formája akkor alakul ki, amikor a felhasználó befejezte az adott mozdulatot. Ilyen esetben a videófolyamon nem figyelhető meg további mozgás. Az időzítés egyik feltétele mindenképpen a mozgás hiányának kell lennie. Ez többféleképpen is megfigyelhető, vizsgálhatjuk a globális eredővektorunkat is, vagy a \textit{Hőtérkép} segítségével meghatározott csoportok számát is figyelembe vehetjük. Mivel a mintázat rajzolásához is a vektorok összetartozó csoportját használtuk fel, az időzítés egyik feltételének a vektorcsoportok hiányát szabhatjuk meg. Egy másik feltétel a rajzolat aktuális állapotára vonatkozhat. Figyelembe vehetjük a vonalhosszat is, vagyis egy bizonyos vonalhossz alatt nem végeznénk el az osztályozási becslést. Ezen két feltétel biztosítja, hogy az osztályozási művelet végrehajtása a megfelelő pillanatban történjen, elkerülve a felesleges számításokat, hibás becsléseket.
 
 Mielőtt a gesztust reprezentáló képről döntene a modellünk, egy előfeldolgozási lépést kell végrehajtanunk rajta. A gesztus képe nem fogja betölteni a teljes vásznat, így sok felesleges értéket fogtartalmazni. Ennek kiküszöbölésére ki kell vágnunk a gesztus rajzolt képét és egy előre meghatározott felbontásra kell konvertálnunk. Tapasztalati alapokon a 15 $\times$ 11 -es felbontás megfelelőnek tűnik, így minden egyes kivágott képet ilyen felbontásra kell alakítanunk. Ezen előfeldolgozási lépés elősegíti, hogy a betanított modellunket különböző rácsfelbontások és képarányok mellett is használni tudjuk, ugyanis a jellegvektorok mérete minden esetben azonos lesz.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=10truecm]{images/crop_resize.png}
+\caption{\textit{Symbol} előfeldolgozás}
+\label{fig:symbol_pre}
+\end{figure}
 
 A mozdulat osztályozása utáni pillanatban a vásznat törölnünk kell, vagyis csupa 255 intenzitásértékkel kell ellátnunk, hogy a megszabott feltételek tovább ne teljesüljenek a további becsléseket elkerülve.
 
