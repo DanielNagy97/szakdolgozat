@@ -294,6 +294,22 @@ Amennyiben a két pont iránya teljesen ellentétes, akkor a kapott érték a nu
 \SubSection{Symbol}
 
 A prezentáló személy bizonyos mozdulatokat elvégezve további funkciókat érhet el. Az ilyen gesztusok egy fajtája általában a magyarázó mozgástól eltérőek, bizonyos pályákat követnek. Ilyen mozdulatok lehetnek például egy kör, vagy egy L betű, vagy különféle minták rajzolása levegőbe. Az egyes mozdulatok hasonló mintázatot követnek.
+
+A dolgozat programjához mellékelt \textit{Symbol} adatkészlet három gesztus adatait tartalmazza. A három mozdulat a következő neveket kapta:
+\begin{itemize}
+	\item \textit{Gamma}
+	\item \textit{Omikron}
+	\item \textit{BRC} (Bottom Right Corner, vagyis jobb alsó sarok - az Unicode (U+231F) karakternek felel meg)
+\end{itemize}
+\begin{figure}[h]
+\centering
+\includegraphics[width=10truecm]{images/symbols.png}
+\caption{\textit{Gamma}, \textit{Omikron}, \textit{BRC}}
+\label{fig:symbols}
+\end{figure}
+
+Ezen gesztusokra betanított osztályozó modell \textit{Confusion Matrix}-a a \ref{fig:confusionm} ábrán figyelhető meg. Belátható, hogy az osztályozó modell pontossága a minták között megfigyelhető viszonylag nagy távolságoknak is köszönhető.
+
 Az ilyen típusú gesztusok felismeréséhez felhasználhatjuk az \textit{OCR}, vagyis az \textit{Optical Character recognition} (Optikai karakter felismerés) módszert is, mely írott karakterek felismerésére szolgál. 
 Az OCR kipróbálásához rendelkezésre áll egy ingyenes adatkészlet is, a MNIST, amely 70.000 kisfelbontású képet tartalmaz írott számokról 0-9-ig. Segítségével különféle osztályozók taníthatók be, illetve az osztáyozók tejesítményének egyik mérőeszközévé vált az idők során. Az osztályozómodell betanításához a jellegvektorok értékeit a szürkeárnyalatosképek intenzitásértékei adják. Ha egy új osztályozó rendszert fejlesztenek, valószínűleg a MNIST adatkészlettel is kipróbálják azt. \cite{geron2019hands}
 
@@ -302,7 +318,7 @@ Mivel a probléma hasonlít az OCR-hez, hasonló megoldást alkalmazhatunk a lev
 \begin{figure}[h]
 \centering
 \frame{\includegraphics[width=10truecm, height=7.33truecm]{images/OCR-Gesture.png}}
-\caption{Egy levegőbe leírt kör mintázata a 15$\times$11-ös vásznon}
+\caption{Egy levegőbe leírt \textit{Omikron} mintázata egy 15$\times$11-ös vásznon}
 \label{fig:ocr-gesture}
 \end{figure}
 
