@@ -12,66 +12,6 @@ def jump_to(controller, button_widget):
         button_widget.pushed = False
 
 
-def next_slide(controller, button_widget):
-    if button_widget._pushed:
-        controller.current_scene += 1
-        button_widget._pushed = False
-
-
-def prew_slide(controller, button_widget):
-    if button_widget._pushed:
-        controller.current_scene -= 1
-        button_widget._pushed = False
-
-
-def go_back_to_menu(controller, button_widget):
-    if button_widget._pushed:
-        controller.current_scene = 1
-        button_widget._pushed = False
-
-
-def alpha_slide(controller, button_widget):
-    if button_widget._pushed:
-        controller.current_scene = 3
-        button_widget._pushed = False
-
-
-def rgb_slide(controller, button_widget):
-    if button_widget._pushed:
-        controller.current_scene = 4
-        button_widget._pushed = False
-
-
-def threshold_slide(controller, button_widget):
-    if button_widget._pushed:
-        controller.current_scene = 5
-        button_widget._pushed = False
-
-
-def canny_slide(controller, button_widget):
-    if button_widget._pushed:
-        controller.current_scene = 6
-        button_widget._pushed = False
-
-
-def filter_slide(controller, button_widget):
-    if button_widget._pushed:
-        controller.current_scene = 7
-        button_widget._pushed = False
-
-
-def filter1_slide(controller, button_widget):
-    if button_widget._pushed:
-        controller.current_scene = 8
-        button_widget._pushed = False
-
-
-def filter2_slide(controller, button_widget):
-    if button_widget._pushed:
-        controller.current_scene = 9
-        button_widget._pushed = False
-
-
 to_treshold = False
 
 
