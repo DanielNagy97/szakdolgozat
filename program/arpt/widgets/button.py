@@ -22,6 +22,7 @@ class Button(Widget):
             self._arg = action_array[1]
         else:
             self._action = action
+            self._arg = ""
         self._center_point = np.empty((2, ), dtype=np.float32)
         self._control_position = np.empty((2, ), dtype=np.float32)
         self.about_to_push = False
