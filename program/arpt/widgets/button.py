@@ -16,7 +16,12 @@ class Button(Widget):
         :param image: source of the image file
         """
         super().__init__(position, dimension, image, transparent)
-        self.action = action
+        if "$" in action:
+            action_array = action.split('$')
+            self._action = action_array[0]
+            self._arg = action_array[1]
+        else:
+            self._action = action
         self._center_point = np.empty((2, ), dtype=np.float32)
         self._control_position = np.empty((2, ), dtype=np.float32)
         self.about_to_push = False
@@ -87,3 +92,19 @@ class Button(Widget):
             if time.time() - self.push_time >= 0.2:
                 self.about_to_push = False
                 self._pushed = True
+
+    @property
+    def action(self):
+        return self._action
+
+    @property
+    def arg(self):
+        return self._arg
+
+    @property
+    def pushed(self):
+        return self._pushed
+
+    @pushed.setter
+    def pushed(self, new_state):
+        self._pushed = new_state
