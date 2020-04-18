@@ -29,7 +29,7 @@
                 "dimension": [200, 100],
                 "image": "images/placeholder.png",
                 "transparent": true,
-                "action": "next_slide"
+                "action": "jump_to$1"
             }
         ]
     },
@@ -42,7 +42,7 @@
                 "dimension": [200, 150],
                 "image": "images/placeholder.png",
                 "transparent": false,
-                "action": "alpha_slide"
+                "action": "jump_to$3"
             },
             {
                 "type": "Button",
@@ -50,7 +50,7 @@
                 "dimension": [200, 150],
                 "image": "images/placeholder.png",
                 "transparent": false,
-                "action": "rgb_slide"
+                "action": "jump_to$5"
             },
             {
                 "type": "Button",
@@ -58,7 +58,7 @@
                 "dimension": [200, 150],
                 "image": "images/placeholder.png",
                 "transparent": false,
-                "action": "threshold_slide"
+                "action": "jump_to$6"
             },
             {
                 "type": "Button",
@@ -66,7 +66,7 @@
                 "dimension": [200, 150],
                 "image": "images/placeholder.png",
                 "transparent": false,
-                "action": "canny_slide"
+                "action": "jump_to$2"
             },
             {
                 "type": "Button",
@@ -74,7 +74,7 @@
                 "dimension": [200, 150],
                 "image": "images/placeholder.png",
                 "transparent": false,
-                "action": "filter_slide"
+                "action": "jump_to$4"
             },
             {
                 "type": "Button",
@@ -82,7 +82,7 @@
                 "dimension": [180, 120],
                 "image": "images/placeholder.png",
                 "transparent": true,
-                "action": "next_slide"
+                "action": "jump_to$9"
             },
             {
                 "type": "Button",
@@ -90,30 +90,36 @@
                 "dimension": [180, 120],
                 "image": "images/placeholder.png",
                 "transparent": true,
-                "action": "prew_slide"
+                "action": "jump_to$0"
             }
         ]
     },
     {
-        "__title": "End",
+        "__title": "Color Channels",
         "widgets": [
             {
-                "type": "Expand",
-                "position": [540, 30],
-                "dimension": [400, 300],
+                "type": "Button",
+                "position": [770, 30],
+                "dimension": [150, 150],
                 "image": "images/placeholder.png",
-                "speed": 1.8,
-                "attenuation": 0.8,
-                "header_size": 60,
-                "transparent": false
+                "transparent": true,
+                "action": "switch_color_channel"
             },
+            {
+                "type": "Button",
+                "position": [770, 30],
+                "dimension": [150, 150],
+                "image": "images/1x1transparent.png",
+                "transparent": true,
+                "action": "toggle_channel"
+            },  
             {
                 "type": "Button",
                 "position": [30, 40],
                 "dimension": [180, 120],
                 "image": "images/placeholder.png",
                 "transparent": true,
-                "action": "prew_slide"
+                "action": "jump_to$1"
             }
         ]
     },
@@ -151,36 +157,7 @@
                 "dimension": [180, 120],
                 "image": "images/placeholder.png",
                 "transparent": true,
-                "action": "go_back_to_menu"
-            }
-        ]
-    },
-    {
-        "__title": "Color Channels",
-        "widgets": [
-            {
-                "type": "Button",
-                "position": [770, 30],
-                "dimension": [150, 150],
-                "image": "images/placeholder.png",
-                "transparent": true,
-                "action": "switch_color_channel"
-            },
-            {
-                "type": "Button",
-                "position": [770, 30],
-                "dimension": [150, 150],
-                "image": "images/1x1transparent.png",
-                "transparent": true,
-                "action": "toggle_channel"
-            },  
-            {
-                "type": "Button",
-                "position": [30, 40],
-                "dimension": [180, 120],
-                "image": "images/placeholder.png",
-                "transparent": true,
-                "action": "go_back_to_menu"
+                "action": "jump_to$1"
             }
         ]
     },
@@ -218,7 +195,7 @@
                 "dimension": [180, 120],
                 "image": "images/placeholder.png",
                 "transparent": true,
-                "action": "go_back_to_menu"
+                "action": "jump_to$1"
             }
         ]
     },
@@ -256,7 +233,7 @@
                 "dimension": [180, 120],
                 "image": "images/placeholder.png",
                 "transparent": true,
-                "action": "go_back_to_menu"
+                "action": "jump_to$1"
             }
         ]
     },
@@ -269,7 +246,7 @@
                 "dimension": [200, 150],
                 "image": "images/placeholder.png",
                 "transparent": false,
-                "action": "filter1_slide"
+                "action": "jump_to$7"
             },
             {
                 "type": "Button",
@@ -277,7 +254,7 @@
                 "dimension": [200, 150],
                 "image": "images/placeholder.png",
                 "transparent": false,
-                "action": "filter2_slide"
+                "action": "jump_to$8"
             },
             {
                 "type": "Widget",
@@ -292,7 +269,7 @@
                 "dimension": [180, 120],
                 "image": "images/placeholder.png",
                 "transparent": true,
-                "action": "go_back_to_menu"
+                "action": "jump_to$1"
             }
         ]
     },
@@ -320,7 +297,7 @@
                 "dimension": [180, 120],
                 "image": "images/placeholder.png",
                 "transparent": true,
-                "action": "filter_slide"
+                "action": "jump_to$6"
             }
         ]
     },
@@ -348,7 +325,30 @@
                 "dimension": [180, 120],
                 "image": "images/placeholder.png",
                 "transparent": true,
-                "action": "filter_slide"
+                "action": "jump_to$6"
+            }
+        ]
+    },
+    {
+        "__title": "End",
+        "widgets": [
+            {
+                "type": "Expand",
+                "position": [540, 30],
+                "dimension": [400, 300],
+                "image": "images/placeholder.png",
+                "speed": 1.8,
+                "attenuation": 0.8,
+                "header_size": 60,
+                "transparent": false
+            },
+            {
+                "type": "Button",
+                "position": [30, 40],
+                "dimension": [180, 120],
+                "image": "images/placeholder.png",
+                "transparent": true,
+                "action": "jump_to$1"
             }
         ]
     }

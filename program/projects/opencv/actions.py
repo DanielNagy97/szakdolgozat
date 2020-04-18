@@ -6,6 +6,12 @@ def placeholder(eze, aza):
     pass
 
 
+def jump_to(controller, button_widget):
+    if button_widget.pushed:
+        controller.current_scene = int(button_widget.arg)
+        button_widget.pushed = False
+
+
 def next_slide(controller, button_widget):
     if button_widget._pushed:
         controller.current_scene += 1
