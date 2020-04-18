@@ -34,8 +34,32 @@
         ]
     },
     {
-        "__title": "Conception",
+        "__title": "Koncepció - Menü",
         "widgets": [
+            {
+                "type": "Button",
+                "position": [730, 20],
+                "dimension": [200, 150],
+                "image": "images/placeholder.png",
+                "transparent": false,
+                "action": "placeholder"
+            },
+            {
+                "type": "Button",
+                "position": [730, 190],
+                "dimension": [200, 150],
+                "image": "images/placeholder.png",
+                "transparent": false,
+                "action": "placeholder"
+            },
+            {
+                "type": "Button",
+                "position": [510, 20],
+                "dimension": [200, 150],
+                "image": "images/placeholder.png",
+                "transparent": false,
+                "action": "placeholder"
+            },
             {
                 "type": "Widget",
                 "position": [610, 460],
@@ -44,47 +68,17 @@
                 "transparent": false
             },
             {
-                "type": "Expand",
-                "position": [730, 30],
-                "dimension": [200, 300],
-                "image": "images/placeholder.png",
-                "speed": 1.8,
-                "attenuation": 0.8,
-                "header_size": 60,
-                "transparent": false
-            },
-            {
-                "type": "Expand",
-                "position": [500, 30],
-                "dimension": [200, 300],
-                "image": "images/placeholder.png",
-                "speed": 1.8,
-                "attenuation": 0.8,
-                "header_size": 60,
-                "transparent": false
-            },
-            {
-                "type": "Expand",
-                "position": [270, 30],
-                "dimension": [200, 300],
-                "image": "images/placeholder.png",
-                "speed": 1.8,
-                "attenuation": 0.8,
-                "header_size": 60,
-                "transparent": false
-            },
-            {
                 "type": "Button",
-                "position": [20, 400],
-                "dimension": [200, 100],
+                "position": [30, 360],
+                "dimension": [180, 120],
                 "image": "images/placeholder.png",
                 "transparent": true,
                 "action": "next_slide"
             },
             {
                 "type": "Button",
-                "position": [20, 40],
-                "dimension": [200, 100],
+                "position": [30, 40],
+                "dimension": [180, 120],
                 "image": "images/placeholder.png",
                 "transparent": true,
                 "action": "prew_slide"
@@ -92,15 +86,195 @@
         ]
     },
     {
-        "__title": "Vector Field", 
+        "__title": "AR",
         "widgets": [
             {
+                "type": "Expand",
+                "position": [650, 30],
+                "dimension": [300, 400],
+                "image": "images/placeholder.png",
+                "speed": 1.8,
+                "attenuation": 0.8,
+                "header_size": 60,
+                "transparent": false
+            },
+            {
+                "type": "Shift",
+                "position": [300, 200],
+                "dimension": [180, 180],
+                "image": "images/placeholder.png",
+                "speed": 1.8,
+                "attenuation": 0.8,
+                "transparent": false
+            },
+            {
+                "type": "Button",
+                "position": [30, 40],
+                "dimension": [180, 120],
+                "image": "images/placeholder.png",
+                "transparent": true,
+                "action": "placeholder"
+            }
+        ]
+    },
+    {
+        "__title": "Prezentációs szoftverek",
+        "widgets": [
+            {
+                "type": "Expand",
+                "position": [650, 30],
+                "dimension": [300, 400],
+                "image": "images/placeholder.png",
+                "speed": 1.8,
+                "attenuation": 0.8,
+                "header_size": 60,
+                "transparent": false
+            },
+            {
+                "type": "Rollable",
+                "position": [30, 250],
+                "dimension": [375, 1967],
+                "image": "images/placeholder.png",
+                "speed": 1.8,
+                "attenuation": 0.8,
+                "box_dimension": [375, 280],
+                "transparent": false
+            },
+            {
+                "type": "Button",
+                "position": [30, 40],
+                "dimension": [180, 120],
+                "image": "images/placeholder.png",
+                "transparent": true,
+                "action": "placeholder"
+            }
+        ]
+    },
+    {
+        "__title": "Scikit, OpenCV",
+        "widgets": [
+            {
+                "type": "Shift",
+                "position": [300, 200],
+                "dimension": [180, 230],
+                "image": "images/placeholder.png",
+                "speed": 1.8,
+                "attenuation": 0.8,
+                "transparent": false
+            },
+            {
+                "type": "Shift",
+                "position": [600, 200],
+                "dimension": [230, 120],
+                "image": "images/placeholder.png",
+                "speed": 1.8,
+                "attenuation": 0.8,
+                "transparent": false
+            },
+            {
+                "type": "Button",
+                "position": [30, 40],
+                "dimension": [180, 120],
+                "image": "images/placeholder.png",
+                "transparent": true,
+                "action": "placeholder"
+            }
+        ]
+    },
+    {
+        "__title": "Gesztusok - Menü",
+        "widgets": [
+            {
+                "type": "Button",
+                "position": [730, 20],
+                "dimension": [200, 150],
+                "image": "images/placeholder.png",
+                "transparent": false,
+                "action": "placeholder"
+            },
+            {
+                "type": "Button",
+                "position": [730, 190],
+                "dimension": [200, 150],
+                "image": "images/placeholder.png",
+                "transparent": false,
+                "action": "placeholder"
+            },
+            {
+                "type": "Button",
+                "position": [730, 360],
+                "dimension": [200, 150],
+                "image": "images/placeholder.png",
+                "transparent": false,
+                "action": "placeholder"
+            },
+            {
+                "type": "Button",
+                "position": [510, 360],
+                "dimension": [200, 150],
+                "image": "images/placeholder.png",
+                "transparent": false,
+                "action": "placeholder"
+            },
+            {
                 "type": "Widget",
-                "position": [610, 290],
-                "dimension": [350, 250],
+                "position": [300, 0],
+                "dimension": [350, 80],
                 "image": "images/placeholder.png",
                 "transparent": false
             },
+            {
+                "type": "Button",
+                "position": [30, 360],
+                "dimension": [180, 120],
+                "image": "images/placeholder.png",
+                "transparent": true,
+                "action": "next_slide"
+            },
+            {
+                "type": "Button",
+                "position": [30, 40],
+                "dimension": [180, 120],
+                "image": "images/placeholder.png",
+                "transparent": true,
+                "action": "prew_slide"
+            }
+        ]
+    },
+    {
+        "__title": "Lucas - Kanade",
+        "widgets": [
+            {
+                "type": "Rollable",
+                "position": [600, 30],
+                "dimension": [350, 1967],
+                "image": "images/placeholder.png",
+                "speed": 1.8,
+                "attenuation": 0.8,
+                "box_dimension": [350, 280],
+                "transparent": false
+            },
+            {
+                "type": "Button",
+                "position": [0, 250],
+                "dimension": [290, 290],
+                "image": "images/placeholder.png",
+                "transparent": false,
+                "action": "placeholder"
+            },
+            {
+                "type": "Button",
+                "position": [30, 40],
+                "dimension": [180, 120],
+                "image": "images/placeholder.png",
+                "transparent": true,
+                "action": "placeholder"
+            }
+        ]
+    },
+    {
+        "__title": "Grid Menü in Gesztusok - Menü",
+        "widgets": [
             {
                 "type": "Button",
                 "position": [514, 20],
@@ -111,48 +285,35 @@
             },
             {
                 "type": "Button",
-                "position": [20, 400],
-                "dimension": [200, 100],
-                "image": "images/placeholder.png",
-                "transparent": true,
-                "action": "next_slide"
-            },
-            {
-                "type": "Button",
-                "position": [20, 40],
-                "dimension": [200, 100],
-                "image": "images/placeholder.png",
-                "transparent": true,
-                "action": "prew_slide"
-            }
-        ]
-    },
-    {
-        "__title": "Heat Map",
-        "widgets": [
-            {
-                "type": "Button",
-                "position": [514, 20],
-                "dimension": [426, 240],
+                "position": [30, 190],
+                "dimension": [200, 150],
                 "image": "images/placeholder.png",
                 "transparent": false,
-                "action": "heatmap_show"
+                "action": "placeholder"
             },
             {
                 "type": "Button",
-                "position": [20, 400],
-                "dimension": [200, 100],
+                "position": [30, 360],
+                "dimension": [200, 150],
                 "image": "images/placeholder.png",
-                "transparent": true,
-                "action": "next_slide"
+                "transparent": false,
+                "action": "placeholder"
             },
             {
                 "type": "Button",
-                "position": [20, 40],
-                "dimension": [200, 100],
+                "position": [260, 360],
+                "dimension": [200, 150],
+                "image": "images/placeholder.png",
+                "transparent": false,
+                "action": "placeholder"
+            },
+            {
+                "type": "Button",
+                "position": [30, 40],
+                "dimension": [180, 120],
                 "image": "images/placeholder.png",
                 "transparent": true,
-                "action": "prew_slide"
+                "action": "placeholder"
             }
         ]
     },
@@ -169,19 +330,44 @@
             },
             {
                 "type": "Button",
-                "position": [20, 400],
-                "dimension": [200, 100],
+                "position": [30, 40],
+                "dimension": [180, 120],
                 "image": "images/placeholder.png",
                 "transparent": true,
-                "action": "next_slide"
+                "action": "placeholder"
+            }
+        ]
+    },
+    {
+        "__title": "Rotation", 
+        "widgets": [
+            {
+                "type": "Tuner",
+                "position": [100, 300],
+                "dimension": [180, 180],
+                "image": "images/placeholder.png",
+                "min_value": 0,
+                "max_value": 10,
+                "transparent": true,
+                "action": "placeholder"
+            },
+            {
+                "type": "Rollable",
+                "position": [600, 30],
+                "dimension": [350, 1967],
+                "image": "images/placeholder.png",
+                "speed": 1.8,
+                "attenuation": 0.8,
+                "box_dimension": [350, 280],
+                "transparent": false
             },
             {
                 "type": "Button",
-                "position": [20, 40],
-                "dimension": [200, 100],
+                "position": [30, 40],
+                "dimension": [180, 120],
                 "image": "images/placeholder.png",
                 "transparent": true,
-                "action": "prew_slide"
+                "action": "placeholder"
             }
         ]
     },
@@ -206,19 +392,49 @@
             },
             {
                 "type": "Button",
-                "position": [20, 400],
-                "dimension": [200, 100],
+                "position": [30, 40],
+                "dimension": [180, 120],
                 "image": "images/placeholder.png",
                 "transparent": true,
-                "action": "next_slide"
+                "action": "placeholder"
+            }
+        ]
+    },
+
+    {
+        "__title": "Heat Map - Menü",
+        "widgets": [
+            {
+                "type": "Button",
+                "position": [0, 300],
+                "dimension": [426, 240],
+                "image": "images/placeholder.png",
+                "transparent": false,
+                "action": "heatmap_show"
             },
             {
                 "type": "Button",
-                "position": [20, 40],
-                "dimension": [200, 100],
+                "position": [730, 20],
+                "dimension": [200, 150],
+                "image": "images/placeholder.png",
+                "transparent": false,
+                "action": "placeholder"
+            },
+            {
+                "type": "Button",
+                "position": [730, 190],
+                "dimension": [200, 150],
+                "image": "images/placeholder.png",
+                "transparent": false,
+                "action": "placeholder"
+            },
+            {
+                "type": "Button",
+                "position": [30, 40],
+                "dimension": [180, 120],
                 "image": "images/placeholder.png",
                 "transparent": true,
-                "action": "prew_slide"
+                "action": "placeholder"
             }
         ]
     },
@@ -250,65 +466,11 @@
             },
             {
                 "type": "Button",
-                "position": [20, 400],
-                "dimension": [200, 100],
+                "position": [30, 40],
+                "dimension": [180, 120],
                 "image": "images/placeholder.png",
-                "transparent": true,
-                "action": "next_slide"
-            },
-            {
-                "type": "Button",
-                "position": [20, 40],
-                "dimension": [200, 100],
-                "image": "images/placeholder.png",
-                "transparent": true,
-                "action": "prew_slide"
-            }
-        ]
-    },
-    {
-        "__title": "Rotation", 
-        "widgets": [
-            {
-                "type": "Tuner",
-                "position": [300, 100],
-                "dimension": [150, 150],
-                "image": "images/placeholder.png",
-                "min_value": 0,
-                "max_value": 10,
                 "transparent": true,
                 "action": "placeholder"
-            },
-            {
-                "type": "Widget",
-                "position": [605, 0],
-                "dimension": [355, 250],
-                "image": "images/placeholder.png",
-                "transparent": false
-            },
-            {
-                "type": "Button",
-                "position": [605, 250],
-                "dimension": [355, 200],
-                "image": "images/placeholder.png",
-                "transparent": false,
-                "action": "vector_field_show"
-            },
-            {
-                "type": "Button",
-                "position": [20, 400],
-                "dimension": [200, 100],
-                "image": "images/placeholder.png",
-                "transparent": true,
-                "action": "next_slide"
-            },
-            {
-                "type": "Button",
-                "position": [20, 40],
-                "dimension": [200, 100],
-                "image": "images/placeholder.png",
-                "transparent": true,
-                "action": "prew_slide"
             }
         ]
     },
@@ -317,7 +479,7 @@
         "widgets": [
             {
                 "type": "Button",
-                "position": [800, 200],
+                "position": [0, 390],
                 "dimension": [150, 150],
                 "image": "images/placeholder.png",
                 "transparent": false,
@@ -325,16 +487,105 @@
             },
             {
                 "type": "Button",
-                "position": [20, 400],
-                "dimension": [200, 100],
+                "position": [534, 0],
+                "dimension": [426, 240],
+                "image": "images/placeholder.png",
+                "transparent": false,
+                "action": "placeholder"
+            },
+            {
+                "type": "Button",
+                "position": [30, 40],
+                "dimension": [180, 120],
+                "image": "images/placeholder.png",
+                "transparent": true,
+                "action": "placeholder"
+            }
+        ]
+    },
+    {
+        "__title": "ML", 
+        "widgets": [
+            {
+                "type": "Expand",
+                "position": [30, 180],
+                "dimension": [300, 320],
+                "image": "images/placeholder.png",
+                "speed": 1.8,
+                "attenuation": 0.8,
+                "header_size": 60,
+                "transparent": false
+            },
+            {
+                "type": "Widget",
+                "position": [610, 0],
+                "dimension": [350, 300],
+                "image": "images/placeholder.png",
+                "transparent": false
+            },
+            {
+                "type": "Button",
+                "position": [30, 40],
+                "dimension": [180, 120],
+                "image": "images/placeholder.png",
+                "transparent": true,
+                "action": "placeholder"
+            }
+        ]
+    },
+    {
+        "__title": "Példa prezentációk - Menü",
+        "widgets": [
+            {
+                "type": "Widget",
+                "position": [630, 20],
+                "dimension": [300, 225],
+                "image": "images/placeholder.png",
+                "transparent": false
+            },
+            {
+                "type": "Button",
+                "position": [630, 265],
+                "dimension": [300, 225],
+                "image": "images/placeholder.png",
+                "transparent": false,
+                "action": "placeholder"
+            },
+            {
+                "type": "Button",
+                "position": [30, 360],
+                "dimension": [180, 120],
                 "image": "images/placeholder.png",
                 "transparent": true,
                 "action": "next_slide"
             },
             {
                 "type": "Button",
-                "position": [20, 40],
-                "dimension": [200, 100],
+                "position": [30, 40],
+                "dimension": [180, 120],
+                "image": "images/placeholder.png",
+                "transparent": true,
+                "action": "prew_slide"
+            }
+        ]
+    },
+    {
+        "__title": "End",
+        "widgets": [
+            {
+                "type": "Expand",
+                "position": [540, 30],
+                "dimension": [400, 300],
+                "image": "images/placeholder.png",
+                "speed": 1.8,
+                "attenuation": 0.8,
+                "header_size": 60,
+                "transparent": false
+            },
+            {
+                "type": "Button",
+                "position": [30, 40],
+                "dimension": [180, 120],
                 "image": "images/placeholder.png",
                 "transparent": true,
                 "action": "prew_slide"
