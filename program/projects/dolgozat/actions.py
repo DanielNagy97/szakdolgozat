@@ -13,7 +13,7 @@ def jump_to(controller, button_widget):
 
 
 def frame_diff_show(controller, button_widget):
-    if button_widget.pushed:
+    if button_widget.pushed or button_widget.arg == "default":
 
         canvas = controller.frame_diff.canvas.canvas
         canvas = cv2.resize(canvas, button_widget.dimension, fx=0, fy=0,
@@ -24,7 +24,7 @@ def frame_diff_show(controller, button_widget):
 
 
 def heatmap_show(controller, button_widget):
-    if button_widget.pushed:
+    if button_widget.pushed or button_widget.arg == "default":
 
         canvas = controller.heat_map.map
         canvas = cv2.resize(canvas, button_widget.dimension, fx=0, fy=0,
@@ -34,7 +34,7 @@ def heatmap_show(controller, button_widget):
 
 
 def vector_field_show(controller, button_widget):
-    if button_widget.pushed:
+    if button_widget.pushed or button_widget.arg == "default":
         controller.view.show_vector_field(controller.grid, controller.swirl,
                                           controller._canvasses['vectorfield'])
         canvas = controller._canvasses['vectorfield'].canvas
@@ -46,7 +46,7 @@ def vector_field_show(controller, button_widget):
 
 
 def symbol_show(controller, button_widget):
-    if button_widget.pushed:
+    if button_widget.pushed or button_widget.arg == "default":
 
         canvas = controller._ocr.predicted_gest
         canvas = cv2.resize(canvas, button_widget.dimension, fx=0, fy=0,
@@ -57,7 +57,7 @@ def symbol_show(controller, button_widget):
 
 
 def sweep_show(controller, button_widget):
-    if button_widget.pushed:
+    if button_widget.pushed or button_widget.arg == "default":
         controller.view.show_result_plot(controller.grid,
                                          controller._canvasses['resultplot'])
 
@@ -69,7 +69,7 @@ def sweep_show(controller, button_widget):
 
 
 def grab_show(controller, button_widget):
-    if button_widget.pushed:
+    if button_widget.pushed or button_widget.arg == "default":
 
         canvas = controller._grab.grab_image
         canvas = cv2.resize(canvas, button_widget.dimension, fx=0, fy=0,

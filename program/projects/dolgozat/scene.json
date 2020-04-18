@@ -281,7 +281,7 @@
                 "dimension": [426, 240],
                 "image": "images/placeholder.png",
                 "transparent": false,
-                "action": "vector_field_show"
+                "action": "vector_field_show$default"
             },
             {
                 "type": "Button",
@@ -326,7 +326,7 @@
                 "dimension": [420, 420],
                 "image": "images/placeholder.png",
                 "transparent": false,
-                "action": "sweep_show"
+                "action": "sweep_show$default"
             },
             {
                 "type": "Button",
@@ -410,7 +410,7 @@
                 "dimension": [426, 240],
                 "image": "images/placeholder.png",
                 "transparent": false,
-                "action": "heatmap_show"
+                "action": "heatmap_show$default"
             },
             {
                 "type": "Button",
@@ -454,7 +454,7 @@
                 "dimension": [426, 240],
                 "image": "images/placeholder.png",
                 "transparent": false,
-                "action": "frame_diff_show"
+                "action": "frame_diff_show$default"
             },
             {
                 "type": "Button",
