@@ -29,7 +29,7 @@
                 "dimension": [200, 100],
                 "image": "images/placeholder.png",
                 "transparent": true,
-                "action": "next_slide"
+                "action": "jump_to$1"
             }
         ]
     },
@@ -42,7 +42,7 @@
                 "dimension": [200, 150],
                 "image": "images/placeholder.png",
                 "transparent": false,
-                "action": "placeholder"
+                "action": "jump_to$2"
             },
             {
                 "type": "Button",
@@ -50,7 +50,7 @@
                 "dimension": [200, 150],
                 "image": "images/placeholder.png",
                 "transparent": false,
-                "action": "placeholder"
+                "action": "jump_to$3"
             },
             {
                 "type": "Button",
@@ -58,7 +58,7 @@
                 "dimension": [200, 150],
                 "image": "images/placeholder.png",
                 "transparent": false,
-                "action": "placeholder"
+                "action": "jump_to$4"
             },
             {
                 "type": "Widget",
@@ -73,7 +73,7 @@
                 "dimension": [180, 120],
                 "image": "images/placeholder.png",
                 "transparent": true,
-                "action": "next_slide"
+                "action": "jump_to$5"
             },
             {
                 "type": "Button",
@@ -81,7 +81,7 @@
                 "dimension": [180, 120],
                 "image": "images/placeholder.png",
                 "transparent": true,
-                "action": "prew_slide"
+                "action": "jump_to$0"
             }
         ]
     },
@@ -113,7 +113,7 @@
                 "dimension": [180, 120],
                 "image": "images/placeholder.png",
                 "transparent": true,
-                "action": "placeholder"
+                "action": "jump_to$1"
             }
         ]
     },
@@ -146,7 +146,7 @@
                 "dimension": [180, 120],
                 "image": "images/placeholder.png",
                 "transparent": true,
-                "action": "placeholder"
+                "action": "jump_to$1"
             }
         ]
     },
@@ -177,7 +177,7 @@
                 "dimension": [180, 120],
                 "image": "images/placeholder.png",
                 "transparent": true,
-                "action": "placeholder"
+                "action": "jump_to$1"
             }
         ]
     },
@@ -190,7 +190,7 @@
                 "dimension": [200, 150],
                 "image": "images/placeholder.png",
                 "transparent": false,
-                "action": "placeholder"
+                "action": "jump_to$6"
             },
             {
                 "type": "Button",
@@ -198,7 +198,7 @@
                 "dimension": [200, 150],
                 "image": "images/placeholder.png",
                 "transparent": false,
-                "action": "placeholder"
+                "action": "jump_to$7"
             },
             {
                 "type": "Button",
@@ -206,7 +206,7 @@
                 "dimension": [200, 150],
                 "image": "images/placeholder.png",
                 "transparent": false,
-                "action": "placeholder"
+                "action": "jump_to$11"
             },
             {
                 "type": "Button",
@@ -214,7 +214,7 @@
                 "dimension": [200, 150],
                 "image": "images/placeholder.png",
                 "transparent": false,
-                "action": "placeholder"
+                "action": "jump_to$14"
             },
             {
                 "type": "Widget",
@@ -229,7 +229,7 @@
                 "dimension": [180, 120],
                 "image": "images/placeholder.png",
                 "transparent": true,
-                "action": "next_slide"
+                "action": "jump_to$15"
             },
             {
                 "type": "Button",
@@ -237,7 +237,7 @@
                 "dimension": [180, 120],
                 "image": "images/placeholder.png",
                 "transparent": true,
-                "action": "prew_slide"
+                "action": "jump_to$1"
             }
         ]
     },
@@ -268,7 +268,7 @@
                 "dimension": [180, 120],
                 "image": "images/placeholder.png",
                 "transparent": true,
-                "action": "placeholder"
+                "action": "jump_to$5"
             }
         ]
     },
@@ -289,7 +289,7 @@
                 "dimension": [200, 150],
                 "image": "images/placeholder.png",
                 "transparent": false,
-                "action": "placeholder"
+                "action": "jump_to$8"
             },
             {
                 "type": "Button",
@@ -297,7 +297,7 @@
                 "dimension": [200, 150],
                 "image": "images/placeholder.png",
                 "transparent": false,
-                "action": "placeholder"
+                "action": "jump_to$9"
             },
             {
                 "type": "Button",
@@ -305,7 +305,7 @@
                 "dimension": [200, 150],
                 "image": "images/placeholder.png",
                 "transparent": false,
-                "action": "placeholder"
+                "action": "jump_to$10"
             },
             {
                 "type": "Button",
@@ -313,7 +313,7 @@
                 "dimension": [180, 120],
                 "image": "images/placeholder.png",
                 "transparent": true,
-                "action": "placeholder"
+                "action": "jump_to$5"
             }
         ]
     },
@@ -334,7 +334,7 @@
                 "dimension": [180, 120],
                 "image": "images/placeholder.png",
                 "transparent": true,
-                "action": "placeholder"
+                "action": "jump_to$7"
             }
         ]
     },
@@ -367,7 +367,7 @@
                 "dimension": [180, 120],
                 "image": "images/placeholder.png",
                 "transparent": true,
-                "action": "placeholder"
+                "action": "jump_to$7"
             }
         ]
     },
@@ -396,7 +396,7 @@
                 "dimension": [180, 120],
                 "image": "images/placeholder.png",
                 "transparent": true,
-                "action": "placeholder"
+                "action": "jump_to$7"
             }
         ]
     },
@@ -418,7 +418,7 @@
                 "dimension": [200, 150],
                 "image": "images/placeholder.png",
                 "transparent": false,
-                "action": "placeholder"
+                "action": "jump_to$12"
             },
             {
                 "type": "Button",
@@ -426,7 +426,7 @@
                 "dimension": [200, 150],
                 "image": "images/placeholder.png",
                 "transparent": false,
-                "action": "placeholder"
+                "action": "jump_to$13"
             },
             {
                 "type": "Button",
@@ -434,12 +434,12 @@
                 "dimension": [180, 120],
                 "image": "images/placeholder.png",
                 "transparent": true,
-                "action": "placeholder"
+                "action": "jump_to$5"
             }
         ]
     },
     {
-        "__title": "Blink, D&D",
+        "__title": "Grab, Blink, D&D",
         "widgets": [
             {
                 "type": "Grabbable",
@@ -470,7 +470,7 @@
                 "dimension": [180, 120],
                 "image": "images/placeholder.png",
                 "transparent": true,
-                "action": "placeholder"
+                "action": "jump_to$11"
             }
         ]
     },
@@ -499,7 +499,7 @@
                 "dimension": [180, 120],
                 "image": "images/placeholder.png",
                 "transparent": true,
-                "action": "placeholder"
+                "action": "jump_to$11"
             }
         ]
     },
@@ -529,7 +529,7 @@
                 "dimension": [180, 120],
                 "image": "images/placeholder.png",
                 "transparent": true,
-                "action": "placeholder"
+                "action": "jump_to$5"
             }
         ]
     },
@@ -549,7 +549,7 @@
                 "dimension": [300, 225],
                 "image": "images/placeholder.png",
                 "transparent": false,
-                "action": "placeholder"
+                "action": "jump_to$0"
             },
             {
                 "type": "Button",
@@ -557,7 +557,7 @@
                 "dimension": [180, 120],
                 "image": "images/placeholder.png",
                 "transparent": true,
-                "action": "next_slide"
+                "action": "jump_to$16"
             },
             {
                 "type": "Button",
@@ -565,7 +565,7 @@
                 "dimension": [180, 120],
                 "image": "images/placeholder.png",
                 "transparent": true,
-                "action": "prew_slide"
+                "action": "jump_to$5"
             }
         ]
     },
@@ -588,7 +588,7 @@
                 "dimension": [180, 120],
                 "image": "images/placeholder.png",
                 "transparent": true,
-                "action": "prew_slide"
+                "action": "jump_to$15"
             }
         ]
     }
