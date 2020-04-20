@@ -56,6 +56,11 @@ class Grab(object):
                 self.y, self.x = np.subtract(self._center, 2)
                 self.w = 5
                 self.h = 5
+                self.local_euclidean_vectors = \
+                    np.subtract(grid.new_points_3D[self.y:self.y+self.h,
+                                                   self.x:self.x+self.w],
+                                grid.old_points_3D[self.y:self.y+self.h,
+                                                   self.x:self.x+self.w])
 
         if self.rect_area != 0 and not heat_map.bounding_rects.any():
             new_canvas = frame_diff_canv.canvas.copy()
@@ -67,21 +72,15 @@ class Grab(object):
                 tuple(np.uint32(grid.old_points_3D[self._center[0],
                                                    self._center[1]]))
             image = new_canvas[pt1[1]:pt2[1], pt1[0]:pt2[0]]
-
             image = cv2.resize(image, (16, 16),
                                interpolation=cv2.INTER_AREA)
             self._grab_image = image
-            local_euclidean_vectors = \
-                np.subtract(grid.new_points_3D[self.y:self.y+self.h,
-                                               self.x:self.x+self.w],
-                            grid.old_points_3D[self.y:self.y+self.h,
-                                               self.x:self.x+self.w])
 
             # First 256 feature is the 16*16 image flattened
             # Second 50 feature is the direction vectors (25 pair)
             self.data = \
                 np.concatenate((image.flatten(),
-                                local_euclidean_vectors.flatten()),
+                                self.local_euclidean_vectors.flatten()),
                                axis=None)
 
     def save_data(self, heat_map):
