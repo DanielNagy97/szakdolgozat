@@ -110,7 +110,7 @@ class Grab(object):
             self._state = score[0]
             self.rect_area = 0
 
-            if self._state == "grab":
+            if self._state == "blink":
                 self._grabbed = not self._grabbed
                 x, y = self._center_point
                 self._position = np.array([[x, y]], dtype=np.float32)
