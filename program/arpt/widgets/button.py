@@ -92,7 +92,7 @@ class Button(Widget):
 
             if time.time() - self.push_time >= 0.2:
                 self.about_to_push = False
-                self._pushed = True
+                self._pushed = not self._pushed
 
     @property
     def action(self):
