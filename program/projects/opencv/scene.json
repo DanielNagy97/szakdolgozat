@@ -16,18 +16,18 @@
             {
                 "type": "Rollable",
                 "position": [20, 20],
-                "dimension": [375, 1967],
-                "image": "images/placeholder.png",
-                "speed": 1.8,
+                "dimension": [375, 1900],
+                "image": "images/intro.png",
+                "speed": 0.8,
                 "attenuation": 0.8,
                 "box_dimension": [375, 250],
                 "transparent": false
             },
             {
                 "type": "Button",
-                "position": [740, 400],
-                "dimension": [200, 100],
-                "image": "images/placeholder.png",
+                "position": [740, 300],
+                "dimension": [150, 150],
+                "image": "images/button_next.png",
                 "transparent": true,
                 "action": "jump_to$1"
             }
@@ -40,15 +40,15 @@
                 "type": "Button",
                 "position": [730, 20],
                 "dimension": [200, 150],
-                "image": "images/placeholder.png",
-                "transparent": false,
+                "image": "images/alpha.png",
+                "transparent": true,
                 "action": "jump_to$3"
             },
             {
                 "type": "Button",
                 "position": [730, 190],
                 "dimension": [200, 150],
-                "image": "images/placeholder.png",
+                "image": "images/edge.png",
                 "transparent": false,
                 "action": "jump_to$5"
             },
@@ -56,7 +56,7 @@
                 "type": "Button",
                 "position": [730, 360],
                 "dimension": [200, 150],
-                "image": "images/placeholder.png",
+                "image": "images/filters.png",
                 "transparent": false,
                 "action": "jump_to$6"
             },
@@ -64,7 +64,7 @@
                 "type": "Button",
                 "position": [510, 20],
                 "dimension": [200, 150],
-                "image": "images/placeholder.png",
+                "image": "images/d_im.png",
                 "transparent": false,
                 "action": "jump_to$2"
             },
@@ -72,52 +72,55 @@
                 "type": "Button",
                 "position": [510, 190],
                 "dimension": [200, 150],
-                "image": "images/placeholder.png",
+                "image": "images/threshold.png",
                 "transparent": false,
                 "action": "jump_to$4"
             },
             {
                 "type": "Button",
                 "position": [30, 360],
-                "dimension": [180, 120],
-                "image": "images/placeholder.png",
+                "dimension": [150, 150],
+                "image": "images/button_next.png",
                 "transparent": true,
                 "action": "jump_to$9"
             },
             {
                 "type": "Button",
                 "position": [30, 40],
-                "dimension": [180, 120],
-                "image": "images/placeholder.png",
+                "dimension": [150, 150],
+                "image": "images/button_prew.png",
                 "transparent": true,
                 "action": "jump_to$0"
             }
         ]
     },
     {
-        "__title": "Color Channels",
+        "__title": "Digital images",
         "widgets": [
             {
                 "type": "Button",
                 "position": [770, 30],
                 "dimension": [150, 150],
-                "image": "images/placeholder.png",
+                "image": "images/button_push.png",
                 "transparent": true,
                 "action": "switch_color_channel"
             },
+
             {
-                "type": "Button",
-                "position": [770, 30],
-                "dimension": [150, 150],
-                "image": "images/1x1transparent.png",
-                "transparent": true,
-                "action": "toggle_channel"
-            },  
+                "type": "Rollable",
+                "position": [0, 240],
+                "dimension": [350, 600],
+                "image": "images/d_im_rollable.png",
+                "speed": 0.8,
+                "attenuation": 0.8,
+                "box_dimension": [350, 300],
+                "transparent": false
+            },
             {
                 "type": "Button",
                 "position": [30, 40],
-                "dimension": [180, 120],
-                "image": "images/placeholder.png",
+                "dimension": [150, 150],
+                "image": "images/button_prew.png",
                 "transparent": true,
                 "action": "jump_to$1"
             }
@@ -130,7 +133,7 @@
                 "type": "Tuner",
                 "position": [600, 100],
                 "dimension": [180, 180],
-                "image": "images/placeholder.png",
+                "image": "images/tuner.png",
                 "min_value": 0,
                 "max_value": 0.8,
                 "transparent": true,
@@ -140,22 +143,22 @@
                 "type": "Button",
                 "position": [30, 300],
                 "dimension": [150, 150],
-                "image": "images/placeholder.png",
+                "image": "images/button_push.png",
                 "transparent": true,
                 "action": "toggle_alpha"
             },
             {
                 "type": "Widget",
-                "position": [610, 460],
-                "dimension": [350, 80],
-                "image": "images/placeholder.png",
+                "position": [610, 300],
+                "dimension": [350, 240],
+                "image": "images/alpha_widget.png",
                 "transparent": false
             },
             {
                 "type": "Button",
                 "position": [30, 40],
-                "dimension": [180, 120],
-                "image": "images/placeholder.png",
+                "dimension": [150, 150],
+                "image": "images/button_prew.png",
                 "transparent": true,
                 "action": "jump_to$1"
             }
@@ -168,7 +171,7 @@
                 "type": "Tuner",
                 "position": [600, 100],
                 "dimension": [180, 180],
-                "image": "images/placeholder.png",
+                "image": "images/tuner.png",
                 "min_value": 80,
                 "max_value": 200,
                 "transparent": true,
@@ -178,22 +181,25 @@
                 "type": "Button",
                 "position": [30, 300],
                 "dimension": [150, 150],
-                "image": "images/placeholder.png",
+                "image": "images/button_push.png",
                 "transparent": true,
                 "action": "toggle_threshold"
             },
             {
-                "type": "Widget",
-                "position": [610, 460],
-                "dimension": [350, 80],
-                "image": "images/placeholder.png",
+                "type": "Rollable",
+                "position": [610, 300],
+                "dimension": [350, 600],
+                "image": "images/threshold_rollable.png",
+                "speed": 0.8,
+                "attenuation": 0.8,
+                "box_dimension": [350, 240],
                 "transparent": false
             },
             {
                 "type": "Button",
                 "position": [30, 40],
-                "dimension": [180, 120],
-                "image": "images/placeholder.png",
+                "dimension": [150, 150],
+                "image": "images/button_prew.png",
                 "transparent": true,
                 "action": "jump_to$1"
             }
@@ -206,7 +212,7 @@
                 "type": "Tuner",
                 "position": [600, 100],
                 "dimension": [180, 180],
-                "image": "images/placeholder.png",
+                "image": "images/tuner.png",
                 "min_value": 0,
                 "max_value": 100,
                 "transparent": true,
@@ -216,35 +222,38 @@
                 "type": "Button",
                 "position": [30, 300],
                 "dimension": [150, 150],
-                "image": "images/placeholder.png",
+                "image": "images/button_push.png",
                 "transparent": true,
                 "action": "toggle_edge"
             },
             {
-                "type": "Widget",
-                "position": [610, 460],
-                "dimension": [350, 80],
-                "image": "images/placeholder.png",
+                "type": "Rollable",
+                "position": [610, 300],
+                "dimension": [350, 360],
+                "image": "images/canny_widget.png",
+                "speed": 0.8,
+                "attenuation": 0.8,
+                "box_dimension": [350, 240],
                 "transparent": false
             },
             {
                 "type": "Button",
                 "position": [30, 40],
-                "dimension": [180, 120],
-                "image": "images/placeholder.png",
+                "dimension": [150, 150],
+                "image": "images/button_prew.png",
                 "transparent": true,
                 "action": "jump_to$1"
             }
         ]
     },
     {
-        "__title": "Filters, ez is egy újabb szintetnyit majd meg",
+        "__title": "Filters",
         "widgets": [
             {
                 "type": "Button",
                 "position": [510, 20],
                 "dimension": [200, 150],
-                "image": "images/placeholder.png",
+                "image": "images/gaussian_tile.png",
                 "transparent": false,
                 "action": "jump_to$7"
             },
@@ -252,78 +261,82 @@
                 "type": "Button",
                 "position": [730, 20],
                 "dimension": [200, 150],
-                "image": "images/placeholder.png",
+                "image": "images/hist_tile.png",
                 "transparent": false,
                 "action": "jump_to$8"
             },
             {
-                "type": "Widget",
-                "position": [610, 460],
-                "dimension": [350, 80],
-                "image": "images/placeholder.png",
+                "type": "Rollable",
+                "position": [0, 300],
+                "dimension": [350, 700],
+                "image": "images/filters_rollable.png",
+                "speed": 0.8,
+                "attenuation": 0.8,
+                "box_dimension": [350, 240],
                 "transparent": false
             },
             {
                 "type": "Button",
                 "position": [30, 40],
-                "dimension": [180, 120],
-                "image": "images/placeholder.png",
+                "dimension": [150, 150],
+                "image": "images/button_prew.png",
                 "transparent": true,
                 "action": "jump_to$1"
             }
         ]
     },
     {
-        "__title": "Filter1",
+        "__title": "Gaussian Blur",
         "widgets": [
             {
                 "type": "Button",
                 "position": [660, 20],
-                "dimension": [200, 150],
-                "image": "images/placeholder.png",
-                "transparent": false,
-                "action": "placeholder"
+                "dimension": [150, 150],
+                "image": "images/button_push.png",
+                "transparent": true,
+                "action": "gauss_button"
             },
+
             {
                 "type": "Widget",
                 "position": [610, 180],
                 "dimension": [350, 360],
-                "image": "images/placeholder.png",
+                "image": "images/gaussian_blur_widget.png",
                 "transparent": false
             },
             {
                 "type": "Button",
                 "position": [30, 40],
-                "dimension": [180, 120],
-                "image": "images/placeholder.png",
+                "dimension": [150, 150],
+                "image": "images/button_prew.png",
                 "transparent": true,
                 "action": "jump_to$6"
             }
         ]
     },
     {
-        "__title": "Filter2",
+        "__title": "Histogram eqv",
         "widgets": [
             {
                 "type": "Button",
                 "position": [660, 20],
-                "dimension": [200, 150],
-                "image": "images/placeholder.png",
-                "transparent": false,
-                "action": "placeholder"
+                "dimension": [150, 150],
+                "image": "images/button_push.png",
+                "transparent": true,
+                "action": "histeqv_button"
             },
             {
                 "type": "Widget",
                 "position": [0, 180],
                 "dimension": [350, 360],
-                "image": "images/placeholder.png",
+                "image": "images/histogram_widget.png",
                 "transparent": false
             },
             {
                 "type": "Button",
                 "position": [30, 40],
-                "dimension": [180, 120],
-                "image": "images/placeholder.png",
+                "dimension": [150, 150],
+                "image": "images/button_prew.png",
                 "transparent": true,
                 "action": "jump_to$6"
             }
@@ -335,8 +348,8 @@
             {
                 "type": "Expand",
                 "position": [540, 30],
-                "dimension": [400, 300],
-                "image": "images/placeholder.png",
+                "dimension": [400, 450],
+                "image": "images/expand_template.png",
                 "speed": 1.8,
                 "attenuation": 0.8,
                 "header_size": 60,
@@ -345,8 +358,8 @@
             {
                 "type": "Button",
                 "position": [30, 40],
-                "dimension": [180, 120],
-                "image": "images/placeholder.png",
+                "dimension": [150, 150],
+                "image": "images/button_prew.png",
                 "transparent": true,
                 "action": "jump_to$1"
             }

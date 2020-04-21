@@ -2,41 +2,38 @@
 import cv2
 
 
-def placeholder(eze, aza):
-    pass
-
-
 def jump_to(controller, button_widget):
     if button_widget.pushed:
         controller.current_scene = int(button_widget.arg)
         button_widget.pushed = False
 
 
-to_treshold = False
+threshold_value = 0.0
 
 
 def threshold_tuner(controller, tuner_widget):
-    global to_treshold
+    global threshold_value
 
-    if to_treshold:
-        value = tuner_widget.value
-        ret, threshold = cv2.threshold(controller._video.gray_frame,
-                                       value, 255, cv2.THRESH_BINARY)
-        threshold = cv2.cvtColor(threshold, cv2.COLOR_GRAY2BGR)
-        controller._video.frame = threshold
+    threshold_value = tuner_widget.value
 
 
 def toggle_threshold(controller, button_widget):
-    global to_treshold
+    global threshold_value
     if button_widget._pushed:
-        to_treshold = not to_treshold
-        button_widget._pushed = False
+        ret, threshold = cv2.threshold(controller._video.gray_frame,
+                                       threshold_value, 255, cv2.THRESH_BINARY)
+        threshold = cv2.cvtColor(threshold, cv2.COLOR_GRAY2BGR)
+        controller._video.frame = threshold
+        cv2.putText(controller._video.frame,
+                    "Threshold value: " + str(format(threshold_value, '.2f')),
+                    (300, 50),
+                    cv2.FONT_HERSHEY_TRIPLEX, 1, 255)
 
 
 channel = 0
 
 
-def toggle_channel(controller, button_widget):
+def switch_color_channel(controller, button_widget):
     global channel
     if button_widget._pushed:
         channel += 1
@@ -44,70 +41,76 @@ def toggle_channel(controller, button_widget):
             channel = 0
         button_widget._pushed = False
 
+    if channel == 1:
+        r = controller._video.frame.copy()
+        # set blue and green channels to 0
+        r[:, :, 0] = 0
+        r[:, :, 1] = 0
+        controller._video.frame = r
 
-def switch_color_channel(controller, button_widget):
-    global channel
-    if button_widget._pushed:
+    elif channel == 2:
+        g = controller._video.frame.copy()
+        # set blue and red channels to 0
+        g[:, :, 0] = 0
+        g[:, :, 2] = 0
+        controller._video.frame = g
 
-        if channel == 1:
-            r = controller._video.frame.copy()
-            # set blue and green channels to 0
-            r[:, :, 0] = 0
-            r[:, :, 1] = 0
-            controller._video.frame = r
-
-        elif channel == 2:
-            g = controller._video.frame.copy()
-            # set blue and red channels to 0
-            g[:, :, 0] = 0
-            g[:, :, 2] = 0
-            controller._video.frame = g
-
-        elif channel == 3:
-            b = controller._video.frame.copy()
-            # set green and red channels to 0
-            b[:, :, 1] = 0
-            b[:, :, 2] = 0
-            controller._video.frame = b
+    elif channel == 3:
+        b = controller._video.frame.copy()
+        # set green and red channels to 0
+        b[:, :, 1] = 0
+        b[:, :, 2] = 0
+        controller._video.frame = b
 
 
-to_alpha = False
+alpha_value = 0.0
 
 
 def alpha_tuner(controller, tuner_widget):
-    global to_alpha
-
-    if to_alpha:
-        value = tuner_widget.value
-        controller._transparency = value
-        cv2.putText(controller._video.frame,
-                    "Opacity: " + str(format(value, '.2f')),
-                    (200, 100),
-                    cv2.FONT_HERSHEY_TRIPLEX, 2, 255)
+    global alpha_value
+    alpha_value = tuner_widget.value
 
 
 def toggle_alpha(controller, button_widget):
-    global to_alpha
+    global alpha_value
     if button_widget._pushed:
-        to_alpha = not to_alpha
-        button_widget._pushed = False
+        controller._transparency = alpha_value
+        cv2.putText(controller._video.frame,
+                    "Opacity: " + str(format(alpha_value, '.2f')),
+                    (300, 50),
+                    cv2.FONT_HERSHEY_TRIPLEX, 1, 255)
 
 
-to_edge = False
+edge_value = 0
 
 
 def toggle_edge(controller, button_widget):
-    global to_edge
+    global edge_value
     if button_widget._pushed:
-        to_edge = not to_edge
-        button_widget._pushed = False
+        output = cv2.Canny(controller._video.gray_frame, edge_value, 120)
+        output = cv2.cvtColor(output, cv2.COLOR_GRAY2BGR)
+        controller._video.frame = output
 
 
 def edge_tuner(controller, tuner_widget):
-    global to_edge
+    global edge_value
+    edge_value = tuner_widget.value
 
-    if to_edge:
-        value = tuner_widget.value
-        threshold = cv2.Canny(controller._video.gray_frame, value, 120)
-        threshold = cv2.cvtColor(threshold, cv2.COLOR_GRAY2BGR)
-        controller._video.frame = threshold
+
+def gauss_button(controller, button_widget):
+    if button_widget._pushed:
+        controller._video.frame = cv2.GaussianBlur(controller._video.frame,
+                                                   (19, 19),
+                                                   cv2.BORDER_DEFAULT)
+
+
+def histeqv_button(controller, button_widget):
+    gray = cv2.cvtColor(controller._video.frame, cv2.COLOR_BGR2GRAY)
+
+    if button_widget._pushed:
+        gray_frame = cv2.equalizeHist(gray)
+        output = cv2.cvtColor(gray_frame, cv2.COLOR_GRAY2BGR)
+    else:
+        output = cv2.cvtColor(gray, cv2.COLOR_GRAY2BGR)
+
+    controller._video.frame = output
