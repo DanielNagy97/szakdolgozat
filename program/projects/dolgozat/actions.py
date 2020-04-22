@@ -15,7 +15,7 @@ def jump_to(controller, button_widget):
 def frame_diff_show(controller, button_widget):
     if button_widget.pushed or button_widget.arg == "default":
 
-        canvas = controller.frame_diff.canvas.canvas
+        canvas = controller.frame_diff.canvas.canvas.copy()
         canvas = cv2.resize(canvas, button_widget.dimension, fx=0, fy=0,
                             interpolation=cv2.INTER_CUBIC)
         results_canvas = cv2.cvtColor(canvas,
@@ -26,7 +26,7 @@ def frame_diff_show(controller, button_widget):
 def heatmap_show(controller, button_widget):
     if button_widget.pushed or button_widget.arg == "default":
 
-        canvas = controller.heat_map.map
+        canvas = controller.heat_map.map.copy()
         canvas = cv2.resize(canvas, button_widget.dimension, fx=0, fy=0,
                             interpolation=cv2.INTER_AREA)
 
@@ -56,6 +56,16 @@ def symbol_show(controller, button_widget):
         button_widget._image = results_canvas
 
 
+def symbol_canvas_show(controller, button_widget):
+    if button_widget.pushed or button_widget.arg == "default":
+        canvas = controller._ocr.canvas.canvas.copy()
+        canvas = cv2.resize(canvas, button_widget.dimension, fx=0, fy=0,
+                            interpolation=cv2.INTER_AREA)
+        results_canvas = cv2.cvtColor(canvas,
+                                      cv2.COLOR_GRAY2BGR)
+        button_widget._image = results_canvas
+
+
 def sweep_show(controller, button_widget):
     if button_widget.pushed or button_widget.arg == "default":
         controller.view.show_result_plot(controller.grid,
@@ -71,7 +81,7 @@ def sweep_show(controller, button_widget):
 def grab_show(controller, button_widget):
     if button_widget.pushed or button_widget.arg == "default":
 
-        canvas = controller._grab.grab_image
+        canvas = controller._grab.grab_image.copy()
         canvas = cv2.resize(canvas, button_widget.dimension, fx=0, fy=0,
                             interpolation=cv2.INTER_AREA)
         results_canvas = cv2.cvtColor(canvas,

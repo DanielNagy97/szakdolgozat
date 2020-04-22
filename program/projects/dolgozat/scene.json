@@ -7,11 +7,11 @@
             {
                 "type": "Shift",
                 "position": [60, 40],
-                "dimension": [350, 80],
-                "image": "images/placeholder.png",
+                "dimension": [350, 82],
+                "image": "images/title.png",
                 "speed": 1.8,
                 "attenuation": 0.8,
-                "transparent": false
+                "transparent": true
             },
             {
                 "type": "Rollable",
@@ -25,9 +25,9 @@
             },
             {
                 "type": "Button",
-                "position": [20, 400],
-                "dimension": [200, 100],
-                "image": "images/placeholder.png",
+                "position": [20, 300],
+                "dimension": [150, 150],
+                "image": "images/button_next.png",
                 "transparent": true,
                 "action": "jump_to$1"
             }
@@ -40,7 +40,7 @@
                 "type": "Button",
                 "position": [730, 20],
                 "dimension": [200, 150],
-                "image": "images/placeholder.png",
+                "image": "images/ar_tile.png",
                 "transparent": false,
                 "action": "jump_to$2"
             },
@@ -48,7 +48,7 @@
                 "type": "Button",
                 "position": [730, 190],
                 "dimension": [200, 150],
-                "image": "images/placeholder.png",
+                "image": "images/presentation_tile.png",
                 "transparent": false,
                 "action": "jump_to$3"
             },
@@ -56,7 +56,7 @@
                 "type": "Button",
                 "position": [510, 20],
                 "dimension": [200, 150],
-                "image": "images/placeholder.png",
+                "image": "images/cv_scikit_tile.png",
                 "transparent": false,
                 "action": "jump_to$4"
             },
@@ -64,22 +64,22 @@
                 "type": "Widget",
                 "position": [610, 460],
                 "dimension": [350, 80],
-                "image": "images/placeholder.png",
-                "transparent": false
+                "image": "images/koncepcio_title.png",
+                "transparent": true
             },
             {
                 "type": "Button",
-                "position": [30, 360],
-                "dimension": [180, 120],
-                "image": "images/placeholder.png",
+                "position": [20, 300],
+                "dimension": [150, 150],
+                "image": "images/button_next.png",
                 "transparent": true,
                 "action": "jump_to$5"
             },
             {
                 "type": "Button",
                 "position": [30, 40],
-                "dimension": [180, 120],
-                "image": "images/placeholder.png",
+                "dimension": [150, 150],
+                "image": "images/button_prew.png",
                 "transparent": true,
                 "action": "jump_to$0"
             }
@@ -110,8 +110,8 @@
             {
                 "type": "Button",
                 "position": [30, 40],
-                "dimension": [180, 120],
-                "image": "images/placeholder.png",
+                "dimension": [150, 150],
+                "image": "images/button_prew.png",
                 "transparent": true,
                 "action": "jump_to$1"
             }
@@ -143,8 +143,8 @@
             {
                 "type": "Button",
                 "position": [30, 40],
-                "dimension": [180, 120],
-                "image": "images/placeholder.png",
+                "dimension": [150, 150],
+                "image": "images/button_prew.png",
                 "transparent": true,
                 "action": "jump_to$1"
             }
@@ -156,26 +156,36 @@
             {
                 "type": "Shift",
                 "position": [300, 200],
-                "dimension": [180, 230],
-                "image": "images/placeholder.png",
+                "dimension": [150, 81],
+                "image": "images/scikit_logo.png",
                 "speed": 1.8,
                 "attenuation": 0.8,
-                "transparent": false
+                "transparent": true
             },
             {
                 "type": "Shift",
-                "position": [600, 200],
-                "dimension": [230, 120],
-                "image": "images/placeholder.png",
+                "position": [487, 300],
+                "dimension": [122, 150],
+                "image": "images/OpenCV_logo.png",
                 "speed": 1.8,
                 "attenuation": 0.8,
+                "transparent": true
+            },
+            {
+                "type": "Rollable",
+                "position": [0, 240],
+                "dimension": [350, 600],
+                "image": "images/placeholder.png",
+                "speed": 0.8,
+                "attenuation": 0.8,
+                "box_dimension": [350, 300],
                 "transparent": false
             },
             {
                 "type": "Button",
                 "position": [30, 40],
-                "dimension": [180, 120],
-                "image": "images/placeholder.png",
+                "dimension": [150, 150],
+                "image": "images/button_prew.png",
                 "transparent": true,
                 "action": "jump_to$1"
             }
@@ -196,7 +206,7 @@
                 "type": "Button",
                 "position": [730, 190],
                 "dimension": [200, 150],
-                "image": "images/placeholder.png",
+                "image": "images/grid_tile.png",
                 "transparent": false,
                 "action": "jump_to$7"
             },
@@ -204,7 +214,7 @@
                 "type": "Button",
                 "position": [730, 360],
                 "dimension": [200, 150],
-                "image": "images/placeholder.png",
+                "image": "images/heatmap_tile.png",
                 "transparent": false,
                 "action": "jump_to$11"
             },
@@ -212,7 +222,7 @@
                 "type": "Button",
                 "position": [510, 360],
                 "dimension": [200, 150],
-                "image": "images/placeholder.png",
+                "image": "images/ml_tile.png",
                 "transparent": false,
                 "action": "jump_to$14"
             },
@@ -220,22 +230,22 @@
                 "type": "Widget",
                 "position": [300, 0],
                 "dimension": [350, 80],
-                "image": "images/placeholder.png",
-                "transparent": false
+                "image": "images/gesztusok_title.png",
+                "transparent": true
             },
             {
                 "type": "Button",
-                "position": [30, 360],
-                "dimension": [180, 120],
-                "image": "images/placeholder.png",
+                "position": [20, 300],
+                "dimension": [150, 150],
+                "image": "images/button_next.png",
                 "transparent": true,
                 "action": "jump_to$15"
             },
             {
                 "type": "Button",
                 "position": [30, 40],
-                "dimension": [180, 120],
-                "image": "images/placeholder.png",
+                "dimension": [150, 150],
+                "image": "images/button_prew.png",
                 "transparent": true,
                 "action": "jump_to$1"
             }
@@ -265,8 +275,8 @@
             {
                 "type": "Button",
                 "position": [30, 40],
-                "dimension": [180, 120],
-                "image": "images/placeholder.png",
+                "dimension": [150, 150],
+                "image": "images/button_prew.png",
                 "transparent": true,
                 "action": "jump_to$5"
             }
@@ -287,7 +297,7 @@
                 "type": "Button",
                 "position": [30, 190],
                 "dimension": [200, 150],
-                "image": "images/placeholder.png",
+                "image": "images/sweep_tile.png",
                 "transparent": false,
                 "action": "jump_to$8"
             },
@@ -295,7 +305,7 @@
                 "type": "Button",
                 "position": [30, 360],
                 "dimension": [200, 150],
-                "image": "images/placeholder.png",
+                "image": "images/rotation_tile.png",
                 "transparent": false,
                 "action": "jump_to$9"
             },
@@ -310,8 +320,8 @@
             {
                 "type": "Button",
                 "position": [30, 40],
-                "dimension": [180, 120],
-                "image": "images/placeholder.png",
+                "dimension": [150, 150],
+                "image": "images/button_prew.png",
                 "transparent": true,
                 "action": "jump_to$5"
             }
@@ -331,8 +341,8 @@
             {
                 "type": "Button",
                 "position": [30, 40],
-                "dimension": [180, 120],
-                "image": "images/placeholder.png",
+                "dimension": [150, 150],
+                "image": "images/button_prew.png",
                 "transparent": true,
                 "action": "jump_to$7"
             }
@@ -364,8 +374,8 @@
             {
                 "type": "Button",
                 "position": [30, 40],
-                "dimension": [180, 120],
-                "image": "images/placeholder.png",
+                "dimension": [150, 150],
+                "image": "images/button_prew.png",
                 "transparent": true,
                 "action": "jump_to$7"
             }
@@ -393,8 +403,8 @@
             {
                 "type": "Button",
                 "position": [30, 40],
-                "dimension": [180, 120],
-                "image": "images/placeholder.png",
+                "dimension": [150, 150],
+                "image": "images/button_prew.png",
                 "transparent": true,
                 "action": "jump_to$7"
             }
@@ -416,7 +426,7 @@
                 "type": "Button",
                 "position": [730, 20],
                 "dimension": [200, 150],
-                "image": "images/placeholder.png",
+                "image": "images/blink_tile.png",
                 "transparent": false,
                 "action": "jump_to$12"
             },
@@ -424,15 +434,15 @@
                 "type": "Button",
                 "position": [730, 190],
                 "dimension": [200, 150],
-                "image": "images/placeholder.png",
+                "image": "images/symbol_tile.png",
                 "transparent": false,
                 "action": "jump_to$13"
             },
             {
                 "type": "Button",
                 "position": [30, 40],
-                "dimension": [180, 120],
-                "image": "images/placeholder.png",
+                "dimension": [150, 150],
+                "image": "images/button_prew.png",
                 "transparent": true,
                 "action": "jump_to$5"
             }
@@ -443,8 +453,8 @@
         "widgets": [
             {
                 "type": "Grabbable",
-                "position": [250, 50],
-                "dimension": [150, 150],
+                "position": [250, 100],
+                "dimension": [200, 200],
                 "image": "images/placeholder.png",
                 "transparent": false
             },
@@ -467,8 +477,8 @@
             {
                 "type": "Button",
                 "position": [30, 40],
-                "dimension": [180, 120],
-                "image": "images/placeholder.png",
+                "dimension": [150, 150],
+                "image": "images/button_prew.png",
                 "transparent": true,
                 "action": "jump_to$11"
             }
@@ -491,13 +501,13 @@
                 "dimension": [426, 240],
                 "image": "images/placeholder.png",
                 "transparent": false,
-                "action": "placeholder"
+                "action": "symbol_canvas_show$default"
             },
             {
                 "type": "Button",
                 "position": [30, 40],
-                "dimension": [180, 120],
-                "image": "images/placeholder.png",
+                "dimension": [150, 150],
+                "image": "images/button_prew.png",
                 "transparent": true,
                 "action": "jump_to$11"
             }
@@ -526,8 +536,8 @@
             {
                 "type": "Button",
                 "position": [30, 40],
-                "dimension": [180, 120],
-                "image": "images/placeholder.png",
+                "dimension": [150, 150],
+                "image": "images/button_prew.png",
                 "transparent": true,
                 "action": "jump_to$5"
             }
@@ -553,17 +563,17 @@
             },
             {
                 "type": "Button",
-                "position": [30, 360],
-                "dimension": [180, 120],
-                "image": "images/placeholder.png",
+                "position": [20, 300],
+                "dimension": [150, 150],
+                "image": "images/button_next.png",
                 "transparent": true,
                 "action": "jump_to$16"
             },
             {
                 "type": "Button",
                 "position": [30, 40],
-                "dimension": [180, 120],
-                "image": "images/placeholder.png",
+                "dimension": [150, 150],
+                "image": "images/button_prew.png",
                 "transparent": true,
                 "action": "jump_to$5"
             }
@@ -585,8 +595,8 @@
             {
                 "type": "Button",
                 "position": [30, 40],
-                "dimension": [180, 120],
-                "image": "images/placeholder.png",
+                "dimension": [150, 150],
+                "image": "images/button_prew.png",
                 "transparent": true,
                 "action": "jump_to$15"
             }

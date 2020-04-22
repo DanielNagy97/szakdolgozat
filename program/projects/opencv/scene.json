@@ -105,7 +105,6 @@
                 "transparent": true,
                 "action": "switch_color_channel"
             },
-
             {
                 "type": "Rollable",
                 "position": [0, 240],
