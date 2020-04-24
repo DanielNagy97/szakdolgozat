@@ -17,7 +17,7 @@ def calc_centers(image, grid_resolution):
     k = 0
     for i in range(grid_resolution[0]):
         for j in range(grid_resolution[1]):
-            centers[k][0] = j * cell_width + (cell_width / 2)
-            centers[k][1] = i * cell_height + (cell_height / 2)
+            centers[k][0] = i * cell_width + (cell_width / 2)
+            centers[k][1] = j * cell_height + (cell_height / 2)
             k += 1
     return centers
