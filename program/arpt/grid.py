@@ -7,6 +7,7 @@ def calc_centers(image, grid_resolution):
     :param image: OpenCV image (for image dimension)
     :param grid_resolution: tuple of (n_rows, n_columns) of the grid resolution
     :return: NumPy array with size (n_rows * n_columns) x 2
+             The first column is for X values, the second is for Y values.
     """
     width = image.shape[1]
     height = image.shape[0]
@@ -15,9 +16,10 @@ def calc_centers(image, grid_resolution):
     cell_width = width / grid_resolution[0]
     cell_height = height / grid_resolution[1]
     k = 0
-    for i in range(grid_resolution[0]):
-        for j in range(grid_resolution[1]):
-            centers[k][0] = i * cell_width + (cell_width / 2)
-            centers[k][1] = j * cell_height + (cell_height / 2)
+    for i in range(grid_resolution[1]):
+        for j in range(grid_resolution[0]):
+            centers[k][0] = j * cell_width + (cell_width / 2)
+            centers[k][1] = i * cell_height + (cell_height / 2)
             k += 1
     return centers
+
