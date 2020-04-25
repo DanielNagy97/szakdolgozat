@@ -5,7 +5,7 @@
         "__title": "Image Processing with OpenCV",
         "widgets": [
             {
-                "type": "Shift",
+                "type": "Shiftable",
                 "position": [60, 40],
                 "dimension": [203, 250],
                 "image": "images/OpenCV_logo.png",
@@ -345,7 +345,7 @@
         "__title": "End",
         "widgets": [
             {
-                "type": "Expand",
+                "type": "Expandable",
                 "position": [540, 30],
                 "dimension": [400, 450],
                 "image": "images/expand_template.png",

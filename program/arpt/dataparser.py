@@ -5,8 +5,8 @@ from arpt.canvas import Canvas
 from arpt.window import Window
 
 from arpt.widget import Widget
-from arpt.widgets.shift import Shift
-from arpt.widgets.expand import Expand
+from arpt.widgets.shiftable import Shiftable
+from arpt.widgets.expandable import Expandable
 from arpt.widgets.button import Button
 from arpt.widgets.grabbable import Grabbable
 from arpt.widgets.tuner import Tuner
@@ -101,23 +101,23 @@ class DataParser(object):
                                          widget['max_value'],
                                          widget['transparent'],
                                          widget['action'])
-                elif widget['type'] == 'Shift':
+                elif widget['type'] == 'Shiftable':
                     image_path = os.path.join(path, widget['image'])
-                    widget_class = Shift(tuple(widget['position']),
-                                         tuple(widget['dimension']),
-                                         image_path,
-                                         widget['speed'],
-                                         widget['attenuation'],
-                                         widget['transparent'])
-                elif widget['type'] == 'Expand':
+                    widget_class = Shiftable(tuple(widget['position']),
+                                             tuple(widget['dimension']),
+                                             image_path,
+                                             widget['speed'],
+                                             widget['attenuation'],
+                                             widget['transparent'])
+                elif widget['type'] == 'Expandable':
                     image_path = os.path.join(path, widget['image'])
-                    widget_class = Expand(tuple(widget['position']),
-                                          tuple(widget['dimension']),
-                                          image_path,
-                                          widget['speed'],
-                                          widget['attenuation'],
-                                          widget['header_size'],
-                                          widget['transparent'])
+                    widget_class = Expandable(tuple(widget['position']),
+                                              tuple(widget['dimension']),
+                                              image_path,
+                                              widget['speed'],
+                                              widget['attenuation'],
+                                              widget['header_size'],
+                                              widget['transparent'])
                 elif widget['type'] == 'Grabbable':
                     image_path = os.path.join(path, widget['image'])
                     widget_class = Grabbable(tuple(widget['position']),

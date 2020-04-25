@@ -139,17 +139,17 @@ class Controller(object):
         """
         pass
 
-    def shift_control(self, shift_widget):
+    def shiftable_control(self, shiftable_widget):
         """
-        Controlling the shift function.
+        Controlling the shiftable function.
         """
-        shift_widget.calc_shift(self.grid, self._video.dimension)
+        shiftable_widget.calc_shiftable(self.grid, self._video.dimension)
 
-    def expand_control(self, expand_widget):
+    def expandable_control(self, expandable_widget):
         """
-        Controlling the expand function.
+        Controlling the expandable function.
         """
-        expand_widget.calc_expand(self.grid, self._video.dimension)
+        expandable_widget.calc_expandable(self.grid, self._video.dimension)
 
     def button_control(self, button_widget):
         """
@@ -186,11 +186,11 @@ class Controller(object):
         Updating the widgets
         """
         for widget in self.scene[self.current_scene]['widgets']:
-            if type(widget).__name__ == "Shift":
-                self.shift_control(widget)
+            if type(widget).__name__ == "Shiftable":
+                self.shiftable_control(widget)
 
-            elif type(widget).__name__ == "Expand":
-                self.expand_control(widget)
+            elif type(widget).__name__ == "Expandable":
+                self.expandable_control(widget)
 
             elif type(widget).__name__ == "Button":
                 self.button_control(widget)

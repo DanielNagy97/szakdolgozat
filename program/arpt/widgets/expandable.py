@@ -3,14 +3,14 @@ import arpt.vector as v
 from arpt.widget import Widget
 
 
-class Expand(Widget):
+class Expandable(Widget):
     """
     Expand widget representation
     """
     def __init__(self, position, dimension, image, speed, attenuation,
                  header_size, transparent):
         """
-        Initialize new expandable widget.
+        Initialize new Expandable widget.
         :param position: position of the element tuple of (x,y)
         :param dimension: dimension of the element tuple of (width, height)
         :param image: source of the image file
@@ -33,9 +33,9 @@ class Expand(Widget):
                                 self.original_height,
                                 0:self.dimension[0]].copy()
 
-    def calc_expand(self, grid, dimensions_of_frame):
+    def calc_expandable(self, grid, dimensions_of_frame):
         """
-        Calculate the expand's behaviour.
+        Calculate the Expandable's behaviour.
         :param grid: grid object
         :param dimensions_of_frame: dimension of frame, tuple of (w, h)
         :return: None

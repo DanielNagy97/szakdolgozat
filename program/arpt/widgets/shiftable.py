@@ -2,15 +2,15 @@ import numpy as np
 from arpt.widget import Widget
 
 
-class Shift(Widget):
+class Shiftable(Widget):
     """
-    Shift widget representation
+    Shiftable widget representation
     """
 
     def __init__(self, position, dimension, image, speed, attenuation,
                  transparent):
         """
-        Initialize new shift widget.
+        Initialize new shiftable widget.
         :param position: position of the element tuple of (x,y)
         :param dimension: dimension of the element tuple of (width, height)
         :param image: source of the image file
@@ -24,7 +24,7 @@ class Shift(Widget):
         self.attenuation = attenuation
         self.velocity = [0.0, 0.0]
 
-    def calc_shift(self, grid, dimensions_of_frame):
+    def calc_shiftable(self, grid, dimensions_of_frame):
         """
         Calculate the shift vectors.
         :param grid: grid object

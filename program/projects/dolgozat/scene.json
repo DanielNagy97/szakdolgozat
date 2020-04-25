@@ -5,7 +5,7 @@
         "__title": "01 - Introduction with Shift title",
         "widgets": [
             {
-                "type": "Shift",
+                "type": "Shiftable",
                 "position": [60, 40],
                 "dimension": [350, 82],
                 "image": "images/title.png",
@@ -89,7 +89,7 @@
         "__title": "AR",
         "widgets": [
             {
-                "type": "Expand",
+                "type": "Expandable",
                 "position": [650, 30],
                 "dimension": [300, 400],
                 "image": "images/ar_expand.png",
@@ -99,7 +99,7 @@
                 "transparent": false
             },
             {
-                "type": "Shift",
+                "type": "Shiftable",
                 "position": [300, 200],
                 "dimension": [180, 180],
                 "image": "images/placeholder.png",
@@ -121,7 +121,7 @@
         "__title": "Prezentációs szoftverek",
         "widgets": [
             {
-                "type": "Expand",
+                "type": "Expandable",
                 "position": [650, 30],
                 "dimension": [300, 400],
                 "image": "images/prezi_expand.png",
@@ -154,7 +154,7 @@
         "__title": "Scikit, OpenCV",
         "widgets": [
             {
-                "type": "Shift",
+                "type": "Shiftable",
                 "position": [300, 200],
                 "dimension": [225, 122],
                 "image": "images/scikit_logo.png",
@@ -163,7 +163,7 @@
                 "transparent": true
             },
             {
-                "type": "Shift",
+                "type": "Shiftable",
                 "position": [487, 300],
                 "dimension": [183, 225],
                 "image": "images/OpenCV_logo.png",
@@ -385,7 +385,7 @@
         "__title": "Shift", 
         "widgets": [
             {
-                "type": "Shift",
+                "type": "Shiftable",
                 "position": [300, 200],
                 "dimension": [180, 180],
                 "image": "images/shift_shiftable.png",
@@ -394,7 +394,7 @@
                 "transparent": false
             },
             {
-                "type": "Expand",
+                "type": "Expandable",
                 "position": [150, 30],
                 "dimension": [250, 375],
                 "image": "images/shift_expand.png",
@@ -530,7 +530,7 @@
         "__title": "ML", 
         "widgets": [
             {
-                "type": "Expand",
+                "type": "Expandable",
                 "position": [30, 160],
                 "dimension": [400, 394],
                 "image": "images/ml_expand.png",
@@ -599,7 +599,7 @@
         "__title": "End",
         "widgets": [
             {
-                "type": "Expand",
+                "type": "Expandable",
                 "position": [540, 30],
                 "dimension": [400, 450],
                 "image": "images/end_expand.png",
