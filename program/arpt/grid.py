@@ -13,11 +13,11 @@ def calc_centers(image, grid_resolution):
     height = image.shape[0]
     n_grid_points = grid_resolution[0] * grid_resolution[1]
     centers = np.empty((n_grid_points, 2), dtype=np.float32)
-    cell_width = width / grid_resolution[0]
-    cell_height = height / grid_resolution[1]
+    cell_width = width / grid_resolution[1]
+    cell_height = height / grid_resolution[0]
     k = 0
-    for i in range(grid_resolution[1]):
-        for j in range(grid_resolution[0]):
+    for i in range(grid_resolution[0]):
+        for j in range(grid_resolution[1]):
             centers[k][0] = j * cell_width + (cell_width / 2)
             centers[k][1] = i * cell_height + (cell_height / 2)
             k += 1

@@ -9,7 +9,7 @@ def calc_optical_flow(prev_image, next_image, grid_resolution):
     Calculate the motion vector field from sequential images.
     :param prev_image: previous image
     :param next_image: current image
-    :param grid_resolution: resolution of the vector field
+    :param grid_resolution: resolution of the vector field as (n_rows, n_columns)
     :return:
     """
     prev_points = grid.calc_centers(prev_image, grid_resolution)
