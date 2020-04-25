@@ -86,51 +86,58 @@ class DataParser(object):
             slide = []
             for widget in scene_data[i]['widgets']:
                 if widget['type'] == 'Button':
+                    image_path = os.path.join(path, widget['image'])
                     widget_class = Button(tuple(widget['position']),
                                           tuple(widget['dimension']),
-                                          path+widget['image'],
+                                          image_path,
                                           widget['transparent'],
                                           widget['action'])
                 elif widget['type'] == 'Tuner':
+                    image_path = os.path.join(path, widget['image'])
                     widget_class = Tuner(tuple(widget['position']),
                                          tuple(widget['dimension']),
-                                         path+widget['image'],
+                                         image_path,
                                          widget['min_value'],
                                          widget['max_value'],
                                          widget['transparent'],
                                          widget['action'])
                 elif widget['type'] == 'Shift':
+                    image_path = os.path.join(path, widget['image'])
                     widget_class = Shift(tuple(widget['position']),
                                          tuple(widget['dimension']),
-                                         path+widget['image'],
+                                         image_path,
                                          widget['speed'],
                                          widget['attenuation'],
                                          widget['transparent'])
                 elif widget['type'] == 'Expand':
+                    image_path = os.path.join(path, widget['image'])
                     widget_class = Expand(tuple(widget['position']),
                                           tuple(widget['dimension']),
-                                          path+widget['image'],
+                                          image_path,
                                           widget['speed'],
                                           widget['attenuation'],
                                           widget['header_size'],
                                           widget['transparent'])
                 elif widget['type'] == 'Grabbable':
+                    image_path = os.path.join(path, widget['image'])
                     widget_class = Grabbable(tuple(widget['position']),
                                              tuple(widget['dimension']),
-                                             path+widget['image'],
+                                             image_path,
                                              widget['transparent'])
                 elif widget['type'] == 'Rollable':
+                    image_path = os.path.join(path, widget['image'])
                     widget_class = Rollable(tuple(widget['position']),
                                             tuple(widget['dimension']),
-                                            path+widget['image'],
+                                            image_path,
                                             widget['speed'],
                                             widget['attenuation'],
                                             tuple(widget['box_dimension']),
                                             widget['transparent'])
                 elif widget['type'] == 'Widget':
+                    image_path = os.path.join(path, widget['image'])
                     widget_class = Widget(tuple(widget['position']),
                                           tuple(widget['dimension']),
-                                          path+widget['image'],
+                                          image_path,
                                           widget['transparent'])
 
                 slide.append(widget_class)

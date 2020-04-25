@@ -1,4 +1,5 @@
 import cv2
+import os
 
 from arpt.grid import Grid
 from arpt.video import Video
@@ -29,7 +30,7 @@ class Controller(object):
         :param source_path: The path of the project file
         :demo: When True, only the output will be shown
         """
-        module_path = source_path+"actions.py"
+        module_path = os.path.join(source_path, "actions.py")
         spec = \
             importlib.util.spec_from_file_location("module.name", module_path)
         self.actions = importlib.util.module_from_spec(spec)
