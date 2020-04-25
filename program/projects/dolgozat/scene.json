@@ -16,8 +16,8 @@
             {
                 "type": "Rollable",
                 "position": [563, 20],
-                "dimension": [375, 1967],
-                "image": "images/placeholder.png",
+                "dimension": [375, 1200],
+                "image": "images/intro_rollable.png",
                 "speed": 1.8,
                 "attenuation": 0.8,
                 "box_dimension": [375, 280],
@@ -133,8 +133,8 @@
             {
                 "type": "Rollable",
                 "position": [30, 250],
-                "dimension": [375, 1967],
-                "image": "images/placeholder.png",
+                "dimension": [375, 700],
+                "image": "images/prezi_rollable.png",
                 "speed": 1.8,
                 "attenuation": 0.8,
                 "box_dimension": [375, 280],
@@ -156,7 +156,7 @@
             {
                 "type": "Shift",
                 "position": [300, 200],
-                "dimension": [150, 81],
+                "dimension": [225, 122],
                 "image": "images/scikit_logo.png",
                 "speed": 1.8,
                 "attenuation": 0.8,
@@ -165,7 +165,7 @@
             {
                 "type": "Shift",
                 "position": [487, 300],
-                "dimension": [122, 150],
+                "dimension": [183, 225],
                 "image": "images/OpenCV_logo.png",
                 "speed": 1.8,
                 "attenuation": 0.8,
@@ -174,8 +174,8 @@
             {
                 "type": "Rollable",
                 "position": [0, 240],
-                "dimension": [350, 600],
-                "image": "images/placeholder.png",
+                "dimension": [350, 989],
+                "image": "images/opencv_scikit_rollable.png",
                 "speed": 0.8,
                 "attenuation": 0.8,
                 "box_dimension": [350, 300],
@@ -355,7 +355,7 @@
                 "type": "Tuner",
                 "position": [100, 300],
                 "dimension": [180, 180],
-                "image": "images/placeholder.png",
+                "image": "images/tuner.png",
                 "min_value": 0,
                 "max_value": 10,
                 "transparent": true,
@@ -388,16 +388,29 @@
                 "type": "Shift",
                 "position": [300, 200],
                 "dimension": [180, 180],
-                "image": "images/placeholder.png",
+                "image": "images/shift_shiftable.png",
                 "speed": 1.8,
                 "attenuation": 0.8,
                 "transparent": false
             },
             {
-                "type": "Widget",
+                "type": "Expand",
+                "position": [150, 30],
+                "dimension": [250, 375],
+                "image": "images/shift_expand.png",
+                "speed": 1.8,
+                "attenuation": 0.8,
+                "header_size": 60,
+                "transparent": false
+            },
+            {
+                "type": "Rollable",
                 "position": [610, 0],
                 "dimension": [350, 400],
-                "image": "images/placeholder.png",
+                "image": "images/shift_widget.png",
+                "speed": 1.8,
+                "attenuation": 0.8,
+                "box_dimension": [350, 280],
                 "transparent": false
             },
             {
@@ -455,8 +468,8 @@
                 "type": "Grabbable",
                 "position": [250, 100],
                 "dimension": [200, 200],
-                "image": "images/placeholder.png",
-                "transparent": false
+                "image": "images/grabbable.png",
+                "transparent": true
             },
             {
                 "type": "Button",
@@ -493,7 +506,7 @@
                 "dimension": [150, 150],
                 "image": "images/placeholder.png",
                 "transparent": false,
-                "action": "symbol_show"
+                "action": "symbol_show$default"
             },
             {
                 "type": "Button",
@@ -518,8 +531,8 @@
         "widgets": [
             {
                 "type": "Expand",
-                "position": [30, 180],
-                "dimension": [400, 320],
+                "position": [30, 160],
+                "dimension": [400, 394],
                 "image": "images/ml_expand.png",
                 "speed": 1.8,
                 "attenuation": 0.8,
@@ -527,10 +540,13 @@
                 "transparent": false
             },
             {
-                "type": "Widget",
-                "position": [610, 0],
-                "dimension": [350, 300],
-                "image": "images/placeholder.png",
+                "type": "Rollable",
+                "position": [600, 30],
+                "dimension": [350, 800],
+                "image": "images/mlperf_rollable.png",
+                "speed": 1.8,
+                "attenuation": 0.8,
+                "box_dimension": [350, 280],
                 "transparent": false
             },
             {
