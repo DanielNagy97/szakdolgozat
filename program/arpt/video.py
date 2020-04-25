@@ -1,110 +1,48 @@
 import cv2
-from .capture_device import CaptureDevice
 
 
 class Video(object):
     """
     Class for providing a more convenient access for the video capture device
     """
-
-    def __init__(self, source, dimension, to_flip=False):
+    
+    def __init__(self, source, dimension=None, need_flip=False):
         """
-        Initialize the video
-        :param source: index of the device, or file name in string
-        :param dimension: The dimension of the frame, tuple of (width, height)
-        :param to_flip: To mirror the image or not
+        Initialize the video.
+        :param source: index of the device as an integer, or a file path as a string
+        :param dimension: the dimension of the frame, tuple of (width, height)
+        :param need_flip: logical value which signs that the horizontal flipping is necessary or not
         """
-        self._capture = CaptureDevice(source, dimension)
-        self._to_flip = to_flip
+        self._capture = cv2.VideoCapture(source)
+        self._need_flip = need_flip
         self._dimension = dimension
 
-        self._ret, self._frame = self._capture.read()
-        if self._to_flip:
-            self._frame = self.flip_frame(self._frame)
-
-        if self._dimension != self._capture.dimension:
-            self.resize_current_frame()
-
-        self._gray_frame = self.make_gray_frame(self._frame)
-        self._old_gray_frame = self._gray_frame
-
-    def make_gray_frame(self, frame):
+    def get_next_frame(self):
         """
-        Get the grayscale frame.
-        :return: a grayscale image
+        Get the next frame from the capture.
+        :return: NumPy array of a properly sized and flipped frame
         """
-        return cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+        has_read_properly, frame = self._capture.read()
+        if has_read_properly is False:
+            return None
+        if self._dimension is not None:
+            frame = cv2.resize(frame,
+                               self._dimension,
+                               fx=0,
+                               fy=0,
+                               interpolation=cv2.INTER_CUBIC)
+        if self._need_flip:
+            frame = cv2.flip(frame, 1)
+        return frame
 
-    def flip_frame(self, frame):
+    def __enter__(self):
         """
-        Flip the frame.
-        :return: an image object
+        Returns with the Video instance as a context manager.
         """
-        return cv2.flip(frame, 1)
+        return self
 
-    def get_frame(self):
+    def __exit__(self, exc_type, value, traceback):
         """
-        Get the next frame from the capture device.
-        """
-        self._old_gray_frame = self._gray_frame
-        self._ret, self._frame = self._capture.read()
-        if self._to_flip:
-            self._frame = self.flip_frame(self._frame)
-
-        if self._dimension != self._capture.dimension:
-            self.resize_current_frame()
-
-        self._gray_frame = self.make_gray_frame(self._frame)
-
-    def resize_current_frame(self):
-        """
-        Resizing the current frame
-        """
-        self._frame = cv2.resize(self._frame, self._dimension, fx=0, fy=0,
-                                 interpolation=cv2.INTER_CUBIC)
-
-    def release_capture_device(self):
-        """
-        Releasing capture device
+        Release the capture device when exiting from the context.
         """
         self._capture.release()
-
-    @property
-    def dimension(self):
-        """
-        Get the dimension of the frame.
-        :return: tuple of (width, height)
-        """
-        return self._dimension
-
-    @property
-    def frame(self):
-        """
-        Get the current frame.
-        """
-        return self._frame
-
-    @frame.setter
-    def frame(self, new_frame):
-        self._frame = new_frame
-
-    @property
-    def gray_frame(self):
-        """
-        Get the current grayscale frame.
-        """
-        return self._gray_frame
-
-    @property
-    def old_gray_frame(self):
-        """
-        Get the former grayscale frame.
-        """
-        return self._old_gray_frame
-
-    @property
-    def ret(self):
-        """
-        Get the logic value of the reading successfulness
-        """
-        return self._ret
