@@ -2,11 +2,11 @@
 
 \Section{Felismerendő gesztusok}
 
-A szoftver használata közben a prezentáló személy különféle gesztusok segítségével irányíthatja a prezentáció menetét és szintén ezen gesztusok segítségével léphet kapcsolatba a videófolyamon megjelenő virtuális elemekkel. A felhasználó a karjai segítségével valósíthatja meg a mozdulatokat. A gesztusokat az alábbi kategóriákba sorolhatjuk:
+A szoftver használata közben a prezentáló személy különféle gesztusok segítségével irányíthatja a prezentáció menetét és szintén gesztusok segítségével léphet kapcsolatba a videófolyamon megjelenő virtuális elemekkel. A felhasználó a karjai segítségével valósíthatja meg a mozdulatokat. A gesztusokat az alábbi kategóriákba sorolhatjuk:
 
 \begin{itemize}
-	\item \textbf{Sweep}: Egyenes vonalú mozgás. A mozgásnak van iránya és két képkocka között megfigyelhető a hossza is.
-	\item \textbf{Shift}: Bizonyos virtuális elemek közvetlenül is reagálnak a környezetükben történő mozgásra. Az ilyen elemek az irányukba történő mozgással megegyező irányú mozgással reagálnak. Vagyis a prezentáló személy például a kezei segítségével egyszerűen eltolhatja az adott virtuális elemet.
+	\item \textbf{Sweep}: Egyenes vonalú mozgás, pl.: kézfej végighúzása a képtartományon. A mozgásnak van iránya és két képkocka között megfigyelhető a hossza is.
+	\item \textbf{Shift}: Bizonyos virtuális elemek közvetlenül is reagálnak a környezetükben történő mozgásra. Az ilyen elemek az irányukba történő mozgással megegyező irányú mozgással reagálnak. Vagyis a prezentáló személy például a kezei segítségével egyszerűen eltolhatja az adott virtuális elemet. Az ilyen elemeket vezérlő gesztusokat \textit{Shift}-nek nevezhetjük el.
 	\item \textbf{Blink}: Az ujjak gyors ökölbe zárása vagy a tenyér széttárásának mozdulata.
 	\item \textbf{Drag and Drop}: Bizonyos virtuális elemeket a prezentáló személy képes megfogni, majd odébbhúzni és elengedni. A funkció eléréséhez a prezentálónak az ún. \textit{Drag and Drop} mozgássorozatot kell végrehajtania. Két \textit{Blink} gesztus között szabadon mozgathatja az "elkapott" elemet, majd végül a kívánt helyére teheti azt.
 	\item \textbf{Rotation}: A videófolyamon történő örvénylő mozgás, ami akár több ponton is megfigyelhető. Ez lehet például karlendítés, körvonal/ív menti mozgás, tenyerek forgatása.
@@ -19,15 +19,15 @@ A szoftver használata közben a prezentáló személy különféle gesztusok se
 % A feldolgozás folyamata ábra
 % Videófolyam -> két kép kiragadása -> Elmozdulásértékek számítása
 
-A videófolyamon megfigyelhető mozgást a további számítások elvégzéséhez először érzékelnünk kell. Az elmozdulások becslésére az ún. \textit{Motion-Flow} technikák tűntek a legalkalmasabbnak. Egy kiemelkedő és széles körben elterjedt eljárás a Bruce D. Lucas és Takeo Kanade által kidolgozott módszer, melynek implementálása az \textit{OpenCV}-ben is megtalálható.
+A videófolyamon megfigyelhető mozgást a további számítások elvégzéséhez először érzékelnünk kell. Az elmozdulások becslésére az ún. \textit{MotionFlow}/\textit{Optical Flow} technikák tűnnek a legalkalmasabbnak. Egy kiemelkedő és széles körben elterjedt eljárás a Bruce D. Lucas és Takeo Kanade által kidolgozott módszer, melynek implementálása az \textit{OpenCV}-ben is megtalálható.
 
-A Lucas-Kanade módszer dedikált pontok követésére hivatott. Ha a videófomlyaból kiemelünk két képkockát, melyek között az eltelt idő kicsi, a módszer képes megbecsülni a két képkockán elhelyezkedő kijelölt pontok pozíciójának a változását, vagyis megadja a pontok elmozdulás vektorát. A módszer azon a megállapításon alapszik, hogy a videófolyamon egy kijelölt pont és a körülötte lévő pixelek halmaza közel azonos intenzitású $(I)$ a vizsgált időintervallumban. Ha a ponthoz tartozó valós objektum elmozdul a korábbi helyzetéről és az általa képviselt új pont a vizsgálandó pont bizonyos tartományába esik, akkor a módszer képes becslést adni a pont új helyzetére a videófolyamon. A módszer használatánál feltételezzük azt is, hogy a videófolyamon megfigyelhető mozgás viszonylag lassú, vagyis két képkockát vizsgálva az új pont nem eshet kívül a vizsgált pont tartományából. A módszer tetszőleges pontok halmazára alkalmazható. Elsősorban szürkeárnyalatos képekre használatos, de a megfelelő paraméterek megválasztása mellett színes képekre is alkalmazható. Színinformációk használata mellett pontosabb eredményt kaphatunk, viszont a számításigény várhatóan erősen megnövekedne.
+A Lucas-Kanade módszer dedikált pontok követésére hivatott. Ha a videófomlyaból kiemelünk két képkockát, melyek között az eltelt idő kicsi, a módszer képes megbecsülni a két képkockán elhelyezkedő kijelölt pontok pozíciójának a változását, vagyis megadja a pontok elmozdulás vektorait. A módszer azon a megállapításon alapszik, hogy a videófolyamon egy kijelölt pont és a körülötte lévő pixelek halmaza közel azonos intenzitású $(I)$ a vizsgált időintervallumban. Ha a ponthoz tartozó valós objektum elmozdul a korábbi helyzetéről és az általa képviselt új pont a vizsgálandó terület tartományába esik, akkor a módszer képes becslést adni a vizsgált pont új helyzetére a videófolyamon. A módszer használatánál feltételezzük azt is, hogy a videófolyamon megfigyelhető mozgás viszonylag lassú, vagyis két képkockát vizsgálva az új pont nem eshet kívül a vizsgált pont tartományából. A módszer tetszőleges pontok halmazára alkalmazható. Elsősorban szürkeárnyalatos képekre használatos, de a megfelelő paraméterek megválasztása mellett színes képekre is használható. Színinformációk használata mellett pontosabb eredményt kaphatunk, hiszen ilyenkor egy-egy pont több információt hordozna, viszont a számításigény várhatóan erősen megnövekedne. 
 
 Vegyünk egy pixelt az összehasonlítandó két képkocka egyikéből és jelöljük $I(x,y,t)$-vel, ahol $x,y \in \mathbb{R}$ a pixel pozíciója, $t$ pedig az idő. Tegyük fel, hogy a vizsgálandó pixel $(dx, dy)$ távolsággal elmozdul a következő képkockán megfigyelve $dt$ idővel később. Mivel ezek a pixelek ugyanannak a valós objektumnak a vetületei, ezért feltételezzük, hogy az intenzitásértékük nem változott. Így
 \begin{align*}
 I(x,y,t) = I(x+dx,y+dy,t+dt)
 \end{align*}
-Ezután vegyük a jobboldali kifejezés Taylor-sor közelítését, távolítsuk el a közös kifejezéseket, majd osszunk $dt$-vel. Így a következő egyenletet kapjuk:
+Ezután vegyük a jobb oldali kifejezés Taylor-sor közelítését, távolítsuk el a közös kifejezéseket, majd osszunk $dt$-vel. Így a következő egyenletet kapjuk:
 \begin{align*}
 f_xu+f_yv+f_t=0
 \end{align*}
@@ -36,7 +36,7 @@ ahol:
 f_x = \frac{\partial f}{\partial x} &; f_y = \frac{\partial f}{\partial y}\\
 u = \frac{dx}{dt} &; v = \frac{dy}{dt}
 \end{align*}
-A fenti egyenlet \textit{Optical Flow egyenlet}nek hívjuk, melyben $f_x$ és $f_y$ kép gradiensek. Hasonlóan, $f_t$ az idő gradiense. De $(u,v)$, vagyis az elmozdulás vektorok ismeretlenek. Ezen kétismeretlenes egyenlet megoldására számos módszer létezik, ezek egyike a \textit{Lucas-Kanade} módszer.
+A fenti egyenlet \textit{Optical Flow egyenletnek} hívjuk, melyben $f_x$ és $f_y$ kép gradiensek. Hasonlóan, $f_t$ az idő gradiense. De $(u,v)$, vagyis az elmozdulás vektorok ismeretlenek. Ezen kétismeretlenes egyenlet megoldására számos módszer létezik, ezek egyike a \textit{Lucas-Kanade} módszer.
 
 Korábban említettük, hogy a vizsgálandó pont és az őt körülvevő pontok halmazai közel azonos intenzitásértékekkel rendelkeznek a megfigyelés időtartamában. Vegyünk például egy $3 \times 3$-as foltot a vizsgálandó pixel körül. A megállapítás alapján feltételezhetjük, hogy ezen tartományba eső pixelek elmozdulása hasonló lesz. Megkereshetjük az $(f_x,f_y,f_t)$-ket ezekre a pontokra. Így 9 darab kétismeretlenes egyenletet kapunk, amely túlhatározott.
 
@@ -53,17 +53,17 @@ Az \textit{OpenCV}-ben található implementáció ún. \textit{Gauss képpirami
 \label{fig:gausspyramid}
 \end{figure}
 
-A módszer \textit{Spare Optical-Flow}-t valósít meg, vagyis egymástól különálló pontokat vizsgál, ellentétben a \textit{Dense Optical-Flow} módszerekkel, melyek a teljes kép vizsgálatával számolják ki az elmozdulás vektorokat. \cite{bradski2008learning} Az utóbbi módszerek számításigénye kifejezetten magas. Valós idejű alkalmazás esetén problémákba ütközhetünk gyengébb hardverek esetében. A mozgás valós idejű detektálására a \textit{Spare Optical-Flow} módszerek is kielégítő eredményekkel szolgálnak, néhány trükk alkalmazása mellett. Ilyenek például a már említett \textit{kép-piramisok} használata a gyors mozgások pontos követésére és a vizsgálandó pontok kijelölésének a stratégiája is. A pontok kijelöléséhez egy rácsszerkezet használatát gondoltam a legmegfelelőbbnek, ahol a pontok a rács metszéspontjaiban helyezkednek el. A képtartományt ily módon egyenletesen fedik le a pontok.
+A módszer \textit{Spare Optical Flow}-t valósít meg, vagyis egymástól különálló pontokat vizsgál, ellentétben a \textit{Dense Optical Flow} módszerekkel, melyek a teljes kép vizsgálatával számolják ki az elmozdulás vektorokat. \cite{bradski2008learning} Az utóbbi módszerek számításigénye kifejezetten magas. Valós idejű alkalmazás esetén problémákba ütközhetünk gyengébb hardverek esetében. A mozgás valós idejű detektálására a \textit{Spare Optical Flow} módszerek is kielégítő eredményekkel szolgálnak, néhány trükk alkalmazása mellett. Ilyenek például a már említett \textit{kép-piramisok} használata a gyors mozgások pontos követésére és a vizsgálandó pontok kijelölésének a stratégiája is. A pontok kijelöléséhez egy rácsszerkezet használatát gondoltam a legmegfelelőbbnek, ahol a pontok a rács középpontjaiban helyezkednek el. A képtartományt ily módon egyenletesen fedik le a pontok, a további számításokat pedig ehhez tudjuk igazítani.
 
 \Section{Rácspontok kezelése}
 
-Az \textit{Optical-Flow} eljárást tetszőleges számú pontra elvégezhetjük. Ha létrehozunk egy rácsszerkezetet fix pontokkal, akkor a képtartományt egyenletesen lefedhetjük a pontok halmazával.
+Az \textit{Optical Flow} eljárást tetszőleges számú pontra elvégezhetjük. Ha létrehozunk egy rácsszerkezetet fix pontokkal, akkor a képtartományt egyenletesen lefedhetjük a pontok halmazával.
 Ezen pontokat felhasználva minden iterációban az éppen aktuális és az egyel korábbi szürkeárnyalatos képkockákra elvégezhetjük az eljárást és így minden esetben kapunk egy új ponthalmazt, amely az eljárás eredménypontjait tartalmazza. Az eredeti és az új pontok párjaiból egy vektormezőt kapunk.
 
 \begin{figure}[h]
 \centering
 \frame{\includegraphics[width=11.2truecm, height=6.3truecm]{images/vectorField_screenshot.png}}
-\caption{Képernyőfotó a vektormezőről, $15 \times 8$-as rácsfelbontás mellett !! új ábra kell!! }
+\caption{Képernyőfotó a vektormezőről, egy $8 \times 15$-ös rácsfelbontás mellett}
 \label{fig:vectorfield}
 \end{figure}
 
@@ -72,8 +72,8 @@ A kapott pontok párjaiból kiszámolhatjuk az elmozdulásvektorokat.
 A mozgás detektálása rácspontok segítségével kevesebb számítást igényel, mintha minden pixel elmozdulását vizsgálnánk és az elmozdulás becslésére is elfogadható eredményeket kapunk.
 A rács felbontását tetszőlegesen megadhatjuk. Minél nagyobb a felbontás, annál több pontot vizsgál a szoftver, ami nagyobb pontosságot is eredményez. Viszont a rácsfelbontás használata a futási időt is befolyásolja. Egy gyengébb hardver esetén nem ajánlott magas rácsfelbontás mellett futatnunk a programot, mivel tapasztalataim szerint jelentős lassulásra számíthatunk.
 
-A rácspontok helyzetének meghatározásához elsősorban definiálnunk kell a rács felbontását és ismernünk kell a videófolyam felbontását is. Érdemes a képarány függvényében megválasztani a rács felbontásásnak értékeit. Pédául egy 16:9-es képarányú videófolyam esetén egy $16 \times 9$-as rács használata teljesen megfelelőnek tűnik. Ez 144 vizsgálandó pontot jelent.
-A képtartomány széleit nem szükséges vizsgálnunk, hiszen a képből kilépő objektumok további helyzetét már nem tudjuk meghatározni és feltételezzük, hogy a lényeges mozgások nem a széleken történnek. Így érdemes egy bizonyos kereten belül elhelyeznünk a rácspontokat.
+A rácspontok helyzetének meghatározásához elsősorban definiálnunk kell a rács felbontását és ismernünk kell a videófolyam felbontását is. Érdemes a képarány függvényében megválasztani a rács felbontásásnak értékeit. Pédául egy 16:9-es képarányú videófolyam esetén egy $9 \times 16$-es rács használata teljesen megfelelőnek tűnik, vagyis 9 sorban és 16 oszlopban lesznek elhelyezve a pontok az említett felbontás használata mellett. Ez 144 vizsgálandó pontot jelent.
+A képtartomány széleit nem szükséges vizsgálnunk, hiszen a képből kilépő objektumok további helyzetét már nem tudjuk meghatározni és feltételezzük, hogy a lényeges mozgások nem a széleken történnek. Így érdemes egy bizonyos kereten belül elhelyeznünk a pontokat.
 
 \bigskip
 
@@ -84,8 +84,8 @@ A képtartomány széleit nem szükséges vizsgálnunk, hiszen a képből kilép
 \noindent \textbf{Rácspontok$\_$generálása}(@kép, @rács\_felbontás, @rács)\\
 szélesség $\leftarrow$ kép.szélesség()\\
 magasság $\leftarrow$  kép.magasság()\\
-cella\_szélesség $\leftarrow$ $\frac{\text{szélesség}}{\text{rács\_felbontás}_0}$\\
-cella\_magasság $\leftarrow$ $\frac{\text{magasság}}{\text{rács\_felbontás}_1}$\\
+cella\_magasság $\leftarrow$ $\frac{\text{magasság}}{\text{rács\_felbontás}_0}$\\
+cella\_szélesség $\leftarrow$ $\frac{\text{szélesség}}{\text{rács\_felbontás}_1}$\\
 k $\leftarrow$ 0\\
 \textbf{FOR} i $\leftarrow$ 0 \textbf{TO} $\text{rács\_felbontás}_0-1$ \textbf{DO}\\
 \indent \textbf{FOR} j $\leftarrow$ 0 \textbf{TO} $\text{rács\_felbontás}_1-1$ \textbf{DO}\\
@@ -102,9 +102,9 @@ Az értékek a következőképpen kerülnek kiszámításra:\\
 \noindent \textbf{Hőtérkép$\_$kiszámítása}(@vektormező, érzékenység, @hőtérkép)\\ 
 Input paraméter: vektormező (n$\times$m-es mátrix), érzékenység\\
 Output paraméter: hőtérkép\\
-\textbf{FOR} i $\leftarrow$ 1 \textbf{TO} Hossz(vektor$_n$) \textbf{DO}\\
-\indent \textbf{FOR} j $\leftarrow$ 1 \textbf{TO} Hossz(vektor$_m$) \textbf{DO}\\
-\indent \indent hőérték$_{ij}$ $\leftarrow$ hossz(vektor$_{ij}$)*érzékenység\\
+\textbf{FOR} i $\leftarrow$ 1 \textbf{TO} Hossz(vektormező$_n$) \textbf{DO}\\
+\indent \textbf{FOR} j $\leftarrow$ 1 \textbf{TO} Hossz(vektormező$_m$) \textbf{DO}\\
+\indent \indent hőérték$_{ij}$ $\leftarrow$ hossz(vektormező$_{ij}$)*érzékenység\\
 \indent \indent \textbf{IF} hőérték$_{ij}$ > 255\\
 \indent \indent \indent \textbf{THEN} hőérték$_{ij}$ $\leftarrow$ 255\\
 \indent \indent hőtérkép$_{ij}$ $\leftarrow$ (255-hőérték$_{ij}$, 0, hőérték$_{ij}$)\\
@@ -125,7 +125,7 @@ A \ref{fig:heatmap} ábrán megfigyelhető, hogy az összetartozó értékek feh
 
 \Section{Gépi tanulásos módszerek, teljesítménymérések}
 
-A dolgozatom programjához szükséges modellek betanításhoz felügyelt tanítási módszert kívánok alkalmazni, \textit{offline} adatkészletekkel. Az ilyen típusú tanító módszererek hátrányai közé sorolhatjuk a rugalmatlanságot is, vagyis az alkalmazóképesség hiányát is. Az \textit{online} tanulásos módszerek ezzel ellentétben sokkal jobban alkalmazkodnak, hiszen működés közben a valós világ éppen aktuális jellegzetességeihez igazítják magukat. Az \textit{online} módszerek előnye lehet a kisebb memória igény is, hiszen kevesebb adatmennyiség van jelen a futás során. Ez egyben a módszerek hátrányát is jelenti, mivel könnyen felejtenek az ilyen megoldások és a drasztikus, hirtelen változásokra rosszabbul reagálnak, mint az \textit{offline} megoldások. \cite{geron2019hands}
+A dolgozatom programjához szükséges modellek betanításhoz felügyelt tanítási módszert kívánok alkalmazni, \textit{offline} adatkészletekkel. Az ilyen típusú tanító módszererek hátrányai közé sorolhatjuk a rugalmatlanságot is, vagyis az alkalmazóképesség hiányát is. Az \textit{online} tanulásos módszerek ezzel ellentétben sokkal jobban alkalmazkodnak, hiszen működés közben a valós világ éppen aktuális jellegzetességeihez igazítják magukat. Az \textit{online} módszerek előnye lehet a kisebb memória igény is, hiszen kevesebb adatmennyiség van jelen a futás során. Ez egyben a módszerek hátrányát is jelenti, mivel könnyen felejtenek az ilyen megoldások és a drasztikus, hirtelen változásokra rosszabbul reagálnak, mint az \textit{offline} módszerek. \cite{geron2019hands}
 
 A tanítómintát két részre szokás bontani, tanító adatkészletre és teszt részre. A tanító adatkészletünk a modell tanítására szolgál, míg a teszt adatkészlet segítségével pedig a már betanított modellünk teljesítményét mérhetjük. A teszt adatkészlet elkülönítése azért szükséges, hogy betanítás után olyan adatokkal is tudjuk vizsgálni a modell teljesítményét, melyek nem egyeznek meg a tanítómintával. Így pontosabb eredményeket kaphatunk a teljesítményről, hiszen feltételezhetjük, hogy "élesben" is hasonlóan eredményeket fog szolgáltatni. Fontos a helyes arány megválasztása a felbontásnál, általánosan 70\% tanító és 30\% teszt adat javasolt. \cite{geron2019hands}
 
@@ -137,7 +137,7 @@ A betanított modell teljesítményének mérésére két módszert kívánok al
 
 \SubSection{Cross-Validation}
 
-A \textit{$k$-hajtásos Cross-Validation} technika a mintát $k$ egyenlő részre osztja, majd egy ciklussal végigmegy a $k$-kon: a minta $k-1$ részével tanítja a modellt, majd a maradékon pedig ellenőrzi és kiértékeli a teljesítményét. Így $k$ darab eredményt kapunk, melyet átlagából következtethetéseket vonhatunk le a modell teljesítményéről.
+A \textit{$k$-hajtásos Cross-Validation} technika a mintát $k$ egyenlő részre osztja, majd egy ciklussal végigmegy a $k$-kon: a minta $k-1$ részével tanítja a modellt, majd a maradékon pedig ellenőrzi és kiértékeli az így beatanított modell teljesítményét. Így $k$ darab eredményt kapunk, melyet átlagából következtethetéseket vonhatunk le a modell teljesítményéről.
 
 Például a \textit{Symbol}-hoz készített három osztállyal rendelkező 348 elemű adatkészletem 70\%-os (243 db) tanítómintájára, $k=5$ hajtással elvégzett \textit{Cross-Validation} teljesítménymérése a következő:
 \begin{align*}
@@ -166,8 +166,8 @@ Az eredmények alapján a betanított modellünk $95.47 (+/- 2.12)$\%-os pontoss
 \end{figure}
 
 A teljesítménymérésnek egy másik módja lehet az úgynevezett \textit{Confusion Matrix} módszer. Segítségével meg lehet figyelni a helyes és hibás döntések eloszlását egy mátrix formájában.\cite{koesmarno2019class}
-A már betanított modellünket a teszt adatkészlettel ellenőriztetjük, majd az eredmények alapján megszerkeszthetjük a mátrixunkat. Két fajta eredmény keletkezhet minden osztályban: Helyes becslés és hibás becslés. Mátrix soraiban az adatkészletben szerepő osztályok találhatók, míg oszlopaiban a becslések. Az általános \textit{Confusion Matrix} főátlójában a helyes becslések eloszlása figyelhető meg. Az átló alatti és feletti részeken pedig a hibás becslések, vagyis a félre osztályozások számai. A mátrixból jól leolvasható, hogy mely osztályokat kever össze az adott modell. A normalizált mátrix csupán arra szolgál, hogy nagy mennyiségű adatok mellett is jól kiolvashatóak legyenek az egyes osztályokra hozott becslések mértékei.
-A \ref{fig:confusionm} ábrán megfigyelhető a \textit{Symbol} adatkészletre betanított modell, teszt mintahalmazzal való ellenőzsése \textit{Confusion Matrix} ábrázolással. Megfigyelhető, hogy milyen esetekben hozott hibás döntést a modellünk.
+A már betanított modellünket a teszt adatkészlettel ellenőriztetjük, majd az eredmények alapján megszerkeszthetjük a mátrixunkat. Két fajta eredmény keletkezhet minden osztályban: Helyes becslés és hibás becslés. Mátrix soraiban az adatkészletben szerepő osztályok találhatók, míg oszlopaiban a becslések. Az általános \textit{Confusion Matrix} főátlójában a helyes becslések eloszlása figyelhető meg. Az átló alatti és feletti részeken pedig a hibás becslések, vagyis a hibás reosztályozások számai. A mátrixból jól leolvasható, hogy mely osztályokat kever össze az adott modell. A normalizált mátrix csupán arra szolgál, hogy nagy mennyiségű adatok mellett is jól kiolvashatóak legyenek az egyes osztályokra hozott becslések mértékei.
+A \ref{fig:confusionm} ábrán megfigyelhető a \textit{Symbol} adatkészletre betanított modell, teszt mintahalmazzal való ellenőrzése \textit{Confusion Matrix} ábrázolással. Megfigyelhető, hogy milyen esetekben hozott hibás döntést a modellünk.
 
 \Section{Kontrollpontok és vektorok számítása}
 
@@ -190,29 +190,40 @@ Az ábrán megfigyelhető a globális eredő vektor hosszainak változása egy 3
 
 \SubSection{Shift}
 
-A \textit{Shift} tulajdonsággal rendelkező virtuális elemeknek mindig van egy aktuális pozíciójuk $(x,y)$, szélességük és hosszuk $(w,h)$, illetve sebesség értékük $v_{xy}$ a két tengelyre vonatkozóan.
+A \textit{Shift} tulajdonsággal rendelkező virtuális elemeknek mindig van egy aktuális pozíciójuk $(x,y)$, szélességük és magasságuk $(w,h)$, illetve sebességértékük $v_{xy}$ (a két tengelyre vonatkozóan). A pozíciót a virtuális elem bal felső sarkának tekintsük.
 
-A \textit{Shift} viselkedésének meghatározásához első lépésként az adott virtuális elem területére eső vektorokból $\vec{v}_l$  lokális eredővektort számolunk. Az elem területére eső vektorok és a lokális irányvektor meghatározható az elem pozíciója és a mérete alapján a következő módon:
+A \textit{Shift} viselkedésének meghatározásához első lépésként az adott virtuális elem területére eső vektorokból $\vec{v}_l$  lokális irányvektort számolunk. Az elem területére eső vektorok meghatározható az elem pozíciója és a mérete alapján a következő módon:
+
+Jelöljük $\boldsymbol P \in \mathbb{R}^2$-vel a virtuális elem pozícióját $(x,y)$, $\boldsymbol D \in \mathbb{R}^2$-vel pedig a dimenzióját (szélesség, magasság).
+A rácspontok alapján kiszámolhatjuk a lépésközt is, ami rács első koordinátájának az összege lesz. Ezt jelöljük $\boldsymbol L \in \mathbb{R}$-el. 
 \begin{align*}
-  (i_1, j_1), (n, m) &= \lfloor \frac{(x,y),(w,h)}{\textit{rács lépésköze}} \rfloor\\
-  \vec{v_l} &= \sum_{i=i_1}^n \sum_{j=j_1}^m \vec{u}_{ij}
+	\boldsymbol L = \textit{rács}_{0,0} + \textit{rács}_{0,1}
 \end{align*}
-Az eredővektorból ezután irányvektort számolunk. Majd az irányvektor segítségével kiszámoljuk az elem sebességét:
+Ha rácsot háromdimenziós vektornak tekintjük, vagyis egy $n\times m$-es mátrixnak, ahol $n$ a rács sorait, $m$ pedig az oszlopait jelöli.\\
+A részmátrix kezdőpozícióját jelöljük $\boldsymbol {RM}poz \in \mathbb{R}^2$-vel,\\
+dimenzióját pedig $\boldsymbol {RM}dim \in \mathbb{R}^2$-vel.
 \begin{align*}
-  v_{xy} = v_{xy} + \frac{\vec{v}_l}{(n \cdot m)} \cdot \textit{gyorsulás}
+	\boldsymbol {RM}poz &= \left\lfloor \frac{\boldsymbol P}{\boldsymbol L} \right\rfloor\\
+	\boldsymbol {RM}dim &= \left\lfloor \frac{\boldsymbol D}{\boldsymbol L} \right\rfloor
+\end{align*}
+Jelöljük $\vec{u}$-val a vektormező irányvektorait.
+\begin{align*}
+  \vec{v_l} &= \frac{\sum_{i=\boldsymbol {RM}poz_1}^{\boldsymbol {RM}dim_1} \sum_{j=\boldsymbol {RM}poz_0}^{\boldsymbol {RM}dim_0} \vec{u}_{ij}}{\boldsymbol {RM}dim_0 \cdot \boldsymbol {RM}dim_1}
+\end{align*}
+Így megkaptuk a $\vec{v_l}$ lokális irányvektort, amely egyben az elem elmozdulásvektora is. Segítségével kiszámolhatjuk az elem sebességét:
+\begin{align*}
+  v_{xy} = v_{xy} + \frac{\vec{v}_l}{\boldsymbol {RM}dim_0 \cdot \boldsymbol {RM}dim_1} \cdot \textit{gyorsulás}
 \end{align*}
 , ahol $\textit{gyorsulás} > 0$.\\
-Az elem pozíciója $(x,y)$ a sebesség függvényében változik.
+Az elem pozíciója ($\boldsymbol P$) a sebesség függvényében változik.
 \begin{align*}
-  (x,y) = (x,y)+v_{xy}
+  \boldsymbol P = \boldsymbol P+v_{xy}
 \end{align*}
 A sebesség értéket minden iteráció végén tompítani kell, hogy a kezelt virtuális elem meg tudjon állni egy bizonyos ponton. Ha az adott elemet nem éri tovább erő, akkor a tompítás lassulást eredményez, a sebesség csökkenni fog. Olyan hatást is el tudunk érni egy helyesen megválasztott értékkel, mintha az eltolás után az elem csúszós felületen mozogna és így fokozatosan lassul le az iterációk során.
 \begin{align*}
   v_{xy} = v_{xy} \cdot \textit{tompítás}
 \end{align*}
 , ahol $0 \leq \textit{tompítás} < 1$
-
-% Ide még lehet jöhetne majd egy szemléltető képernyőkép, vagy valami ábra...
 
 \SubSection{Blink}
 
@@ -240,7 +251,7 @@ A \textit{Blink} gesztusról feltételezhetjük, hogy a videófolyam egy kis ter
 
 A csoport változásait ezután figyelemmel kísérjük, a tulajdonságait egy szűrési feltétel után rögzítjük. Mivel a \textit{Blink} gesztus várhatóan a vektormező egy viszonylag kis területen figyelhető meg, ezért egy bizonyos \textit{Hőtérkép-csoport} méret fölött nem érdemes további vizsgálatokat végrehajtani. Ha a \textit{Hőtérképen} megfigyelhető csoport területe meghaladja a 25 pixelt, akkor arról a csoportról feltételezhetjük, hogy nem tartalmaz \textit{Blink} gesztust. Természetesen ez a mennyiség rácsfelbontásokként változhat. Egy nagy sűrűségű rácson valószínűleg már alacsony lenne ez az érték, viszont az ajánlott rácsfelbontás mellett jól működik. Mint korábban kifejtettem, nem érdemes túl sűrű rácsot alkalmazni, így a területre megszabott korlát az indokolt rácsfelbontásokig megfelelőnek tűnik.
 
-Ha a területre vonatkozó szűrés eredményes lesz, meghatározhatjuk a \textit{Blink} gesztus középpontját. A szűrésen átesett csoport nem minden esetben négyzetes. A rögzített jellegvektor hossz szükségessége miatt minden esetben egy $5\times5$-ös részmátrixot kell meghatároznunk a \textit{Vektormezőre} nézven. A részmátrix középpontját a \textit{Hőtérképből} kinyert csoport középpontja adja. A mátrix szélein és a sarkoknál, az indexelés helyessége miatt meg kell szabnunk, hogy a középpont minimum 2 lépés távolságra lehet a szélektől. Ha esetleg ez nem teljesülne, a legközelebbi helyes pontot jelöljük ki a \textit{Blink} gesztus középpontjának. A részmátrix segítségével meghatározhatjuk a \textit{Vektormező} $5\times5$-ös csoportra eső irányvektorait is. Az gesztus területére eső irányvektorokat a pontosabb becslés érdekében használjuk majd fel.
+Ha a területre vonatkozó szűrés eredményes lesz, meghatározhatjuk a \textit{Blink} gesztus középpontját. A szűrésen átesett csoport nem minden esetben négyzetes. A rögzített jellegvektor hossz szükségessége miatt minden esetben egy $5\times5$-ös részmátrixot kell meghatároznunk a \textit{Vektormezőre} nézven. A részmátrix középpontját a \textit{Hőtérképből} kinyert csoport középpontja adja. A mátrix szélein és a sarkoknál, az indexelés helyessége miatt meg kell szabnunk, hogy a középpont minimum 2 lépés távolságra lehet a szélektől. Ha esetleg ez nem teljesülne, a legközelebbi helyes pontot jelöljük ki a \textit{Blink} gesztus középpontjának. A részmátrix segítségével meghatározhatjuk a \textit{Vektormező} $5\times5$-ös csoportra eső irányvektorait is. A gesztus területére eső irányvektorokat a pontosabb becslés érdekében használjuk majd fel.
 
 Ha sikeresen meghatároztuk a \textit{Blink}-re eső \textit{vektorokat} és azok indexeit a \textit{Vektormezőn} belül, később a \textit{Rács} indexelt pontjainak értékeit felhasználva kiemelhetjük a \textit{Frame differencing} képből a \textit{Blink} gesztus tartományát. Az eredeti képből kivágott kép jóval kisebb lesz, a felesleges értékekből is kevesebb jelentkezik majd. A \ref{fig:blink} ábrán megfigyelhető egy, a program által kivágott \textit{Blink} képe, amin jó látható, hogy a felesleges értékek nagy részétől sikeresen megszabadultunk.
 
@@ -254,7 +265,7 @@ A kapott kép dimenzióit skálázással tovább csökkenthetjük egy bizonyos p
 \label{fig:blinkvsnotblink}
 \end{figure}
 
-Amint rendelkezésünkre állnak a kapott adatok, jellegvektort formálhatunk belőlük a következő módon: A $16\times16$ felbontású képet kinyújtjuk és az irányvektorok csoportjaival is hasonlóképpen járunk el. A kapott listákat pedig konkatenáljuk, vagyis egymás után fűzzük őket. Így egy 306 hosszúságú jellegvektort kapunk, melyben benne vannak a kép intenzitásértékei és a mozdulatot leíró részvektortér adatai is. A jellegvektort ezután a betanított modellünk osztályozza.
+Amint rendelkezésünkre állnak a kapott adatok, jellegvektort formálhatunk belőlük a következő módon: A $16\times16$ felbontású képet kinyújtjuk és az irányvektorok csoportjaival is hasonlóképpen járunk el. A kapott listákat pedig konkatenáljuk, vagyis egymás után fűzzük őket. Így egy 306 hosszúságú jellegvektort kapunk, melyben benne vannak a kép intenzitásértékei és a mozdulatot leíró részvektortér adatai is. A jellegvektor segítségével ezután a betanított modellünk osztályozza a gesztust.
 
 A \textit{Blink} detektálásához egy bináris osztályozóra lesz szükségünk. A bináris osztályozók két osztályt ismernek, esetünkben az igaz érték jelenti majd a \textit{Blink} gesztust, a hamis érték pedig az olyan gesztusokat, amelyek nagy valószínűséggel nem \textit{Blink}-ek. A modell betanításához egy sor \textit{Blink}-et kellett rögzítenem, a hamis osztály adatainak gyűjtésénél pedig elindítottam a programot és próbáltam olyan mozdulatokat végrehajtani a kamera előtt, melyeket egy prezentáció alkalmával a prezentáló személy is leadna. Ilyenek a magyarázó mozgás, a mutogatás, gesztikulálás. Egy \textit{Blink} és egy másik mozdulat képei a \ref{fig:blinkvsnotblink} ábrán figyelhetők meg. Amint rendelkezésre állt a kívánt adatmennyiség, a rögzítést leállítottam és a kapott adatkészlettel betanítottam az osztályozó modellt.
 \begin{figure}[h]
@@ -270,11 +281,11 @@ A \textit{Blink} gesztus képe természetesen más módszerekkel is meghatározh
 
 A \textit{Drag} az elem elkapása utáni állapot jelenti, amikor a felhasználó az elkapott elem helyzetét szabadon változtathatja, majd új pozíciójára teheti (\textit{Drop}). Ennek a funkciónak a megvalósításához többféleképpen is hozzáláthatunk.
 
-Az első ötletem szerint a vektormező vektorait felhasználva lokális eredővektorokat számolva becsülte volna meg a program a mozgatandó virtuális elem új helyzetét. Ez a megoldás gyakorlatban az elvárásokat nem elégítette ki. Több probléma is adódott ezzel a megoldással. A \textit{Rács} lyukacsossága miatt nem mindig esett vizsgálandó pont a mozgás helyére. Az egyes kiugró értékek is befolyásolták a végeredményt, a mozgatandó elemek ilyen esetekben gyorsabban mozogtak a vártnál. Ez a megoldás tehát nem tűnt stabilnak, a vektormező rácsának sűrítésével pedig a program jelentős lassulásba ütközött volna. Más megoldás után kellett kutatni.
+Az első ötletem szerint a vektormező vektorait felhasználva lokális eredővektor segítségével becsülte volna meg a program a mozgatandó virtuális elem új helyzetét. Ez a megoldás gyakorlatban az elvárásokat nem elégítette ki. Több probléma is adódott. A \textit{Rács} lyukacsossága miatt nem mindig esett vizsgálandó pont a mozgás helyére. Az egyes kiugró értékek is befolyásolták a végeredményt, a mozgatandó elemek ilyen esetekben gyorsabban mozogtak a vártnál. Ez a megoldás tehát nem tűnt stabilnak, a vektormező rácsának sűrítésével pedig a program jelentős lassulásba ütközött volna. Más megoldás után kellett kutatni.
 
-Mivel a \textit{Drag and Drop}-ot előreláthatólag a prezentáló csak rövid időszakaszokban fogja használni, ezért a következő ötlettel áltam elő: a \textit{Blink} gesztus pozíciójára kontollpont(okat) illeszthetnénk, melyekre külön-külön elvégezhetnénk az \textit{Optical-Flow} eljárást és a pont vagy a pontok súlypontjának pozíciója függvényében változna a mozgatandó virtuális elem pozíciója is. Már egyetlen kontrollpont használata is kielégítő eredményt adott. Több kontrollpont használata csupán csak a biztonság érdekében tűnik megfelelőnek. Ha esetleg egy pont új pozícióját rosszul becsülné meg az eljárás és a pont egy bizonyos ponton leragadna, akkor maradjanak olyan "tartalék" pontok is, amelyek biztosítanák a funkció helyes működését.
+Mivel a \textit{Drag and Drop}-ot előreláthatólag a prezentáló csak rövid időszakaszokban fogja használni, ezért a következő ötlettel áltam elő: a \textit{Blink} gesztus pozíciójára kontollpont(okat) illeszthetnénk, melyekre külön-külön elvégezhetnénk az \textit{Optical Flow} eljárást és a pont vagy a pontok súlypontjának pozíciója függvényében változna a mozgatandó virtuális elem pozíciója is. Már egyetlen kontrollpont használata is kielégítő eredményt adott. Több kontrollpont használata csupán csak a biztonság érdekében tűnik megfelelőnek. Ha esetleg egy pont új pozícióját rosszul becsülné meg az eljárás és a pont egy bizonyos ponton leragadna, akkor maradjanak olyan "tartalék" pontok is, amelyek biztosítanák a funkció helyes működését.
 
-A követendő pont(ok) helyes megválasztásánál figyelembe kell vennünk a \textit{Blink} képét. A képen megyfigyelhető legnagyobb intenzitásértékű pontok koordinátájának a súlypontját is meghatározhatjuk, hogy az elhelyezendő pont a lehető legnagyobb valószínűséggel a prezentáló személy \textit{Blink} gesztust végrehajtó kézfejére essen. Viszont a \textit{Blink} gesztus kiszámolt középpontját is felhasználhatjuk erre a célra, hiszen már az is megfelelő pontosságot biztosít.
+A követendő pont(ok) helyes megválasztásánál figyelembe vehetjük a \textit{Blink} képét. A képen megyfigyelhető legnagyobb intenzitásértékű pontok koordinátájának a súlypontját meghatározhatjuk, hogy az elhelyezendő pont a lehető legnagyobb valószínűséggel a prezentáló személy \textit{Blink} gesztust végrehajtó kézfejére essen. Viszont a \textit{Blink} gesztus kiszámolt középpontját is felhasználhatjuk erre a célra, hiszen már az is megfelelő pontosságot biztosít.
 
 \SubSection{Rotation}
 
@@ -339,14 +350,14 @@ A dolgozat programjához mellékelt \textit{Symbol} adatkészlet három gesztus 
 Ezen gesztusokra betanított osztályozó modell \textit{Confusion Matrix}-a a \ref{fig:confusionm} ábrán figyelhető meg. Belátható, hogy az osztályozó modell pontossága a minták között megfigyelhető viszonylag nagy távolságoknak is köszönhető.
 
 Az ilyen típusú gesztusok felismeréséhez felhasználhatjuk az \textit{OCR}, vagyis az \textit{Optical Character recognition} (Optikai karakter felismerés) módszert is, mely írott karakterek felismerésére szolgál. 
-Az OCR kipróbálásához rendelkezésre áll egy ingyenes adatkészlet is, a MNIST, amely 70.000 kisfelbontású képet tartalmaz írott számokról 0-9-ig. Segítségével különféle osztályozók taníthatók be, illetve az osztáyozók tejesítményének egyik mérőeszközévé vált az idők során. Az osztályozómodell betanításához a jellegvektorok értékeit a szürkeárnyalatosképek intenzitásértékei adják. Ha egy új osztályozó rendszert fejlesztenek, valószínűleg a MNIST adatkészlettel is kipróbálják azt. \cite{geron2019hands}
+Az OCR kipróbálásához rendelkezésre áll egy ingyenes adatkészlet is, a MNIST, amely 70.000 kisfelbontású képet tartalmaz írott számokról 0-9-ig. Segítségével különféle osztályozók taníthatók be, illetve az osztáyozók tejesítményének egyik mérőeszközévé vált az idők során. Az osztályozómodell betanításához a jellegvektorok értékeit a szürkeárnyalatos képek intenzitásértékei adják. Ha egy új osztályozó rendszert fejlesztenek, valószínűleg a MNIST adatkészlettel is kipróbálják azt. \cite{geron2019hands}
 
-Mivel a probléma hasonlít az OCR-hez, hasonló megoldást alkalmazhatunk a levegőben leírt gesztusok felismeréséhez is. A mozdulat képét egy, a \textit{Hőtérképpel} megegyező vászonra rajzolja rá a program. A vászon mérete 16-os rácssűrűség mellett 11$\times$15-ös, vagyis megegyezik a \textit{Hőtérkép} dimenzióival. A vászon alapszíne fehér, vagyis 255 inenzitás értékekkel van ellátva. A gesztus képét a \textit{Hőtérkép} elemzésénel kinyert kontrollpontok rajzolják a vászonra: A vektorcsoportnak meghatározandó a súlypontja, mely a virtuális ecset hegyét jelenti. A súlypont elmozdulását a vásznon 0 intenzitásértékek követik, vagyis az elvégzett mozdulatok képei fekete színnel jelennek meg a vásznon. Mivel az egyes mozdulatok hasonló mintázatot követnek, a vásznon megjelenő képük is hasonló lesz.
+Mivel a probléma hasonlít az OCR-hez, hasonló megoldást alkalmazhatunk a levegőben leírt gesztusok felismeréséhez is. A mozdulat képét egy, a \textit{Hőtérképpel} megegyező méretű vászonra rögzíti a program. A vászon alapszíne fehér, vagyis 255 intenzitás értékekkel van ellátva. A gesztus képét a \textit{Hőtérkép} elemzésénel kinyert kontrollpontok rajzolják a vászonra: A vektorcsoportnak meghatározandó a súlypontja, mely a virtuális ecset hegyét jelenti. A súlypont elmozdulását a vásznon 0 intenzitásértékek követik, vagyis az elvégzett mozdulatok képei fekete színnel jelennek meg a vásznon. Mivel az egyes mozdulatok hasonló mintázatot követnek, a vásznon megjelenő képük is hasonló lesz.
 
 \begin{figure}[h]
 \centering
 \frame{\includegraphics[width=10truecm, height=7.33truecm]{images/OCR-Gesture.png}}
-\caption{Egy levegőbe leírt \textit{Omikron} mintázata egy 15$\times$11-ös vásznon}
+\caption{Egy levegőbe leírt \textit{Omikron} mintázata egy 11$\times$15-ös vásznon}
 \label{fig:ocr-gesture}
 \end{figure}
 
@@ -354,7 +365,7 @@ A vászon frissítése két módszerrel történik. Az elmozdulás értékek egy
 
 A felismerés pillanatát feltételekhez kell kötnünk. A mozdulat rajzolatának végső formája akkor alakul ki, amikor a felhasználó befejezte az adott mozdulatot. Ilyen esetben a videófolyamon nem figyelhető meg további mozgás. Az időzítés egyik feltétele mindenképpen a mozgás hiányának kell lennie. Ez többféleképpen is megfigyelhető, vizsgálhatjuk a globális eredővektorunkat is, vagy a \textit{Hőtérkép} segítségével meghatározott csoportok számát is figyelembe vehetjük. Mivel a mintázat rajzolásához is a vektorok összetartozó csoportját használtuk fel, az időzítés egyik feltételének a vektorcsoportok hiányát szabhatjuk meg. Egy másik feltétel a rajzolat aktuális állapotára vonatkozhat. Figyelembe vehetjük a vonalhosszat is, vagyis egy bizonyos vonalhossz alatt nem végeznénk el az osztályozási becslést. Ezen két feltétel biztosítja, hogy az osztályozási művelet végrehajtása a megfelelő pillanatban történjen, elkerülve a felesleges számításokat, hibás becsléseket.
 
-Mielőtt a gesztust reprezentáló képről döntene a modellünk, egy előfeldolgozási lépést kell végrehajtanunk rajta. A gesztus képe nem fogja betölteni a teljes vásznat, így sok felesleges értéket fogtartalmazni. Ennek kiküszöbölésére ki kell vágnunk a gesztus rajzolt képét és egy előre meghatározott felbontásra kell konvertálnunk. Tapasztalati alapokon a 15 $\times$ 11 -es felbontás megfelelőnek tűnik, így minden egyes kivágott képet ilyen felbontásra kell alakítanunk. Ezen előfeldolgozási lépés elősegíti, hogy a betanított modellunket különböző rácsfelbontások és képarányok mellett is használni tudjuk, ugyanis a jellegvektorok mérete minden esetben azonos lesz.
+Mielőtt a gesztust reprezentáló képről döntene a modellünk, egy előfeldolgozási lépést kell végrehajtanunk rajta. A gesztus képe nem fogja betölteni a teljes vásznat, így sok felesleges értéket fog tartalmazni. Ennek kiküszöbölésére ki kell vágnunk a gesztus rajzolt képét és egy előre meghatározott felbontásra kell konvertálnunk. Tapasztalati alapokon a 11 $\times$ 15 -ös felbontás megfelelőnek tűnik, így minden egyes kivágott képet ilyen felbontásra kell alakítanunk. Ezen előfeldolgozási lépés elősegíti, hogy a betanított modellunket különböző rácsfelbontások és képarányok mellett is használni tudjuk, ugyanis a jellegvektorok mérete minden esetben azonos lesz.
 
 \begin{figure}[h]
 \centering
@@ -365,4 +376,4 @@ Mielőtt a gesztust reprezentáló képről döntene a modellünk, egy előfeldo
 
 A mozdulat osztályozása utáni pillanatban a vásznat törölnünk kell, vagyis csupa 255 intenzitásértékkel kell ellátnunk, hogy a megszabott feltételek tovább ne teljesüljenek a további becsléseket elkerülve.
 
-A modell betanításához képekre lesz szükségünk, amelyeket a programmal egyesével legyárthatunk és osztályozhatunk. További módszerek is léteznek a tanítóminta előállítására. Ilyenek lehetnek a minták generálása egy alap mintahalmazból zajosítással és egyéb megoldásokkal. Amint a minta rendelkezésünkre áll, a modell tanítható is.
+A modell betanításához képekre lesz szükségünk, amelyeket a programmal egyesével legyárthatunk és osztályozhatunk. További módszereket is használhatnánk a tanítóminta előállítására. Ilyenek lehetnek a minták generálása egy alap mintahalmazból zajosítással és egyéb megoldásokkal. Amint a minta rendelkezésünkre áll, a modell tanítható is.
