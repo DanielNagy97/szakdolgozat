@@ -2,21 +2,21 @@
 
 \Section{Widget-ek}
 
-A program használata során a felhasználó különféle virtuális interaktív grafikus elemekkel léphet kapcsolatba, segítségükkel irányíthatja a programot, befolyásolhatja a prezentáció menetét. A widgetek a témakör bemutatásának segítésére is szolgálnak, hiszen rajtuk helyezkednek el a tartalmak. Az elemek más-más funkcióval rendelkeznek. Megjelenítés szempontjából minden grafikus elem képek segítségével jelenik meg. A képek rendelkezhetnek alfa csatornával is, a videófolyamra elhelyezésük módjairól később olvashatunkk. A következőkben néhány lehetséges widgetet kívánok definiálni, melyeket felhasználva megvalósíthatuk, a dolgozat feladataként meghatározott, kiterjesztett valóság alapú prezentációkat. A lista korántsem teljes, bővítésének csupán képzelőerőnk szabhat határt.
+A program használata során a felhasználó különféle virtuális interaktív grafikus elemekkel léphet kapcsolatba, segítségükkel irányíthatja a programot, befolyásolhatja a prezentáció menetét. Az elemek más-más funkcióval rendelkeznek A widgetek a témakör bemutatásának legfőbb eszközei, hiszen rajtuk helyezkednek el a tartalmak. Megjelenítés szempontjából minden grafikus elem képek segítségével jelenik meg. A képek rendelkezhetnek alfa csatornával is, a videófolyamra illesztésének technikáiról később olvashatunk. A következőkben egy alap widget készletet kívánok definiálni, melyeket felhasználva megvalósíthatuk a dolgozat feladataként meghatározott, kiterjesztett valóság alapú prezentációkat. A lista korántsem teljes, bővítésének csupán képzelőerőnk szabhat határt.
 \begin{itemize}
 	\item \textbf{Button}: Az egyik legegyszerűbb interaktív elem, egy virtuális nyomógomb, melyet megnyomva egy meghatározott funkciót érhetünk el.
 	\item \textbf{Grabbable}: A prezentáló személy a \textit{Drag and Drop} gesztus-sorozat segítségével megtudja fogni az ilyen tulajdonsággal rendelkező elemeket, majd kívánt új pozíciójába helyezheti azt.
 	\item \textbf{Shiftable}: A felhasználó \textit{Shift} gesztus segítségével léphet kapcsolatba az ilyen típusú elemekkel, a képtartományon belül tologathatja azokat.
-	\item \textbf{Expandable}: Ezen elemek nyithatóak, zárhatóak.
+	\item \textbf{Expandable}: Ezen elemek nyithatóak, zárhatóak. Megjelenés szempontjából egy pargamen tekercshez hasonlít.
 	\item \textbf{Rollable}: Egy rögzített ablakon keresztül vizsgálhatunk egy hosszú kép részletét. A felhasználónak lehetősége van megváltoztatnia a megjelenítendő képrészletet a virtuális elem görgetésével.
 	\item \textbf{Tuner}: Virtuális "potméter". A \textit{Rotation} gesztussal léphetünk kapcsolatba vele és értékeket állíthatunk be egy meghatározott tartományon.
 \end{itemize}
 
 \Section{Képek hozzáadása a videófolyamhoz}
 
-A programban elérhető interaktív grafikus elemek mindegyike képek segítségével jelenik meg. A videófolyam képkockáira az úgynevezett \textit{Alpha blending}\cite{salvi2014multi} technikával helyzehetünk el átlátszóság értékkel képeket. A módszerhez két képre van szükségünk. Esetünkben ezen képek a videófolyam aktuális képkockája és az adott widget képe lesz. Mivel az eljárás egy mátrixművelet, ezért a képeknek hasonló tulajdonságokkal kell rendelkezniük. Egyeznie kell a felbontásnak, és a csatornák számának is. A megjelenítendő widgetek a videófolyam felbontásától különbözni fognak, ezért a videófolyam egy kiragadott képrészletét kell használnunk, hogy a felbontásra vonatkozó megkötés is teljesüljön.
+A programban elérhető interaktív grafikus elemek mindegyike képek segítségével jelenik meg. A videófolyam képkockáira az úgynevezett \textit{Alpha blending}\cite{salvi2014multi} technikával helyzehetünk el, átlátszóság értékkel, képeket. A módszerhez két összemosandó képre van szükségünk. Esetünkben ezen képek a videófolyam aktuális képkockája és az adott widget képe lesz. Mivel az eljárás egy mátrixművelet, ezért a képeknek hasonló tulajdonságokkal kell rendelkezniük. Egyeznie kell a felbontásnak, és a csatornák számának is. A megjelenítendő widgetek a videófolyam felbontásától különbözni fognak, ezért a videófolyam egy kiragadott képrészletét kell használnunk, hogy a felbontásra vonatkozó megkötés is teljesüljön.
 
-Két esetet különíthetünk el. Az első esetben azt az esetet(?) nézzük, amikor mindkét kép három csatornával rendelkezik, vagyis a három alapszínek intenzitásértékeit tartalmazzák. Ebben az esetben az \textit{Alpha blending} technika segítségével az egyes képek átlátszóságát állíthatjuk. Ha nem szeretnénk ilyen hatást elérni, akkor egyszerűen csak kicserélhetnénk a videófolyam widget területére eső pixeleit a widget pixeleire. De a program kezelése szempontjából indokolt egy kis átlátszóság alkalmazása, hogy a prezentáló személy lássa, hogy a widget mögött mi helyezkedik el.
+Két esetet különíthetünk el. Az elsőnek azt az esetet nézzük, amikor mindkét kép három csatornával rendelkezik, vagyis a három alapszínek intenzitásértékeit tartalmazzák. Ebben az esetben az \textit{Alpha blending} technika segítségével az egyes képek átlátszóságát állíthatjuk. Ha nem szeretnénk ilyen hatást elérni, akkor egyszerűen csak kicserélhetnénk a videófolyam widget területére eső pixeleit a widget pixeleire. De a program kezelése szempontjából indokolt egy kis átlátszóság alkalmazása, hogy a prezentáló személy lássa, hogy a widget mögött mi helyezkedik el.
 
 A módszerhez definiálnunk kell az $\alpha$, $\beta$ és súlyokat és a $\gamma$ értékét.
 \begin{align*}
@@ -28,7 +28,7 @@ Ha $0<\alpha<1$ és $\beta = 1 - \alpha$ és $\gamma = 0$, akkor a \textit{szten
 \end{align*}
 Az $\alpha$ súly helyes megválasztásával módosíthatuk a cél képre helyezendő kép átlátszóságánal mértékét.
 
-A második esetben olyan képeket szeretnénk illeszteni, az általánosan háromcsatornás videófolyamra, melyek $\alpha$ csatornával is rendelkeznek, azaz egy egyes pixelek átlátszóságáról is hordoznak információkat. A legelterjettebb ilyen tulajdonsággal rendelkező képformátum a PNG (\textit{Portable Network Graphics}). Hogy az ilyen típusú képeket az \textit{Alpha blending} elvégzéhez előtt a következőképpen kell feldolgoznunk:\\
+A második esetben olyan képeket szeretnénk illeszteni, az általánosan háromcsatornás videófolyamra, melyek $\alpha$ csatornával is rendelkeznek, azaz egy egyes pixelek átlátszóságáról is hordoznak információkat. A legelterjettebb ilyen tulajdonsággal rendelkező képformátum a PNG (\textit{Portable Network Graphics}). Az ilyen típusú képeket az \textit{Alpha blending} elvégzéhez előtt a következőképpen kell feldolgoznunk:\\
 Jelöljük a háttérképet $\boldsymbol H$-val, a ráillesztendő 4 csatornás képet pedig $\boldsymbol E$-vel. Feltételezzük, hogy az intenzitásértékek 0 és 255 közötti tartományon vehetnek fel értékeket.
 \begin{figure}[h]
 	\centering
