@@ -46,3 +46,4 @@ class Video(object):
         Release the capture device when exiting from the context.
         """
         self._capture.release()
+

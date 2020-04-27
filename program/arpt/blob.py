@@ -4,6 +4,11 @@ class Blob(object):
     """
     
     def __init__(self, center, size):
+        """
+        Initialize the blob.
+        :param center: center of the blob as (row, column)
+        :param size: the estimated size of the blob as a float value
+        """
         self._center = center
         self._size = size
 
@@ -14,3 +19,4 @@ class Blob(object):
     @property
     def size(self):
         return self._size
+

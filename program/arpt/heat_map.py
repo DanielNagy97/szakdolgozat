@@ -1,3 +1,6 @@
+import numpy as np
+import cv2
+
 from arpt.blob import Blob
 
 
@@ -24,4 +27,22 @@ class HeatMap(object):
 
     @staticmethod
     def find_blobs(heats, min_area):
-        pass
+        ret, thresholded_heat = cv2.threshold(np.uint8(heats), 40, 255,
+                                              cv2.ADAPTIVE_THRESH_MEAN_C)
+        contours, hierarchy = cv2.findContours(thresholded_heat,
+                                               cv2.RETR_TREE,
+                                               cv2.CHAIN_APPROX_SIMPLE)
+        blobs = []
+        for contour in contours:
+            x, y, w, h = cv2.boundingRect(contour)
+            rect_area = w * h
+            if rect_area >= min_area:
+                center = (y + h / 2, x + w / 2)
+                blob = Blob(center, rect_area)
+                blobs.append(blob)
+        return blobs
+
+    @property
+    def blobs(self):
+        return self._blobs
+

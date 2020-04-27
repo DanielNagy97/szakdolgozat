@@ -39,3 +39,20 @@ class FrameBuffer(object):
             return self._frames[real_index]
         else:
             return self._frames[0]
+    
+    def __len__(self):
+        """
+        Returns the count of the frames in the buffer.
+        :return: a non-negative integer of the frame count
+        """
+        return len(self._frames)
+    
+    def __str__(self):
+        """
+        Print some useful information about the frame buffer.
+        """
+        if len(self._frames) == 0:
+            return 'Empty frame buffer'
+        n_rows, n_columns = self._frames[0].shape
+        return f'FrameBuffer, dimension: {n_columns}x{n_rows}, frame count: {len(self._frames)}'
+

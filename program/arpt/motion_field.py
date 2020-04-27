@@ -9,8 +9,9 @@ def calc_optical_flow(prev_image, next_image, grid_resolution):
     Calculate the motion vector field from sequential images.
     :param prev_image: previous image
     :param next_image: current image
-    :param grid_resolution: resolution of the vector field
-    :return:
+    :param grid_resolution: resolution of the vector field, (n_rows, n_columns)
+    :return: NumPy array of the motion vectors at the resolution of the grid.
+             Its size is (n_rows, n_columns, 2).
     """
     prev_points = grid.calc_centers(prev_image, grid_resolution)
     params = {
@@ -40,6 +41,7 @@ def calc_optical_flow(prev_image, next_image, grid_resolution):
 def calc_lengths(motion_vectors):
     """
     Calculate the lengths of the motion vectors.
+    :return: NumPy array with size (n_rows, n_columns)
     """
     n_rows, n_columns, _ = motion_vectors.shape
     lengths = np.empty((n_rows, n_columns), dtype=np.float32)
@@ -48,3 +50,4 @@ def calc_lengths(motion_vectors):
             dy, dx = motion_vectors[i][j][0], motion_vectors[i][j][1]
             lengths[i][j] = np.sqrt(dx * dx + dy * dy)
     return lengths
+
