@@ -76,13 +76,13 @@ Az \textit{Alpha blendig}-et pedig ebben az esetben a következőképpen hajtjuk
 A \textit{Button} vagy \textit{Nyomógomb} működtetése rendkívül egyszerű. Aktiválásához a felhasználónak egyszerűen csak a gomb területére kell emelnie például a kézfejét, a gomb pedig egy bizonyos idő elteltével reagál.
 
 A gombon belüli mozgás figyelésére segítségül hívhatjuk a \textit{Hőtérkép} csoportjait. Ha egy csoport súlypontja a gombon belül helyezkedik el, majd ha megszűnik (vagyis ha a csoporthoz tartozó valódi objektum abbahagyja a mozgását), akkor a megszűnt csoport súlypontjának a koordinátáira egy figyelendő pontot helyezünk. Ha a vizsgálandó pont kilép a gomb tartományából egy előre meghatározott időn belül, akkor nem történik semmi. Ha viszont a vizsgálandó pont a gomb területén belül marad, a gomb aktiválódik. 
-Vagyis ez egy valós helyzetben a következőképpen nézhet ki: A felhasználó a gomb területére irányítja a kézfejét, a kézfejének apró mozdulatai (melyek nem figyelhetőek meg a \textit{Hőtérképen} a képzaj kiküszöbölése miatt) egy vizsgálandó pont segítségével lesznek követve, amely a már ismert \textit{Optical-Flow} technikával valósul meg.
+Vagyis ez egy valós helyzetben a következőképpen nézhet ki: A felhasználó a gomb területére irányítja a kézfejét, a kézfejének apró mozdulatai (melyek nem figyelhetőek meg a \textit{Hőtérképen} a képzaj kiküszöbölése miatt) egy vizsgálandó pont segítségével lesznek követve, amely a már ismert \textit{Optical Flow} technikával valósul meg.
 
 A véletlen gombnyomás, nem kívánt viselkedés elkerülése érdekében időkeretet kell megszabnunk a vizsgálandó pont a gombon belül töltött idejére. Ezen időintervallumnak viszonylag rövidnek kell lennie, hogy a felhasználói élmény ne romoljon (ne kelljen várni túl sokáig a gombnyomásra), viszont nem lehet túl rövid ahhoz, hogy egy esetleges véletlen mozdulat aktiválni tudja. A helyes időkeret megválasztása a gomb méretétől is függhet. Tapasztalati adatok szerint 0.2-0.5 másodperc közötti időkeret használata megfelelőnek tűnik.
 
 \SubSection{Grabbable}
 
-A megfogható tulajdonsággal rendelkező objektumokat a felhasználó a képtartományon belül szabadon áthelyezheti kedve szerint. A művelethez egy \textit{Drag and Drop} gesztust-sorozatot kell végrehajtania. A \textit{Blink} gesztus kiadásakor minden esetben számolódik egy pozíció érték, amely a kézfej helyzetét kívánja megbecsülni. Ha ezen pont az elem területére esik, akkor a pontot innentől kezdve vizsgálandó pontnak kell tekintenünk. A pont helyzetének frissítése az \textit{Optical-Flow} technikával történik. Az elem új pozíciója a ponthoz képest módosul, vagyis az elem a felhasználó kézfejét követi.
+A megfogható tulajdonsággal rendelkező objektumokat a felhasználó a képtartományon belül szabadon áthelyezheti kedve szerint. A művelethez egy \textit{Drag and Drop} gesztust-sorozatot kell végrehajtania. A \textit{Blink} gesztus kiadásakor minden esetben számolódik egy pozíció érték, amely a kézfej helyzetét kívánja megbecsülni. Ha ezen pont az elem területére esik, akkor a pontot innentől kezdve vizsgálandó pontnak kell tekintenünk. A pont helyzetének frissítése az \textit{Optical Flow} technikával történik. Az elem új pozíciója a ponthoz képest módosul, vagyis az elem a felhasználó kézfejét követi.
 Amint elnavigálta a kívánt pozícióba az új elemet a felhasználó, egy újabb \textit{Blink} gesztussal a helyére teheti azt.
 
 Hogy az elem véletlenül se lépjen ki a videófolyamból, korlátoznunk kell a lehetséges mozgásterét a képtartományra. Vagyis az elem szélei nem mehetnek túl a kép szélein. Ezen megszorítás a többi elemre is vonatkozik.
@@ -102,7 +102,7 @@ Az elem tényleges mérete pedig a teljesen kinyitott állapototára vonatkozik.
 
 A \textit{Rollable} virtuális elemek rögzített pozíciójú, fix méretű widgetek.
 
-Működés szempontjából hasonlítanak egy diavetítőre, hiszen a hozzá tartozó nagy méretű képet egy ablakon keresztül szemlélhetjük, a megjelenítendő képrészletet pedig a felhasználó kedve szerint változtathatja, vagyis úgy tűnik, mintha görgetné az adott ablakon található tartalmat.
+Működés szempontjából hasonlítanak egy diavetítőre, hiszen a hozzá tartozó nagyméretű képet egy ablakon keresztül szemlélhetjük, a megjelenítendő képrészletet pedig a felhasználó kedve szerint változtathatja, vagyis működés közben úgy tűnhet, mintha görgetné az adott ablakon található tartalmat.
 
 Az ilyen típusú widgeteket is a \textit{Shift} gesztus segítségével vezérelhetjük. A gesztus végrehajtása során kiszámolódik a megjelenítendő képrészlet \textit{kezdőpozíciója}, ami alapján, az \textit{ablak méretét} figyelembe véve meghatározható az eredeti képből kivágandó képrészlet.
 A helyes működés érdekében a képrészlet kezdőpozíciójának értékét korlátoznunk kell. Az értéke nem lehet nullánál kisebb, illetve nem lehet nagyobb a hozzá tartozó kép magasságának és az ablakméret magasságának különbségénél ($y$ tengelyen görgethető \textit{Rollable} widget esetében).
@@ -111,14 +111,13 @@ A helyes működés érdekében a képrészlet kezdőpozíciójának értékét 
 \end{align*}
 
 Így elkerülhetők a hibás vágások, illetve megakadályozható a kép kicsúszása az ablakból.
-A megjelenítendő kép
 
 \SubSection{Tuner}
 
 A \textit{Tuner} widget-et működése és megjelenése szempontjából egy potméter gombnak képzelhetjük el. Segítségével a felhasználó különböző értékeket állíthat be.
-Az ilyen típisú widgeteket a \textit{Rotation} gesztus segítségével érhetjük el. Ha a \textit{Rotation} becsült forgási középpontja az adott elem belsejébe esik, az aktiválódik és a gesztus feldolgozása során további információkat figyelembe véve változik meg az állapota.
+Az ilyen típusú widgeteket a \textit{Rotation} gesztus segítségével érhetjük el. Ha a \textit{Rotation} becsült forgási középpontja az adott elem belsejébe esik, az aktiválódik és a gesztus feldolgozása során további információkat figyelembe véve változik meg az állapota.
 
-A felhasználó definiálhatja, hogy az egyes ilyen típusú widget-ek értékei milyen tartományon szerepelhetnek, vagyis meg kell határoznia a legkisebb és legnagyobb értéket, amelyet a widget felvehet. Amennyiben a \textit{Rotation} gesztus becsült forgási szöge a \textit{Tuner} widget területére esik a widget értékét a következőképpen határozhatjuk meg:
+A felhasználó definiálhatja, hogy az ilyen típusú widget értékei milyen tartományon szerepelhetnek, vagyis meg kell határoznia a legkisebb és legnagyobb értéket, amelyet a widget felvehet. Amennyiben a \textit{Rotation} gesztus becsült forgási szöge a \textit{Tuner} widget területére esik, a widget értékét a következőképpen határozhatjuk meg:
 Jelöljük $\alpha$-val a \textit{Rotation} gesztus feldolgozása során kiszámolt forgási szöget, $\boldsymbol V$-vel az aktuális értéket, ($\boldsymbol V_{\max}; \boldsymbol V_{\min}$)-el pedig a felhasználó által definiált maximálisan, illetve minimálisan felvehető értékeket, vagyis $\boldsymbol V_{\min} \leq \boldsymbol V \leq \boldsymbol V_{\max}$.
 \begin{align*}
 	\boldsymbol V = \boldsymbol V + 0.3\left(\boldsymbol V_{\max} - \boldsymbol V_{\min}\right) \cdot \left( \frac{\alpha}{360}\right)

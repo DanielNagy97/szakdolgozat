@@ -2,8 +2,6 @@
 
 % TODO: Tutorial jelleggel leírni, és bemutatni, hogy hogy lehet használni az alkalmazást.
 
-A program felhasználási területe elsősorban \ldots
-
 A program jelenlegi verziójához nincs mellékelve grafikus felülettel ellátott projekt-szerkesztő, viszont a projekt sturktúraszabályait követve létrehozhatunk új prezentáció leíró állományokat.
 
 \bigskip
@@ -19,6 +17,7 @@ A program jelenlegi verziójához nincs mellékelve grafikus felülettel elláto
 .3 settings.json.
 .3 windows.json.
 .2 scene.json.
+.2 actions.py.
 }
 
 \bigskip
@@ -80,6 +79,12 @@ A diasor szerkezete a következő:
 	\item Befejezés
 \end{itemize}
 Mint láthatjuk, a prezentációnak különböző szintjei vannak.
+\begin{figure}[h]
+\centering
+\includegraphics[width=12truecm]{images/opencv_demo_screenshot.png}
+\caption{Képernyőkép a demoról}
+\label{fig:opencvdemo}
+\end{figure}
 
 Az első dián szereplő \textit{Rollable} widget tartalmazza a bevezetést, amely egy rövid áttekintés, hogy miről is fog szólni a prezentáció. Egy \textit{Shiftable} típusú \textit{OpenCV} logó is helyet kapott itt, illetve egy \textit{Button} típusú widget, melynek a funkciója a léptetés, melynek függvénye az \texttt{actions.py} modulon belül található meg. A prezentációban szereplő léptetést a \texttt{scene.json} állományban a következő módon jelölhetjük:
 \begin{verbatim}
@@ -114,8 +119,6 @@ A videófolyam aktuális képkockáját felülírjuk a \texttt{cv2.GaussianBlur(
 A módszereket bemutató diák mindegyikén elhelyezkedik egy-egy \textit{Button} típusú widget is, amellyel az eggyel korábbi szintre, vagy a Menübe léphetünk vissza.
 
 A Menüből pedig szintén egy \textit{Button} segítségével léphetünk tovább az utolsó diára, ahol egy \textit{Expandable} widget segítségével foglalhatjuk össze a prezentációnkat és köszönhetjük meg a figyelmet.
-
-Ide jöhetne pár képernyőfotó is \ldots
 
 \Section{Dolgozat bemutatása}
 
@@ -157,6 +160,13 @@ Mint látható, különböző szinteket különíthetünk el. Az egyes szintek g
 
 A Bevezetés fóliában egy általános bevezetés megtételére van lehetőségünk. Említésre kerülhet a dolgozat feladata, melyet a későbbiekben részletesebben is ismertethetünk. Hasonlóan az első prezentációhoz, itt is egy \textit{Rollable} widgeten helyezkedik el a bevezetés tartalma.
 
+\begin{figure}[h]
+\centering
+\includegraphics[width=12truecm]{images/dolgozat_demo_screenshot.png}
+\caption{Képernyőkép a demoról}
+\label{fig:dolgozatdemo}
+\end{figure}
+
 A bal alsó sarokban elhelyezkedő \textit{Button} segítségével érhetjük el a következő diát, a Koncepció menüjét, amelyről további fóliákat érhetünk el. Itt taláható meg a kiterjesztett valóság, prezentációs szoftverek, \textit{OpenCV} és \textit{scikit-learn}-el foglalkozó diasorok. Az itt szereplő widgetek még nem tartalmaznak élő-ábrákat, az általános widgetek segítségével mutthatjuk be az adott témaköröket. Ezen szekció célja az említett fogalmak tisztázása, általános bemutatása.
 
 A Gesztusok fólia szintén egy menürendszert tartalmaz. Innen 4 további fóliát érhetünk el.
@@ -166,5 +176,3 @@ A \texttt{scene.json} állományban a gomb argumentumaként megadott "default" k
 A példaprezentációkat tartalmazó fólia csupán csak említés szinten foglalkozik a példákkal. Az első példa widgetje \textit{Widget} típusú, vagyis semmijen tulajdonsággal nem rendelkezik, csupán egy képet tudunk megjeleníteni a segítségével. A Dolgozattal foglalkozó példaprezentáció widget-je pedig egy \textit{Button}, melyet megnyomva visszatérhetünk a prezentáció legelső diájára \ldots
 
 A második példaprezentáció is hasonlóan ér véget, mint az első, egy \textit{Expandable} widget segítségével foglalhajuk össze az előadást és köszönhetjük meg a figyelmet.
-
-Pár képernyőfotó közben \ldots
