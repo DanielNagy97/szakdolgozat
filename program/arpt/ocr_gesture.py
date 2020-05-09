@@ -63,13 +63,13 @@ class Ocr_gesture(object):
             im = cv2.imread("./src/"+score[0]+".png", 0)
             self._predicted_gest = im
 
-    def save_data(self, heat_map, canvas):
+    def save_data(self, canvas, heat_map):
         """
         Saving data to disk
         :param heat_map: The Heat-map object
         :param canvas: The OCR-canvas
         """
-        if (len(heat_map.motion_points_roots) > 20 and not
+        if (len(heat_map.motion_points_roots) > 15 and not
            heat_map.bounding_rects.any()):
             canvas.canvas = self.preprocess_gesture(canvas,
                                                     heat_map.map_shape[1])

@@ -118,6 +118,7 @@ class Controller(object):
         """
         self._ocr.draw_gesture(self.heat_map, self._ocr.canvas)
         self._ocr.predict_motion(self._ocr.canvas, self.heat_map)
+        # self._ocr.save_data(self._ocr.canvas, self.heat_map)
 
     def grab_control(self):
         """
@@ -127,6 +128,7 @@ class Controller(object):
                                self.frame_diff.canvas,
                                self.grid)
         self._grab.predict(self.heat_map)
+        # self._grab.save_data(self.heat_map)
         if self._grab.grabbed:
             self._grab.calc_grab_position(self._video)
             x, y = self._grab.position.ravel()

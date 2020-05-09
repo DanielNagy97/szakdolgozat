@@ -159,16 +159,16 @@ if __name__ == "__main__":
     print("\n----grab_performance Measures----")
     print("Cross-validation accuracy scores on training data:\n", train_score,
           "\n")
-    print("Accuracy: %0.2f (+/- %0.2f)" % (np.mean(train_score),
-                                           np.std(train_score) /
-                                           np.sqrt(len(train_score))),
+    print("Accuracy: %0.2f (+/- %0.2f)" % (100*np.mean(train_score),
+                                           100*(1.96*np.std(train_score) /
+                                           np.sqrt(len(train_score)))),
           "\n")
 
     print("Cross-validation accuracy scores on test data:\n", test_score,
           "\n")
-    print("Accuracy: %0.2f (+/- %0.2f)" % (np.mean(test_score),
-                                           np.std(test_score) /
-                                           np.sqrt(len(test_score))),
+    print("Accuracy: %0.2f (+/- %0.2f)" % (100*np.mean(test_score),
+                                           100*(1.96*np.std(test_score) /
+                                           np.sqrt(len(test_score)))),
           "\n")
 
     grab_perf.calc_confusion_matrix(grab)
@@ -183,26 +183,26 @@ if __name__ == "__main__":
     ocr = Model()
     ocr.build_ocr_dataset(165)
     ocr.shuffle_dataset_order()
-    ocr.split_dataset(0.3, 7)
+    ocr.split_dataset(0.3, 3)
     ocr.train_classifier(classifier_args)
 
     perf = Performance()
-    train_score = perf.cross_val_accuracy(ocr.clf, ocr.X_train, ocr.Y_train, 5)
-    test_score = perf.cross_val_accuracy(ocr.clf, ocr.X_test, ocr.Y_test, 5)
+    train_score = perf.cross_val_accuracy(ocr.clf, ocr.X_train, ocr.Y_train, 4)
+    test_score = perf.cross_val_accuracy(ocr.clf, ocr.X_test, ocr.Y_test, 4)
 
     print("\n----Performance Measures----")
     print("Cross-validation accuracy scores on training data:\n", train_score,
           "\n")
-    print("Accuracy: %0.2f (+/- %0.2f)" % (np.mean(train_score),
-                                           np.std(train_score) /
-                                           np.sqrt(len(train_score))),
+    print("Accuracy: %0.2f (+/- %0.2f)" % (100*np.mean(train_score),
+                                           100*(1.96*np.std(train_score) /
+                                           np.sqrt(len(train_score)))),
           "\n")
 
     print("Cross-validation accuracy scores on test data:\n", test_score,
           "\n")
-    print("Accuracy: %0.2f (+/- %0.2f)" % (np.mean(test_score),
-                                           np.std(test_score) /
-                                           np.sqrt(len(test_score))),
+    print("Accuracy: %0.2f (+/- %0.2f)" % (100*np.mean(test_score),
+                                           100*(1.96*np.std(test_score) /
+                                           np.sqrt(len(test_score)))),
           "\n")
 
     perf.calc_confusion_matrix(ocr)
