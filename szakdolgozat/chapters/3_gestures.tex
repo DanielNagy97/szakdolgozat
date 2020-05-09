@@ -139,14 +139,13 @@ A betanított modell teljesítményének mérésére két módszert kívánok al
 
 A \textit{$k$-hajtásos Cross-Validation} technika a mintát $k$ egyenlő részre osztja, majd egy ciklussal végigmegy a $k$-kon: a minta $k-1$ részével tanítja a modellt, majd a maradékon pedig ellenőrzi és kiértékeli az így beatanított modell teljesítményét. Így $k$ darab eredményt kapunk, melyet átlagából következtethetéseket vonhatunk le a modell teljesítményéről.
 
-Például a \textit{Symbol}-hoz készített három osztállyal rendelkező 348 elemű adatkészletem 70\%-os (243 db) tanítómintájára, $k=5$ hajtással elvégzett \textit{Cross-Validation} teljesítménymérése a következő:
+Például a \textit{Symbol}-hoz készített három osztállyal rendelkező 60 elemű adatkészletem 70\%-os (42 db) tanítómintájára, $k=4$ hajtással elvégzett \textit{Cross-Validation} teljesítménymérése a következő:
 \begin{align*}
-	k_1 &= 0.9388\\
-	k_2 &= 0.9796\\
-	k_3 &= 0.9592\\
-	k_4 &= 0.9167\\
-	k_5 &= 0.9792\\
-	\bar{k} &= 0.9547
+	k_1 &= 1.0000\\
+	k_2 &= 0.9091\\
+	k_3 &= 1.0000\\
+	k_4 &= 0.9000\\
+	\bar{k} &= 0.9523
 \end{align*}
 Ahol $\bar{k}$ a minta átlaga.\\
 Az eredményekhez érdemes hibát is számolni, majd segítségével konfidencia intervallumot megadni. Legyen például a konfidenciaintervallum 95\%-os és a hibát Standard hibaként tekintsük.
@@ -154,20 +153,20 @@ Az eredményekhez érdemes hibát is számolni, majd segítségével konfidencia
 	\boldsymbol{CI}(95) = m (+/-) 1.96 \cdot \frac{s}{\sqrt[]{n}}
 \end{align*}
 Ahol $m$ a minta átlaga, $s$ a szórás, $n$ pedig a minta darabszáma.\\
-Az eredmények alapján a betanított modellünk $95.47 (+/- 2.12)$\%-os pontossággal rendelkezik, vagyis ennyi valószínűséggel hoz helyes döntéseket. Hogy megvizsgáljuk, hogy mely esetekben téved a modellünk egy másik teljesítménymérő módszer segítségére lesz szükségünk, a \textit{Confusion Matrix} ábrázolásra.
+Az eredmények alapján a betanított modellünk $95.23 (+/- 4.69)$\%-os pontossággal rendelkezik, vagyis ennyi valószínűséggel hoz helyes döntéseket. Hogy megvizsgáljuk, hogy mely esetekben téved a modellünk egy másik teljesítménymérő módszer segítségére lesz szükségünk, a \textit{Confusion Matrix} ábrázolásra.
 
 \SubSection{Confusion Matrix}
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=\textwidth]{images/confusion_m.png}
+\includegraphics[width=\textwidth]{images/symbol_confusion.png}
 \caption{\textit{Confusion Matrix}-ok a \textit{Symbol} adatkészletre}
 \label{fig:confusionm}
 \end{figure}
 
 A teljesítménymérésnek egy másik módja lehet az úgynevezett \textit{Confusion Matrix} módszer. Segítségével meg lehet figyelni a helyes és hibás döntések eloszlását egy mátrix formájában.\cite{koesmarno2019class}
 A már betanított modellünket a teszt adatkészlettel ellenőriztetjük, majd az eredmények alapján megszerkeszthetjük a mátrixunkat. Két fajta eredmény keletkezhet minden osztályban: Helyes becslés és hibás becslés. Mátrix soraiban az adatkészletben szerepő osztályok találhatók, míg oszlopaiban a becslések. Az általános \textit{Confusion Matrix} főátlójában a helyes becslések eloszlása figyelhető meg. Az átló alatti és feletti részeken pedig a hibás becslések, vagyis a hibás reosztályozások számai. A mátrixból jól leolvasható, hogy mely osztályokat kever össze az adott modell. A normalizált mátrix csupán arra szolgál, hogy nagy mennyiségű adatok mellett is jól kiolvashatóak legyenek az egyes osztályokra hozott becslések mértékei.
-A \ref{fig:confusionm} ábrán megfigyelhető a \textit{Symbol} adatkészletre betanított modell, teszt mintahalmazzal való ellenőrzése \textit{Confusion Matrix} ábrázolással. Megfigyelhető, hogy milyen esetekben hozott hibás döntést a modellünk.
+A \ref{fig:confusionm} ábrán megfigyelhető a \textit{Symbol} adatkészletre betanított modell, teszt mintahalmazzal való ellenőrzése \textit{Confusion Matrix} ábrázolással. Megfigyelhető, hogy milyen esetekben hozott hibás döntést a modellünk. Az adatkészlet 30\%-át (18 db minta) a betanított modell nem ismeri, így ezt tekinthetjük számára teljesen új bemenetnek. Jól látható, hogy a validálás során a modell csupán csak egy esetben tévedett, egy \textit{Omikron} gesztus helyett \textit{Gamma} gesztust feltételezett.
 
 \Section{Kontrollpontok és vektorok számítása}
 
@@ -267,7 +266,7 @@ A kapott kép dimenzióit skálázással tovább csökkenthetjük egy bizonyos p
 
 Amint rendelkezésünkre állnak a kapott adatok, jellegvektort formálhatunk belőlük a következő módon: A $16\times16$ felbontású képet kinyújtjuk és az irányvektorok csoportjaival is hasonlóképpen járunk el. A kapott listákat pedig konkatenáljuk, vagyis egymás után fűzzük őket. Így egy 306 hosszúságú jellegvektort kapunk, melyben benne vannak a kép intenzitásértékei és a mozdulatot leíró részvektortér adatai is. A jellegvektor segítségével ezután a betanított modellünk osztályozza a gesztust.
 
-A \textit{Blink} detektálásához egy bináris osztályozóra lesz szükségünk. A bináris osztályozók két osztályt ismernek, esetünkben az igaz érték jelenti majd a \textit{Blink} gesztust, a hamis érték pedig az olyan gesztusokat, amelyek nagy valószínűséggel nem \textit{Blink}-ek. A modell betanításához egy sor \textit{Blink}-et kellett rögzítenem, a hamis osztály adatainak gyűjtésénél pedig elindítottam a programot és próbáltam olyan mozdulatokat végrehajtani a kamera előtt, melyeket egy prezentáció alkalmával a prezentáló személy is leadna. Ilyenek a magyarázó mozgás, a mutogatás, gesztikulálás. Egy \textit{Blink} és egy másik mozdulat képei a \ref{fig:blinkvsnotblink} ábrán figyelhetők meg. Amint rendelkezésre állt a kívánt adatmennyiség, a rögzítést leállítottam és a kapott adatkészlettel betanítottam az osztályozó modellt.
+A \textit{Blink} detektálásához egy bináris osztályozóra lesz szükségünk. A bináris osztályozók két osztályt ismernek, esetünkben az igaz érték jelenti majd a \textit{Blink} gesztust, a hamis érték pedig az olyan gesztusokat, amelyek nagy valószínűséggel nem \textit{Blink}-ek. A modell betanításához egy sor \textit{Blink}-et kellett rögzítenem, a hamis osztály adatainak gyűjtésénél pedig elindítottam a programot és próbáltam olyan mozdulatokat végrehajtani a kamera előtt, melyeket egy prezentáció alkalmával a prezentáló személy is leadna. Ilyenek a magyarázó mozgás, a mutogatás, gesztikulálás. Egy \textit{Blink} és egy másik mozdulat képei a \ref{fig:blinkvsnotblink} ábrán figyelhetők meg. Amint rendelkezésre állt a kívánt adatmennyiség, a rögzítést leállítottam és a kapott adatkészlettel betanítottam az osztályozó modellt. Az gesztushoz tartozó adatkészlet 150 darab mintát tartalmaz, 75 darab \textit{Blink} és további 75 darab \textit{Blink}-től eltérő mozdulat adatait. A \ref{fig:blinkconfusion} ábrán megfigyelhető a 30 darabos teszt adatkészlettel validált betanított modellünk \textit{Confusion Matrix}-a.
 \begin{figure}[h]
 \centering
 \includegraphics[width=\textwidth]{images/blink_confusion.png}
@@ -334,7 +333,7 @@ Amennyiben a két pont iránya teljesen ellentétes, akkor a kapott érték a nu
 
 A prezentáló személy bizonyos mozdulatokat elvégezve további funkciókat érhet el. Az ilyen gesztusok egy fajtája általában a magyarázó mozgástól eltérőek, bizonyos pályákat követnek. Ilyen mozdulatok lehetnek például egy kör, vagy egy L betű, vagy különféle minták rajzolása levegőbe. Az egyes mozdulatok hasonló mintázatot követnek.
 
-A dolgozat programjához mellékelt \textit{Symbol} adatkészlet három gesztus adatait tartalmazza. A három mozdulat a következő neveket kapta:
+A dolgozat programjához mellékelt \textit{Symbol} adatkészlet három gesztus adatait tartalmazza, gesztusonként 20-20 tanítómintával. A három mozdulat a következő neveket kapta:
 \begin{itemize}
 	\item \textit{Gamma}
 	\item \textit{Omikron}
@@ -365,7 +364,7 @@ A vászon frissítése két módszerrel történik. Az elmozdulás értékek egy
 
 A felismerés pillanatát feltételekhez kell kötnünk. A mozdulat rajzolatának végső formája akkor alakul ki, amikor a felhasználó befejezte az adott mozdulatot. Ilyen esetben a videófolyamon nem figyelhető meg további mozgás. Az időzítés egyik feltétele mindenképpen a mozgás hiányának kell lennie. Ez többféleképpen is megfigyelhető, vizsgálhatjuk a globális eredővektorunkat is, vagy a \textit{Hőtérkép} segítségével meghatározott csoportok számát is figyelembe vehetjük. Mivel a mintázat rajzolásához is a vektorok összetartozó csoportját használtuk fel, az időzítés egyik feltételének a vektorcsoportok hiányát szabhatjuk meg. Egy másik feltétel a rajzolat aktuális állapotára vonatkozhat. Figyelembe vehetjük a vonalhosszat is, vagyis egy bizonyos vonalhossz alatt nem végeznénk el az osztályozási becslést. Ezen két feltétel biztosítja, hogy az osztályozási művelet végrehajtása a megfelelő pillanatban történjen, elkerülve a felesleges számításokat, hibás becsléseket.
 
-Mielőtt a gesztust reprezentáló képről döntene a modellünk, egy előfeldolgozási lépést kell végrehajtanunk rajta. A gesztus képe nem fogja betölteni a teljes vásznat, így sok felesleges értéket fog tartalmazni. Ennek kiküszöbölésére ki kell vágnunk a gesztus rajzolt képét és egy előre meghatározott felbontásra kell konvertálnunk. Tapasztalati alapokon a 11 $\times$ 15 -ös felbontás megfelelőnek tűnik, így minden egyes kivágott képet ilyen felbontásra kell alakítanunk. Ezen előfeldolgozási lépés elősegíti, hogy a betanított modellunket különböző rácsfelbontások és képarányok mellett is használni tudjuk, ugyanis a jellegvektorok mérete minden esetben azonos lesz.
+Mielőtt a gesztust reprezentáló képről döntene a modellünk, egy előfeldolgozási lépést kell végrehajtanunk rajta. A gesztus képe nem fogja betölteni a teljes vásznat, így sok felesleges értéket fog tartalmazni. Ennek kiküszöbölésére ki kell vágnunk a gesztus rajzolt képét és egy előre meghatározott felbontásra kell konvertálnunk. Tapasztalati alapokon a $11\times 15$-ös felbontás megfelelőnek tűnik, így minden egyes kivágott képet ilyen felbontásra kell alakítanunk. Ezen előfeldolgozási lépés elősegíti, hogy a betanított modellunket különböző rácsfelbontások és képarányok mellett is használni tudjuk, ugyanis a jellegvektorok mérete minden esetben azonos lesz.
 
 \begin{figure}[h]
 \centering
