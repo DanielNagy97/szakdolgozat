@@ -272,12 +272,11 @@
                 "transparent": false
             },
             {
-                "type": "Button",
+                "type": "Widget",
                 "position": [0, 250],
                 "dimension": [290, 290],
-                "image": "images/click_me.png",
-                "transparent": false,
-                "action": "placeholder"
+                "image": "images/vector_field.png",
+                "transparent": false
             },
             {
                 "type": "Button",
@@ -573,14 +572,14 @@
                 "type": "Widget",
                 "position": [630, 20],
                 "dimension": [300, 225],
-                "image": "images/click_me.png",
+                "image": "images/opencv_demo.png",
                 "transparent": false
             },
             {
                 "type": "Button",
                 "position": [630, 265],
                 "dimension": [300, 225],
-                "image": "images/click_me.png",
+                "image": "images/dolgozat_demo.png",
                 "transparent": false,
                 "action": "jump_to$0"
             },
