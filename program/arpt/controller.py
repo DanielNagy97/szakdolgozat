@@ -234,11 +234,11 @@ class Controller(object):
 
                     self.view.show_canvas(self._windows['resultplot'],
                                           self._canvasses['resultplot'])
-                elif window == 'ocr':
-                    self.view.show_canvas(self._windows['ocr'],
+                elif window == 'symbol':
+                    self.view.show_canvas(self._windows['symbol'],
                                           self._symbol.canvas)
-                elif window == 'ocr-pred':
-                    self.view.show_image(self._windows['ocr-pred'],
+                elif window == 'symbol-pred':
+                    self.view.show_image(self._windows['symbol-pred'],
                                          self._symbol.predicted_gest)
                 elif window == 'blink-im':
                     self.view.show_image(self._windows['blink-im'],

@@ -32,22 +32,22 @@
         "dimension": [270, 300]
     },
     {
-        "name": "ocr",
-        "title": "OCR - Gesture canvas",
+        "name": "symbol",
+        "title": "Symbol - Gesture canvas",
         "mode": 0,
         "position": [620, 350],
         "dimension": [230, 200]
     },
     {
-        "name": "ocr-pred",
-        "title": "OCR - prediction",
+        "name": "symbol-pred",
+        "title": "Symbol - prediction",
         "mode": 0,
         "position": [960, 600],
         "dimension": [120, 120]
     },
     {
-        "name": "grab-im",
-        "title": "Grab image",
+        "name": "blink-im",
+        "title": "Blink image",
         "mode": 0,
         "position": [860, 350],
         "dimension": [180, 200]
