@@ -89,7 +89,7 @@ A grafikus vezérlők ősosztálya a \texttt{Widget} nevű osztály. Ez tartalma
 Az előzőleg említett elemekből a prezentációt az alábbi osztályok rakják össze a felhasználó számára kezelhető formában.
 \begin{itemize}
 \item \texttt{DataParser}: A prezentációhoz tartozó adatok egy külön jegyzékben kapnak helyet. Ezek betöltését a \texttt{DataParser} osztály végzi el. Az adott prezentáció konfigurációjában felsorolt elemekből ez gyűjti össze, hogy milyen vezérlők példányosítására van szükség, azokhoz milyen további beállítások tartoznak.
-\item \texttt{Composition}: Ennek az osztálynak a feladata, hogy a grafikus vezérlő elemeket a videófolyamra rajzolja (kompozitálja). Erre a \texttt{draw\_widget} és a \texttt{draw\_expand} metódusa szolgál.
+\item \texttt{Composition}: Ennek az osztálynak a feladata, hogy a grafikus vezérlő elemeket a videófolyamra rajzolja (kompozitálja). Erre a \texttt{draw\_widget} metódusa szolgál.
 \item \texttt{Controller}: A prezentációs szoftvernek a \texttt{Controller} osztály egy központi eleme. Ez kezdeményezi a \texttt{DataParser} segítségével az aktuális prezentáció összeállítását, elvégzi az eseménykezelést majd ez fogja a végeredmény kép összerakásához a \texttt{Composition} osztályt használni.
 \end{itemize}
 
