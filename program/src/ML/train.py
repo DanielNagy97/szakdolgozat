@@ -13,8 +13,8 @@ class Model(object):
     """
     Class for Random Forest Classifier model
     """
-    def build_ocr_dataset(self, feature_lenght,
-                          source_path='./training_datas/ocr_datas/'):
+    def build_symbol_dataset(self, feature_lenght,
+                             source_path='./training_datas/symbol_datas/'):
         """
         Building the dataset from files
         :param source_path: The path of the data's folder
@@ -33,7 +33,7 @@ class Model(object):
                 self._y = np.append(self._y, [label], axis=0)
 
     def build_grab_dataset(self, feature_lenght,
-                           source_path='./training_datas/grab_datas/'):
+                           source_path='./training_datas/blink_datas/'):
         """
         Building the dataset from files
         :param source_path: The path of the data's folder
@@ -175,13 +175,13 @@ if __name__ == "__main__":
 
     to_save = input("Save this model? (y/n)")
     if to_save == "y":
-        grab.save_model('./trained_models/grab_model.sav')
+        grab.save_model('./trained_models/blink_model.sav')
 
     # ------------
 
     classifier_args = dict(random_state=42)
     ocr = Model()
-    ocr.build_ocr_dataset(165)
+    ocr.build_symbol_dataset(165)
     ocr.shuffle_dataset_order()
     ocr.split_dataset(0.3, 3)
     ocr.train_classifier(classifier_args)
@@ -209,4 +209,4 @@ if __name__ == "__main__":
 
     to_save = input("Save this model? (y/n)")
     if to_save == "y":
-        ocr.save_model('./trained_models/ocr_model.sav')
+        ocr.save_model('./trained_models/symbol_model.sav')

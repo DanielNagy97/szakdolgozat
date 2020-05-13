@@ -348,7 +348,7 @@
                 "type": "Expandable",
                 "position": [540, 30],
                 "dimension": [400, 450],
-                "image": "images/expand_template.png",
+                "image": "images/end_expand.png",
                 "speed": 1.8,
                 "attenuation": 0.8,
                 "header_size": 60,

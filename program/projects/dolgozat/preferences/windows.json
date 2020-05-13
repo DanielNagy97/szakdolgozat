@@ -46,8 +46,8 @@
         "dimension": [120, 120]
     },
     {
-        "name": "grab-im",
-        "title": "Grab image",
+        "name": "blink-im",
+        "title": "Blink image",
         "mode": 0,
         "position": [860, 350],
         "dimension": [180, 200]

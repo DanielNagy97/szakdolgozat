@@ -35,7 +35,8 @@ def heatmap_show(controller, button_widget):
 
 def vector_field_show(controller, button_widget):
     if button_widget.pushed or button_widget.arg == "default":
-        controller.view.show_vector_field(controller.grid, controller.swirl,
+        controller.view.show_vector_field(controller.grid,
+                                          controller._rotation,
                                           controller._canvasses['vectorfield'])
         canvas = controller._canvasses['vectorfield'].canvas
         canvas = cv2.resize(canvas, button_widget.dimension, fx=0, fy=0,
@@ -48,7 +49,7 @@ def vector_field_show(controller, button_widget):
 def symbol_show(controller, button_widget):
     if button_widget.pushed or button_widget.arg == "default":
 
-        canvas = controller._ocr.predicted_gest
+        canvas = controller._symbol.predicted_gest
         canvas = cv2.resize(canvas, button_widget.dimension, fx=0, fy=0,
                             interpolation=cv2.INTER_AREA)
         results_canvas = cv2.cvtColor(canvas,
@@ -58,7 +59,7 @@ def symbol_show(controller, button_widget):
 
 def symbol_canvas_show(controller, button_widget):
     if button_widget.pushed or button_widget.arg == "default":
-        canvas = controller._ocr.canvas.canvas.copy()
+        canvas = controller._symbol.canvas.canvas.copy()
         canvas = cv2.resize(canvas, button_widget.dimension, fx=0, fy=0,
                             interpolation=cv2.INTER_AREA)
         results_canvas = cv2.cvtColor(canvas,
@@ -81,7 +82,7 @@ def sweep_show(controller, button_widget):
 def grab_show(controller, button_widget):
     if button_widget.pushed or button_widget.arg == "default":
 
-        canvas = controller._grab.grab_image.copy()
+        canvas = controller._blink.blink_image.copy()
         canvas = cv2.resize(canvas, button_widget.dimension, fx=0, fy=0,
                             interpolation=cv2.INTER_AREA)
         results_canvas = cv2.cvtColor(canvas,

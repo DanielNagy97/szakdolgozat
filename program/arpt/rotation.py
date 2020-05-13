@@ -1,19 +1,19 @@
 import numpy as np
 
 
-class Swirl(object):
+class Rotation(object):
     """
-    Swirl class
+    Rotation class
     """
 
     def __init__(self):
         """
-        Initalize the Swirl function.
+        Initalize the Rotation function.
         """
         self._points = np.empty((0, 2), dtype=np.int32)
         self._angles_of_rotation = np.empty((0, 1), dtype=np.int32)
 
-    def calc_swirl(self, grid, motion_blobs, video, eps=2):
+    def calc_rotation_points(self, grid, motion_blobs, video, eps=2):
         """
         Calculate the intersections of the vector field.
         :param grid: the grid object
@@ -27,7 +27,7 @@ class Swirl(object):
         for blob in motion_blobs:
 
             euclidean_vectors, selected_old_points = \
-                self.get_euclidean_vectors_of_swirl(blob, grid, eps)
+                self.get_euclidean_vectors_of_rotation(blob, grid, eps)
 
             b = self.get_b_sides_of_eq(euclidean_vectors, selected_old_points)
 
@@ -55,9 +55,9 @@ class Swirl(object):
 
         return phi
 
-    def get_euclidean_vectors_of_swirl(self, blob, grid, eps):
+    def get_euclidean_vectors_of_rotation(self, blob, grid, eps):
         """
-        Calculate the direction vectors of the swirl
+        Calculate the direction vectors of the rotation
         :param blob: the blob of motion
         :param grid: the grid object
         :param eps: the minimum lengths of the vectors

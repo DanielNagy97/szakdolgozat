@@ -5,26 +5,26 @@ import os
 from datetime import datetime
 
 
-class Grab(object):
+class Blink(object):
     """
-    Grab function class
+    Blink function class
     """
 
     def __init__(self):
         """
-        Initalize the Grab function
+        Initalize the Blink function
         """
         self.rect_area = 0
         self._center = []
         self._state = ""
         self._grabbed = False
-        self._grab_image = np.empty((16, 16))
+        self._blink_image = np.empty((16, 16))
         self.loaded_model = \
-            pickle.load(open("./src/ML/trained_models/grab_model.sav", 'rb'))
+            pickle.load(open("./src/ML/trained_models/blink_model.sav", 'rb'))
 
         self.j = 0
         self.time = datetime.now().strftime("%Y%m%d_%H%M%S")
-        self.dirname = "./src/grab_datas/"+self.time
+        self.dirname = "./src/blink_datas/"+self.time
         self.lk_params = {
             "winSize": (50, 50),
             "maxLevel": 2,
@@ -67,14 +67,14 @@ class Grab(object):
             pt1 = tuple(np.uint32(grid.old_points_3D[self.y, self.x]))
             pt2 = tuple(np.uint32(grid.old_points_3D[self.y+self.h-1,
                                                      self.x+self.w-1]))
-            # NOTE: The mean of white pixel locations would be better
+
             self._center_point = \
                 tuple(np.uint32(grid.old_points_3D[self._center[0],
                                                    self._center[1]]))
             image = new_canvas[pt1[1]:pt2[1], pt1[0]:pt2[0]]
             image = cv2.resize(image, (16, 16),
                                interpolation=cv2.INTER_AREA)
-            self._grab_image = image
+            self._blink_image = image
 
             # First 256 feature is the 16*16 image flattened
             # Second 50 feature is the direction vectors (25 pair)
@@ -92,9 +92,9 @@ class Grab(object):
             if self.j == 0:
                 os.makedirs(self.dirname)
             pickle.dump(self.data,
-                        open("./"+self.dirname+"/grab"+str(self.j)+".pkl",
+                        open("./"+self.dirname+"/blink_"+str(self.j)+".pkl",
                              "wb"))
-            print("grab", self.j)
+            print("blink_", self.j)
             self.j += 1
             self.rect_area = 0
 
@@ -115,9 +115,9 @@ class Grab(object):
                 x, y = self._center_point
                 self._position = np.array([[x, y]], dtype=np.float32)
 
-    def calc_grab_position(self, video):
+    def calc_drag_position(self, video):
         """
-        Calculating the new position of the point with optical-flow
+        Calculating the new position of the dragged point with optical-flow
         :param video: The video object
         """
         new_pos, status, error = \
@@ -153,5 +153,5 @@ class Grab(object):
         return self._position
 
     @property
-    def grab_image(self):
-        return self._grab_image
+    def blink_image(self):
+        return self._blink_image

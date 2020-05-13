@@ -7,11 +7,10 @@ from arpt.view import View
 from arpt.frame_difference import FrameDifference
 from arpt.window import Window
 from arpt.heat_map import HeatMap
-from arpt.swirl import Swirl
+from arpt.rotation import Rotation
 from arpt.composition import Composition
-from arpt.ocr_gesture import Ocr_gesture
-from arpt.event_handler import Event_handler
-from arpt.grab import Grab
+from arpt.symbol import Symbol
+from arpt.blink import Blink
 from arpt.dataparser import DataParser
 
 import importlib.util
@@ -69,12 +68,10 @@ class Controller(object):
         self.heat_map = HeatMap(self.grid,
                                 stgs['heatmap']['sensitivity'],
                                 stgs['heatmap']['min_area'])
-        self.swirl = Swirl()
+        self._rotation = Rotation()
 
-        self._ocr = Ocr_gesture(self.grid.old_points_3D.shape)
-        self._grab = Grab()
-
-        self._event = Event_handler()
+        self._symbol = Symbol(self.grid.old_points_3D.shape)
+        self._blink = Blink()
 
         self._composition = Composition()
         self.view = View()
@@ -105,41 +102,36 @@ class Controller(object):
         self.heat_map.get_motion_points(self.grid)
         self.heat_map.analyse_two_largest_points()
 
-    def swirl_control(self):
+    def rotation_control(self):
         """
         Controlling the swirl function.
         """
-        self.swirl.calc_swirl(self.grid, self.heat_map.bounding_rects,
-                              self._video)
+        self._rotation.calc_rotation_points(self.grid,
+                                            self.heat_map.bounding_rects,
+                                            self._video)
 
-    def ocr_gesture_control(self):
+    def symbol_control(self):
         """
         Controlling the motion gesture recognition
         """
-        self._ocr.draw_gesture(self.heat_map, self._ocr.canvas)
-        self._ocr.predict_motion(self._ocr.canvas, self.heat_map)
-        # self._ocr.save_data(self._ocr.canvas, self.heat_map)
+        self._symbol.draw_gesture(self.heat_map, self._symbol.canvas)
+        self._symbol.predict_motion(self._symbol.canvas, self.heat_map)
+        # self._symbol.save_data(self._symbol.canvas, self.heat_map)
 
-    def grab_control(self):
+    def blink_control(self):
         """
         Controlling the grab function
         """
-        self._grab.create_data(self.heat_map,
-                               self.frame_diff.canvas,
-                               self.grid)
-        self._grab.predict(self.heat_map)
-        # self._grab.save_data(self.heat_map)
-        if self._grab.grabbed:
-            self._grab.calc_grab_position(self._video)
-            x, y = self._grab.position.ravel()
+        self._blink.create_data(self.heat_map,
+                                self.frame_diff.canvas,
+                                self.grid)
+        self._blink.predict(self.heat_map)
+        # self._blink.save_data(self.heat_map)
+        if self._blink.grabbed:
+            self._blink.calc_drag_position(self._video)
+            x, y = self._blink.position.ravel()
             cv2.circle(self._video.frame, (int(x), int(y)),
                        3, (0, 0, 255), 4)
-
-    def event_control(self):
-        """
-        Controlling the event handler
-        """
-        pass
 
     def shiftable_control(self, shiftable_widget):
         """
@@ -166,13 +158,13 @@ class Controller(object):
         """
         Controlling the grabbable widget.
         """
-        grabbable_widget.update_position(self._grab, self._video)
+        grabbable_widget.update_position(self._blink, self._video)
 
     def tuner_control(self, tuner_widget):
         """
-        Controlling the grabbable widget.
+        Controlling the tuner widget.
         """
-        tuner_widget.update_value(self.swirl)
+        tuner_widget.update_value(self._rotation)
         tuner_widget.rotate_widget()
 
         getattr(self.actions, tuner_widget.action)(self, tuner_widget)
@@ -230,7 +222,7 @@ class Controller(object):
                     self.view.show_canvas(self._windows['framediff'],
                                           self.frame_diff.canvas)
                 elif window == 'vectorfield':
-                    self.view.show_vector_field(self.grid, self.swirl,
+                    self.view.show_vector_field(self.grid, self._rotation,
                                                 self._canvasses['vectorfield'])
 
                     self.view.show_canvas(self._windows['vectorfield'],
@@ -244,13 +236,13 @@ class Controller(object):
                                           self._canvasses['resultplot'])
                 elif window == 'ocr':
                     self.view.show_canvas(self._windows['ocr'],
-                                          self._ocr.canvas)
+                                          self._symbol.canvas)
                 elif window == 'ocr-pred':
                     self.view.show_image(self._windows['ocr-pred'],
-                                         self._ocr.predicted_gest)
-                elif window == 'grab-im':
-                    self.view.show_image(self._windows['grab-im'],
-                                         self._grab.grab_image)
+                                         self._symbol.predicted_gest)
+                elif window == 'blink-im':
+                    self.view.show_image(self._windows['blink-im'],
+                                         self._blink.blink_image)
         else:
             self.view.show_image(self._windows['v_stream'],
                                  self._video.frame)
@@ -266,11 +258,9 @@ class Controller(object):
                 self.frame_diff_control()
                 self.grid_control()
                 self.heat_map_control()
-                self.swirl_control()
-                self.ocr_gesture_control()
-                self.grab_control()
-
-                # self.event_control()
+                self.rotation_control()
+                self.symbol_control()
+                self.blink_control()
 
                 self.update_widgets()
 
