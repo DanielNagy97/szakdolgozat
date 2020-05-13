@@ -62,7 +62,8 @@ class Controller(object):
         self._canvasses = \
             data_parser.build_canvasses_from_pref(self._video, source_path)
 
-        self.grid = Grid(stgs['grid']['gridstep'], self._video.dimension)
+        self.grid = Grid(tuple(stgs['grid']['grid_dimension']),
+                         self._video.dimension)
         self.frame_diff = FrameDifference(self._video)
 
         self.heat_map = HeatMap(self.grid,

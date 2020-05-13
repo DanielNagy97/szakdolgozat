@@ -9,31 +9,21 @@ class Grid(object):
     Grid class
     """
 
-    def __init__(self, grid_density, dimension):
+    def __init__(self, grid_resolution, dimension):
         """
         Initialize the grid.
         :param grid_density: count of equidistant sections
         :param dimension: a tuple of (width, height) in pixels \
             capture device dimension
         """
-        capture_width, capture_height = dimension
-        self._old_points = np.empty((0, 2), dtype=np.float32)
-
-        self._grid_step = int(capture_width / grid_density)
-        for i in range(self._grid_step, capture_height, self._grid_step):
-            for j in range(self._grid_step, capture_width, self._grid_step):
-                self._old_points = np.append(self._old_points,
-                                             np.array([[j, i]],
-                                                      dtype=np.float32),
-                                             axis=0)
-
+        self._old_points = self.calc_centers(dimension, grid_resolution)
         self._new_points = np.empty(self._old_points.shape)
 
-        rows = grid_density-1
-        cols = int(len(self._old_points)/rows)
+        self._grid_step = np.sum(self._old_points[0])
 
-        # QUEST: Where has it used?
-        self._old_points_3D = self._old_points.reshape(cols, rows, 2)
+        rows, cols = grid_resolution
+
+        self._old_points_3D = self._old_points.reshape(rows, cols, 2)
         self._avg_vector_lengths = []
         self._global_euclidean_vectors = np.empty((0, 2), dtype=np.float32)
         self.lk_params = {
@@ -42,6 +32,28 @@ class Grid(object):
             "criteria": (cv2.TERM_CRITERIA_EPS |
                          cv2.TERM_CRITERIA_COUNT, 10, 0.03)
         }
+
+    def calc_centers(self, video_dimension, grid_resolution):
+        """
+        Calculates
+        :param video_dimension: tuple of (n_rows, n_columns) of the video dim
+        :param grid_resolution: tuple of (n_rows, n_columns) of the grid res
+        :return: NumPy array with size (n_rows * n_columns) x 2
+                The first column is for X values, the second is for Y values.
+        """
+        width = video_dimension[0]
+        height = video_dimension[1]
+        n_grid_points = grid_resolution[0] * grid_resolution[1]
+        centers = np.empty((n_grid_points, 2), dtype=np.float32)
+        cell_width = width / grid_resolution[1]
+        cell_height = height / grid_resolution[0]
+        k = 0
+        for i in range(grid_resolution[0]):
+            for j in range(grid_resolution[1]):
+                centers[k][0] = j * cell_width + (cell_width / 2)
+                centers[k][1] = i * cell_height + (cell_height / 2)
+                k += 1
+        return centers
 
     def calc_optical_flow(self, video):
         """
