@@ -2,7 +2,7 @@
 
 % TODO: Tutorial jelleggel leírni, és bemutatni, hogy hogy lehet használni az alkalmazást.
 
-A program jelenlegi verziójához nincs mellékelve grafikus felülettel ellátott projekt-szerkesztő, viszont a projekt sturktúraszabályait követve létrehozhatunk új prezentáció leíró állományokat.
+A program jelenlegi verziójához nincs mellékelve grafikus felülettel ellátott projekt-szerkesztő, viszont a projekt sturktúra szabályait követve létrehozhatunk új prezentáció leíró állományokat.
 
 \bigskip
 
@@ -78,10 +78,11 @@ A diasor szerkezete a következő:
 		\end{itemize}
 	\item Befejezés
 \end{itemize}
-Mint láthatjuk, a prezentációnak különböző szintjei vannak.
+Mint láthatjuk, a prezentációnak különböző szintjei vannak. A prezentációról egy képernyőképet \aref{fig:opencvdemo}. ábrán láthatjuk.
+
 \begin{figure}[h]
 \centering
-\includegraphics[width=12truecm]{images/opencv_demo_screenshot.png}
+\includegraphics[width=\textwidth]{images/opencv_demo_screenshot.png}
 \caption{Képernyőkép a demoról}
 \label{fig:opencvdemo}
 \end{figure}
@@ -97,7 +98,7 @@ def jump_to(controller, button_widget):
         controller.current_scene = int(button_widget.arg)
         button_widget.pushed = False
 \end{python}
-A függvény paramétereként átadódik a \texttt{contorller} és a \texttt{button\_widget} címe, melyeket elérve módosíthatjuk a program aktuális állapotait. Ha ezen funkcióval ellátott \textit{Button} típusú gomb lenyomódik, akkor az éppen aktuális fólia sorszámát manipuláljuk az argumentumként kapott adattal, melyet \texttt{int} típusúvá, azaz egész számmá konvertálunk. A művelet végén a gomb lenyomását megszűntethetjük, így ha vissza kell lépnünk erre a fólira, nem okoz majd gondot a lenyomva maradt gomb, amely a fóliára lépés pillanatában újra elnavigálna a benne jelzet fóliára.
+A függvény paramétereként átadódik a \texttt{controller} és a \texttt{button\_widget} címe, melyeket elérve módosíthatjuk a program aktuális állapotait. Ha ezen funkcióval ellátott \textit{Button} típusú gomb lenyomódik, akkor az éppen aktuális fólia sorszámát manipuláljuk az argumentumként kapott adattal, melyet \texttt{int} típusúvá, azaz egész számmá konvertálunk. A művelet végén a gomb lenyomását megszűntethetjük, így ha vissza kell lépnünk erre a fólira, nem okoz majd gondot a lenyomva maradt gomb, amely a fóliára lépés pillanatában újra elnavigálna a benne jelzet fóliára.
 A példaprezentációra jellemző, hogy előre és hátra is léptethetjük a fóliákat, így bejárva az összes szintet.
 
 A második fóliát egy menürendszernek szántam. A csempeszerűen elhelyezkedő widgetek segítségével érhetjuk el rajtuk jelölt funkciókat. A diavetítés így nem lineáris lesz, hiszen szabad sorrendben lefuttathatjuk azokat. Ezen widgetek \textit{Button} típusúak, a hozzájuk tartozó művelet pedig az aktuális diát jelző pointer értékének változtatása a cél helyre, vagyis a már említett \texttt{jump\_to} függvénnyel való ugrás. Ezen diák szintén a \texttt{scene.json} elemei, sorban, a Menü fólia után helyezkednek el.
@@ -105,7 +106,7 @@ A második fóliát egy menürendszernek szántam. A csempeszerűen elhelyezked�
 Az Menüből elérhető diák tartalma változó, a hozzájuk tartozó témakör kifejtését tartalmazzák. A dinamikus elemekkel ellátott diákon a témakörnek megfelelően elhelyzetem olyan vezérlőket, melyekkel manipulálhatjuk a kimeneti videófolyamot a témakörök szemléletesebb bemutatása érdekében.
 Például a Küszöbölés technikát bemutató dián a funkciót aktiváló \textit{Button} megnyomása esetén a videófolyamon a \textit{Tuner} értékeinek megfelelően végrehajtódik a küszöbölés művelete. A \textit{Tuner} segítségével állíthatjuk a küszöb alsó határát, az eljárás szemléltetése érdekében.
 Az éldetektálással és \textit{Alpha Blending} technikákkal foglalkozó fóliákon szintén hasonlóan demonstrálhatjuk a technikák működését, \textit{Tuner} widget segítségével értékeket állítva.
-A filtereket bemutató fólia szintén egy menürendszer, melyen két \textit{Button} segítségével érhetejük el a kívánt fóliákat. A Gauss-elmosást és a Hisztogram kiegyenlítést bemutató fóliákon található egy-egy \textit{Button} widget is, melynek megnyomása esetén a hozzátartozó művelet végrehajtódik. Például a Gauss-elmosással foglalkozó fólia ilyen \textit{Button}-ja a következő egyszerű függvénnyel rendelkezhet:
+A filtereket bemutató fólia szintén egy menürendszer, melyen két \textit{Button} segítségével érhetejük el a kívánt fóliákat. A Gauss-elmosást és a hisztogram kiegyenlítést bemutató fóliákon található egy-egy \textit{Button} widget is, melynek megnyomása esetén a hozzátartozó művelet végrehajtódik. Például a Gauss-elmosással foglalkozó fólia ilyen \textit{Button}-ja a következő egyszerű függvénnyel rendelkezhet:
 \begin{python}
 def gauss_button(controller, button_widget):
     if button_widget.pushed:
@@ -123,7 +124,7 @@ A Menüből pedig szintén egy \textit{Button} segítségével léphetünk tová
 \Section{Dolgozat bemutatása}
 
 A második példaprezentáció segítségével a dolgozatomat szeretném bemutatni.
-A prezentáció során a videófolyam az általános widgetek mellett valós időben frissülő ábrákkal is kiegészül, melyeket egyébként a program fejlesztői módú futása során láthatnánk. Ilyenek a \textit{Frame Difference}, \textit{Grab}, \textit{Vektormező}, stb\ldots ábrák. A folyton frissülő ábrák segítségével a dolgozat kulcs elemeit szemléletesebben bemutathatjuk.
+A prezentáció során a videófolyam az általános widgetek mellett valós időben frissülő ábrákkal is kiegészül, melyeket egyébként a program fejlesztői módú futása során láthatnánk. Ilyenek a \textit{Frame Difference}, \textit{Grab}, \textit{Vektormező} ábrák. A folyton frissülő ábrák segítségével a dolgozat kulcs elemeit szemléletesebben bemutathatjuk.
 
 A prezentációban a dolgozatomban tárgyalt főbb elemek kerülnek említésre. A fejezetek szerint haladva kerül bemutatásra a témakör és a dolgozat anyaga. Egyedül a widgetek nincsenek külön bemutatva, hiszen azok a prezentáció teljes egészében jelen vannak. Az egyes fóliák közti léptetés az előző prezentációhoz hasonlóan van megoldva. A widgetek \textit{design}-ja is hasonló, viszont ennél a prezentációnál mellőztem a \textit{Lorem ipsum} és angol nyelvű szövegeket a tartalomelemeknél és törekedtem az informatív leírásokkal és szemléletes képekkel színesíteni a widgeteket.
 
@@ -162,17 +163,17 @@ A Bevezetés fóliában egy általános bevezetés megtételére van lehetőség
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=12truecm]{images/dolgozat_demo_screenshot.png}
+\includegraphics[width=\textwidth]{images/dolgozat_demo_screenshot.png}
 \caption{Képernyőkép a demoról}
 \label{fig:dolgozatdemo}
 \end{figure}
 
-A bal alsó sarokban elhelyezkedő \textit{Button} segítségével érhetjük el a következő diát, a Koncepció menüjét, amelyről további fóliákat érhetünk el. Itt taláható meg a kiterjesztett valóság, prezentációs szoftverek, \textit{OpenCV} és \textit{scikit-learn}-el foglalkozó diasorok. Az itt szereplő widgetek még nem tartalmaznak élő-ábrákat, az általános widgetek segítségével mutthatjuk be az adott témaköröket. Ezen szekció célja az említett fogalmak tisztázása, általános bemutatása.
+A bal alsó sarokban elhelyezkedő \textit{Button} segítségével érhetjük el a következő diát, a Koncepció menüjét (\ref{fig:dolgozatdemo}. ábra), amelyről további fóliákat érhetünk el. Itt taláható meg a kiterjesztett valóság, prezentációs szoftverek, \textit{OpenCV} és \textit{scikit-learn}-el foglalkozó diasorok. Az itt szereplő widgetek még nem tartalmaznak élő-ábrákat, az általános widgetek segítségével mutthatjuk be az adott témaköröket. Ezen szekció célja az említett fogalmak tisztázása, általános bemutatása.
 
 A Gesztusok fólia szintén egy menürendszert tartalmaz. Innen 4 további fóliát érhetünk el.
 Itt találjuk meg az \textit{Optical-Flow}, a \textit{Grid}, a \textit{Hőtérkép} és a \textit{Gépi tanulás} diasorokat. A \textit{Grid} és \textit{Hőtérkép} fóliákkal egy újabb szintet érhetünk el. A hozzájuk kapcsolódó témaköröket belőlük tudjuk elérni. Itt már megjelennek a frissülő ábrák is, melyek segítségével szemléltesebben be tudjuk mutatni az adott témát.
 A \texttt{scene.json} állományban a gomb argumentumaként megadott "default" kulcsszó segítségével a gombokon belüli funkció gombnyomás nélkül is elérhető lesz. Ezen apró trükk segítségével a diára lépés pillanatában megjelennek az élő ábrák. A "default" kulcs megléte az \texttt{actions.py} modulon belül található függvényekben kerül ellenőrzésre. Ez csupán csak egy példa az argumentum használatra. Amennyiben elmarad a kulcsszó a leíró állományban, a widget a gombnyomás után kezdi el frissíteni a saját képét a kívánt ábrára.
 
-A példaprezentációkat tartalmazó fólia csupán csak említés szinten foglalkozik a példákkal. Az első példa widgetje \textit{Widget} típusú, vagyis semmijen tulajdonsággal nem rendelkezik, csupán egy képet tudunk megjeleníteni a segítségével. A Dolgozattal foglalkozó példaprezentáció widget-je pedig egy \textit{Button}, melyet megnyomva visszatérhetünk a prezentáció legelső diájára \ldots
+A példaprezentációkat tartalmazó fólia csupán csak említés szinten foglalkozik a példákkal. Az első példa widgetje \textit{Widget} típusú, vagyis semmilyen tulajdonsággal nem rendelkezik, csupán egy képet tudunk megjeleníteni a segítségével. A Dolgozattal foglalkozó példaprezentáció widget-je pedig egy \textit{Button}, melyet megnyomva visszatérhetünk a prezentáció legelső diájára.
 
 A második példaprezentáció is hasonlóan ér véget, mint az első, egy \textit{Expandable} widget segítségével foglalhajuk össze az előadást és köszönhetjük meg a figyelmet.

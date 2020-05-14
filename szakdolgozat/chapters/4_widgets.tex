@@ -14,34 +14,38 @@ A program használata során a felhasználó különféle virtuális interaktív
 
 \Section{Képek hozzáadása a videófolyamhoz}
 
-A programban elérhető interaktív grafikus elemek mindegyike képek segítségével jelenik meg. A videófolyam képkockáira az úgynevezett \textit{Alpha blending}\cite{salvi2014multi} technikával helyzehetünk el, átlátszóság értékkel, képeket. A módszerhez két összemosandó képre van szükségünk. Esetünkben ezen képek a videófolyam aktuális képkockája és az adott widget képe lesz. Mivel az eljárás egy mátrixművelet, ezért a képeknek hasonló tulajdonságokkal kell rendelkezniük. Egyeznie kell a felbontásnak, és a csatornák számának is. A megjelenítendő widgetek a videófolyam felbontásától különbözni fognak, ezért a videófolyam egy kiragadott képrészletét kell használnunk, hogy a felbontásra vonatkozó megkötés is teljesüljön.
+A programban elérhető interaktív grafikus elemek mindegyike képek segítségével jelenik meg. A videófolyam képkockáira az úgynevezett \textit{Alpha blending} \cite{salvi2014multi} technikával helyzehetünk el, átlátszóság értékkel, képeket. A módszerhez két összemosandó képre van szükségünk. Esetünkben ezen képek a videófolyam aktuális képkockája és az adott widget képe lesz. Mivel az eljárás egy mátrixművelet, ezért a képeknek hasonló tulajdonságokkal kell rendelkezniük. Egyeznie kell a felbontásnak, és a csatornák számának is. A megjelenítendő widgetek a videófolyam felbontásától különbözni fognak, ezért a videófolyam egy kiragadott képrészletét kell használnunk, hogy a felbontásra vonatkozó megkötés is teljesüljön.
 
-Két esetet különíthetünk el. Az elsőnek azt az esetet nézzük, amikor mindkét kép három csatornával rendelkezik, vagyis a három alapszínek intenzitásértékeit tartalmazzák. Ebben az esetben az \textit{Alpha blending} technika segítségével az egyes képek átlátszóságát állíthatjuk. Ha nem szeretnénk ilyen hatást elérni, akkor egyszerűen csak kicserélhetnénk a videófolyam widget területére eső pixeleit a widget pixeleire. De a program kezelése szempontjából indokolt egy kis átlátszóság alkalmazása, hogy a prezentáló személy lássa, hogy a widget mögött mi helyezkedik el.
+Két esetet különíthetünk el. Az elsőnek azt az esetet nézzük, amikor mindkét kép három csatornával rendelkezik, vagyis a három alapszínek intenzitásértékeit tartalmazzák. Ebben az esetben az \textit{Alpha blending} technika segítségével az egyes képek átlátszóságát állíthatjuk. Ha nem szeretnénk ilyen hatást elérni, akkor egyszerűen csak kicserélhetnénk a videófolyam widget területére eső pixeleit a widget pixeleire. A program kezelése szempontjából indokolt egy kis átlátszóság alkalmazása, hogy a prezentáló személy lássa, hogy a widget mögött mi helyezkedik el.
 
-A módszerhez definiálnunk kell az $\alpha$, $\beta$ és súlyokat és a $\gamma$ értékét.
+A módszerhez definiálnunk kell az $\alpha$, $\beta$ és súlyokat és a $\gamma$ értékét:
 \begin{align*}
-	\text{kimenet}_{x,y} = \alpha \cdot \text{kép1}_{x,y} + \beta \cdot \text{kép2}_{x,y} + \gamma
+	\text{kimenet}_{x,y} = \alpha \cdot \text{kép1}_{x,y} + \beta \cdot \text{kép2}_{x,y} + \gamma.
 \end{align*}
-Ha $0<\alpha<1$ és $\beta = 1 - \alpha$ és $\gamma = 0$, akkor a \textit{sztenderd alpha blend egyenletet}\cite{bradski2008learning} kapjuk:
+Amennyiben $0<\alpha<1$ és $\beta = 1 - \alpha$ és $\gamma = 0$, akkor a \textit{sztenderd alpha blend egyenletet}\cite{bradski2008learning} kapjuk:
 \begin{align*}
-		\text{kimenet}_{x,y} = \alpha \cdot \text{kép1}_{x,y} + (1-\alpha) \cdot \text{kép2}_{x,y}
+		\text{kimenet}_{x,y} = \alpha \cdot \text{kép1}_{x,y} + (1-\alpha) \cdot \text{kép2}_{x,y}.
 \end{align*}
 Az $\alpha$ súly helyes megválasztásával módosíthatuk a cél képre helyezendő kép átlátszóságánal mértékét.
 
 A második esetben olyan képeket szeretnénk illeszteni, az általánosan háromcsatornás videófolyamra, melyek $\alpha$ csatornával is rendelkeznek, azaz egy egyes pixelek átlátszóságáról is hordoznak információkat. A legelterjettebb ilyen tulajdonsággal rendelkező képformátum a PNG (\textit{Portable Network Graphics}). Az ilyen típusú képeket az \textit{Alpha blending} elvégzéhez előtt a következőképpen kell feldolgoznunk:\\
-Jelöljük a háttérképet $\boldsymbol H$-val, a ráillesztendő 4 csatornás képet pedig $\boldsymbol E$-vel. Feltételezzük, hogy az intenzitásértékek 0 és 255 közötti tartományon vehetnek fel értékeket.
+Jelöljük a háttérképet $\boldsymbol H$-val, a ráillesztendő 4 csatornás képet pedig $\boldsymbol E$-vel. Feltételezzük, hogy az intenzitásértékek 0 és 255 közötti tartományon vehetnek fel értékeket. (Ehhez a példaként használt képeket \aref{fig:blend01}. ábrán láthatjuk.)
+
 \begin{figure}[h]
 	\centering
-	\includegraphics[width=6.82truecm, height=3.41truecm]{images/blending_01.png}
+	\includegraphics[scale=1.3]{images/blending_01.png}
 	\caption{Az eredeti képek ($\boldsymbol H$ és  $\boldsymbol E$)}
 	\label{fig:blend01}
 \end{figure}	
+
 \begin{enumerate}
 	\item Vegyük az $\boldsymbol E$ képet és válaszuk két felé: $\boldsymbol E_{sz}$ (szín) és $\boldsymbol E_\alpha$ ($\alpha$) csatornákra.
-	\item Határozzuk meg a $\boldsymbol E_{\alpha H}$ háttérmaszkot az $\boldsymbol E_\alpha$ inverzével.
+	\item Határozzuk meg a $\boldsymbol E_{\alpha H}$ háttérmaszkot az $\boldsymbol E_\alpha$ inverzével:
 		\begin{align*}
-			\boldsymbol E_{\alpha H} = 255 - \boldsymbol E_\alpha
+			\boldsymbol E_{\alpha H} = 255 - \boldsymbol E_\alpha.
 		\end{align*}
+Ennek az eredményeit láthatjuk \aref{fig:blend02}. ábrán.
+
 		\begin{figure}[h]
 			\centering
 			\includegraphics[width=10.24truecm, height=3.41truecm]{images/blending_02.png}
@@ -49,16 +53,18 @@ Jelöljük a háttérképet $\boldsymbol H$-val, a ráillesztendő 4 csatornás 
 			\label{fig:blend02}
 		\end{figure}	
 	\item Alakítsuk át a $\boldsymbol E_{\alpha H}$ háttérmaszkot és az eredeti $\boldsymbol E_\alpha$ maszkot háromcsatornássá, hogy a következő számításokat el tudjuk végezni.
-	\item Számoljuk ki az összemosandó képeket a maszkok segítségével. Itt áttérünk 0 és 1 közötti intenzitásértékekre.
+	\item Számoljuk ki az összemosandó képeket a maszkok segítségével. Itt áttérünk 0 és 1 közötti intenzitásértékekre:
 		\begin{align*}
-				\boldsymbol H_m &= \left(\frac{\boldsymbol H}{255}\right) \cdot \left(\frac{\boldsymbol E_{\alpha H}}{255}\right)\\
-				\boldsymbol E_m &= \left(\frac{\boldsymbol E}{255}\right) \cdot \left(\frac{\boldsymbol E_\alpha}{255}\right)
+				\boldsymbol H_m &= \left(\frac{\boldsymbol H}{255}\right) \cdot \left(\frac{\boldsymbol E_{\alpha H}}{255}\right),\\
+				\boldsymbol E_m &= \left(\frac{\boldsymbol E}{255}\right) \cdot \left(\frac{\boldsymbol E_\alpha}{255}\right).
 		\end{align*}
 \end{enumerate}
 Az \textit{Alpha blendig}-et pedig ebben az esetben a következőképpen hajtjuk végre:
 \begin{align*}
-	\text{kimenet} = 255 \cdot \boldsymbol H_m + 255 \cdot \boldsymbol E_m
+	\text{kimenet} = 255 \cdot \boldsymbol H_m + 255 \cdot \boldsymbol E_m.
 \end{align*}
+A kimeneti képet \aref{fig:blend03}. ábrán láthatjuk.
+
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=10.24truecm, height=3.41truecm]{images/blending_03.png}
@@ -76,7 +82,7 @@ Az \textit{Alpha blendig}-et pedig ebben az esetben a következőképpen hajtjuk
 A \textit{Button} vagy \textit{Nyomógomb} működtetése rendkívül egyszerű. Aktiválásához a felhasználónak egyszerűen csak a gomb területére kell emelnie például a kézfejét, a gomb pedig egy bizonyos idő elteltével reagál.
 
 A gombon belüli mozgás figyelésére segítségül hívhatjuk a \textit{Hőtérkép} csoportjait. Ha egy csoport súlypontja a gombon belül helyezkedik el, majd ha megszűnik (vagyis ha a csoporthoz tartozó valódi objektum abbahagyja a mozgását), akkor a megszűnt csoport súlypontjának a koordinátáira egy figyelendő pontot helyezünk. Ha a vizsgálandó pont kilép a gomb tartományából egy előre meghatározott időn belül, akkor nem történik semmi. Ha viszont a vizsgálandó pont a gomb területén belül marad, a gomb aktiválódik. 
-Vagyis ez egy valós helyzetben a következőképpen nézhet ki: A felhasználó a gomb területére irányítja a kézfejét, a kézfejének apró mozdulatai (melyek nem figyelhetőek meg a \textit{Hőtérképen} a képzaj kiküszöbölése miatt) egy vizsgálandó pont segítségével lesznek követve, amely a már ismert \textit{Optical Flow} technikával valósul meg.
+Ez egy valós helyzetben a következőképpen nézhet ki. A felhasználó a gomb területére irányítja a kézfejét, a kézfejének apró mozdulatai (melyek nem figyelhetőek meg a \textit{Hőtérképen} a képzaj kiküszöbölése miatt) egy vizsgálandó pont segítségével lesznek követve, amely a már ismert \textit{Optical Flow} technikával valósul meg.
 
 A véletlen gombnyomás, nem kívánt viselkedés elkerülése érdekében időkeretet kell megszabnunk a vizsgálandó pont a gombon belül töltött idejére. Ezen időintervallumnak viszonylag rövidnek kell lennie, hogy a felhasználói élmény ne romoljon (ne kelljen várni túl sokáig a gombnyomásra), viszont nem lehet túl rövid ahhoz, hogy egy esetleges véletlen mozdulat aktiválni tudja. A helyes időkeret megválasztása a gomb méretétől is függhet. Tapasztalati adatok szerint 0.2-0.5 másodperc közötti időkeret használata megfelelőnek tűnik.
 
@@ -85,31 +91,30 @@ A véletlen gombnyomás, nem kívánt viselkedés elkerülése érdekében idők
 A megfogható tulajdonsággal rendelkező objektumokat a felhasználó a képtartományon belül szabadon áthelyezheti kedve szerint. A művelethez egy \textit{Drag and Drop} gesztust-sorozatot kell végrehajtania. A \textit{Blink} gesztus kiadásakor minden esetben számolódik egy pozíció érték, amely a kézfej helyzetét kívánja megbecsülni. Ha ezen pont az elem területére esik, akkor a pontot innentől kezdve vizsgálandó pontnak kell tekintenünk. A pont helyzetének frissítése az \textit{Optical Flow} technikával történik. Az elem új pozíciója a ponthoz képest módosul, vagyis az elem a felhasználó kézfejét követi.
 Amint elnavigálta a kívánt pozícióba az új elemet a felhasználó, egy újabb \textit{Blink} gesztussal a helyére teheti azt.
 
-Hogy az elem véletlenül se lépjen ki a videófolyamból, korlátoznunk kell a lehetséges mozgásterét a képtartományra. Vagyis az elem szélei nem mehetnek túl a kép szélein. Ezen megszorítás a többi elemre is vonatkozik.
+Azért, hogy az elem véletlenül se lépjen ki a videófolyamból, korlátoznunk kell a lehetséges mozgásterét a képtartományra, vagyis az elem szélei nem mehetnek túl a kép szélein. Ezen megszorítás a többi elemre is vonatkozik.
 
 \SubSection{Shiftable}
 
-A tologatható elemekkel \textit{Shift} gesztus segítségével léphetünk kapcsolatba. Az irányukba történő mozgásra megeggyező irányú mozgással reagálnak. Működésére olyan hatás jellemző, mintha az elemet tologatnánk.
+A tologatható elemekkel \textit{Shift} gesztus segítségével léphetünk kapcsolatba. Az irányukba történő mozgásra megegyező irányú mozgással reagálnak. Működésére olyan hatás jellemző, mint ha az elemet tologatnánk.
 
 \SubSection{Expandable}
 
-Ezen virtuális elemek megjelenés szempontjából hasonlítanak egy pargamen tekercshez, belső tartalmuk kezdetben rejtett, azonban a felhasználónak lehetősége van kinyitni, megmutatva a belső tartalmát, majd becsukni az adott elemet.
+Ezen virtuális elemek megjelenés szempontjából hasonlítanak egy pergamen tekercshez, belső tartalmuk kezdetben rejtett, azonban a felhasználónak lehetősége van kinyitni, megmutatva a belső tartalmát, majd becsukni az adott elemet.
 
 A \textit{Tologatható elemekhez} hasonlóan, \textit{Shift} gesztussal léphetünk kapcsolatba az ilyen tulajdonságokkal ellátott elemekkel, viszont az ilyen típusú elemek mozgása egy bizonyos tengelyre korlátozódik, kezdőpozícióját megtartja és a megjelenítendő képrészlet nagysága változik csupán. Az elemhez definiálnunk kell a \textit{header} szekció méretét, ami az elem minimum méretét fogja megadni. Mivel az elem viselkedését a vektormező adataiból számoljuk, ezért a \textit{header} mérete nem lehet kisebb a rács sűrűségéből számított lépésköznél, hiszen ilyenkor bizonyos esetekben az elem becsukott állapotban egyetlen kontrollpontot sem fedne le, így a felhasználó nem tudna interakcióba lépni vele.
-Az elem tényleges mérete pedig a teljesen kinyitott állapototára vonatkozik.
+Az elem tényleges mérete pedig a teljesen kinyitott állapotára vonatkozik.
 
 \SubSection{Rollable}
 
 A \textit{Rollable} virtuális elemek rögzített pozíciójú, fix méretű widgetek.
 
-Működés szempontjából hasonlítanak egy diavetítőre, hiszen a hozzá tartozó nagyméretű képet egy ablakon keresztül szemlélhetjük, a megjelenítendő képrészletet pedig a felhasználó kedve szerint változtathatja, vagyis működés közben úgy tűnhet, mintha görgetné az adott ablakon található tartalmat.
+Működés szempontjából hasonlítanak egy diavetítőre, hiszen a hozzá tartozó nagyméretű képet egy ablakon keresztül szemlélhetjük, a megjelenítendő képrészletet pedig a felhasználó kedve szerint változtathatja, vagyis működés közben úgy tűnhet, mint ha görgetné az adott ablakon található tartalmat.
 
 Az ilyen típusú widgeteket is a \textit{Shift} gesztus segítségével vezérelhetjük. A gesztus végrehajtása során kiszámolódik a megjelenítendő képrészlet \textit{kezdőpozíciója}, ami alapján, az \textit{ablak méretét} figyelembe véve meghatározható az eredeti képből kivágandó képrészlet.
-A helyes működés érdekében a képrészlet kezdőpozíciójának értékét korlátoznunk kell. Az értéke nem lehet nullánál kisebb, illetve nem lehet nagyobb a hozzá tartozó kép magasságának és az ablakméret magasságának különbségénél ($y$ tengelyen görgethető \textit{Rollable} widget esetében).
+A helyes működés érdekében a képrészlet kezdőpozíciójának értékét korlátoznunk kell. Az értéke nem lehet nullánál kisebb, illetve nem lehet nagyobb a hozzá tartozó kép magasságának és az ablakméret magasságának különbségénél ($y$ tengelyen görgethető \textit{Rollable} widget esetében), vagyis
 \begin{align*}
-	0 \leq \textit{képrészlet kezdőpozíciója} \leq (\textit{képmagasság} - \textit{ablakmagasság})
+	0 \leq \textit{képrészlet kezdőpozíciója} \leq (\textit{képmagasság} - \textit{ablakmagasság}).
 \end{align*}
-
 Így elkerülhetők a hibás vágások, illetve megakadályozható a kép kicsúszása az ablakból.
 
 \SubSection{Tuner}
@@ -120,17 +125,17 @@ Az ilyen típusú widgeteket a \textit{Rotation} gesztus segítségével érhetj
 A felhasználó definiálhatja, hogy az ilyen típusú widget értékei milyen tartományon szerepelhetnek, vagyis meg kell határoznia a legkisebb és legnagyobb értéket, amelyet a widget felvehet. Amennyiben a \textit{Rotation} gesztus becsült forgási szöge a \textit{Tuner} widget területére esik, a widget értékét a következőképpen határozhatjuk meg:
 Jelöljük $\alpha$-val a \textit{Rotation} gesztus feldolgozása során kiszámolt forgási szöget, $\boldsymbol V$-vel az aktuális értéket, ($\boldsymbol V_{\max}; \boldsymbol V_{\min}$)-el pedig a felhasználó által definiált maximálisan, illetve minimálisan felvehető értékeket, vagyis $\boldsymbol V_{\min} \leq \boldsymbol V \leq \boldsymbol V_{\max}$.
 \begin{align*}
-	\boldsymbol V = \boldsymbol V + 0.3\left(\boldsymbol V_{\max} - \boldsymbol V_{\min}\right) \cdot \left( \frac{\alpha}{360}\right)
+	\boldsymbol V = \boldsymbol V + 0.3\left(\boldsymbol V_{\max} - \boldsymbol V_{\min}\right) \cdot \left( \frac{\alpha}{360^\circ}\right)
 \end{align*}
 Megjelenés szempontjából a \textit{Tuner} widget valóban elfordul. A hatás eléréséhez meg kell határoznunk a $\gamma$ elfordulás szöget a widget aktuális $\boldsymbol V$ értéke alapján.
 \begin{align*}
-	\gamma = \boldsymbol V \cdot \left(\frac{360}{\boldsymbol V_{\max} - \boldsymbol V_{\min}}\right)
+	\gamma = \boldsymbol V \cdot \left(\frac{360^\circ}{\boldsymbol V_{\max} - \boldsymbol V_{\min}}\right)
 \end{align*}
 Az így kapott $\gamma$ szög segítségével pedig affin transzormációval elforgatjuk a widget eredeti képét a középpontja körül és az így kapott képet helyezzük el a videófolyamon.\\
 A forgatás a következő mátrixal lehetséges \cite{bradski2008learning}, ahol $\boldsymbol C \in \mathbb{R}^2$ a kép középpontját jelöli:
 \begin{align*}
 	\begin{bmatrix}
-		\cos(\gamma) & \sin(\gamma) & (1-cos(\gamma))\cdot \boldsymbol C_x-\sin(\gamma)\cdot \boldsymbol C_y\\
-		-\sin(\gamma) & \cos(\gamma) & sin(\gamma)\cdot \boldsymbol C_x+(1-cos(\gamma))\cdot \boldsymbol C_y\\
-	\end{bmatrix}
+		\cos(\gamma) & \sin(\gamma) & (1-\cos(\gamma))\cdot \boldsymbol C_x-\sin(\gamma)\cdot \boldsymbol C_y\\
+		-\sin(\gamma) & \cos(\gamma) & \sin(\gamma)\cdot \boldsymbol C_x+(1-\cos(\gamma))\cdot \boldsymbol C_y\\
+	\end{bmatrix}.
 \end{align*}
