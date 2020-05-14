@@ -1,7 +1,19 @@
 \Chapter{Összefoglalás}
 
-Hasonló szerepe van, mint a bevezetésnek.
-Itt már múltidőben lehet beszélni.
-A szerző saját meglátása szerint kell összegezni és értékelni a dolgozat fontosabb eredményeit.
-Meg lehet benne említeni, hogy mi az ami jobban, mi az ami kevésbé jobban sikerült a tervezettnél.
-El lehet benne mondani, hogy milyen további tervek, fejlesztési lehetőségek vannak még a témával kapcsolatban.
+A dolgozatban egy új, saját kezdeményezésű prezentációs szoftver elkészítése és működése került bemutatásra.
+Ehhez megelőzően áttekintésre kerültek az AR/VR, a képfeldolgozás és a gépi tanulás témaköreinek alapfogalmai.
+Ezt követően a prezentáció során értelmezett (a szoftver által felismerendő) gesztusok áttekintésére került sor.
+
+A gesztusok felismerése egy aktuálisan kutatott terület. A dolgozatban bemutatott problémákhoz kapcsolódóan az eredményeket folyóiratban is sikerült publikálni \cite{nagy2020gesture}.
+
+Az alkalmazás egy \texttt{arpt} nevű Python függvénykönyvtár formájában került megvalósításra. Ez függőségként az OpenCV és a SciKit Learn függvénykönyvtárak meglétét feltételezi. Mivel ezek több platformon elérhetők, így az elkészült alkalmazás is átvihető.
+
+A dolgozat egy külön fejezetben két demo prezentáción mutatja be a prezentáció készítésének módját, és az elkészült prezentáció működését.
+
+Az elkészített program további fejlesztésére több lehetséges irány is adódik.
+A bemutatott gesztus detektálási módszerekben gyakran intuitív, tapasztalati úton beállított paraméterek adtak az elvárásoknak megfelelő megoldást.
+A későbbiekben a hasonló képfeldolgozási, objektumfelismerési- és követési, illetve gépi tanulási módszerek tanulmányozásával megbízhatóbbá tehető az alkalmazás.
+
+A prezentációs projektek kezeléséhez egy formátum definiálásra került, viszont érdemes azt egy grafikus szerkesztőfelülettel egyszerűbben használhatóvá, a technikai dolgokban kevésbé járatos felhasználók számára is elérhetővé tenni.
+
+A példákban a megjelenített \textit{widget}-ek direkten az adott prezentációhoz készültek. Érdemes lehet majd előre definiált készleteket készíteni és közreadni ezekhez.

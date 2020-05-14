@@ -1,9 +1,104 @@
-\Chapter{Megvalósítás}
+\Chapter{A prezentáló szoftver megvalósítása}
 
-\Section{Az \texttt{arpt} csomag felépítése}
+A szoftver egy Python csomagként került megvalósításra, amely az \texttt{arpt} (\textit{Augmented Reality Presentation Tool}) nevet kapta.
+Demonstrációs célból ehhez készült egy \texttt{main.py} szkript is, amelynek az a feladata, hogy betöltse az elkészült függvénykönyvtárból az annak használatához szükséges vezérlőt, illetve kezelje a parancssori argumentumokat.
+A következő szakaszokban a program működéséről, az \texttt{arpt} felépítéséről és a megvalósításának részleteiről lesz szó.
 
-% TODO: Osztályok felsorolása.
+Nyilvánvalóan egy adatfeldolgozást végző, interaktív grafikus alkalmazásról van szó.
+Ennek megfelelően érdemes külön kezelni az ezen funkciókhoz tartozó kódrészeket, a feldolgozási- és megjelenítési folyamatot valahogyan rétegekbe szervezni.
+Egy lehetséges, idealizált réteges felépítés \aref{tab:layers}. táblázatban látható.
 
-\Section{Videóeszköz kezelése}
+\begin{table}[h!]
+\centering
+\caption{Az alkalmazás fő rétegei}
+\label{tab:layers}
+\smallskip
+\begin{tabular}{|l|l|}
+\hline
+\textbf{Réteg neve} & \textbf{Funkciója} \\
+\hline
+Presenter & A prezentáció beállításait, megjelenítését kezeli. \\
+Widget Manager & A vezérlők elrendezéséért, megjelenítéséért felelős. \\
+Handlers & A gesztusok által kiváltott események kezelését végzi. \\
+Recognizers & Az aggregált jellegek alapján ismeri fel a gesztusokat. \\
+Aggregators & A videófolyam képeiből nyeri ki a lényeges információkat. \\
+Video & A videófolyam kezelését végzi. \\
+\hline
+\end{tabular}
+\end{table}
 
-Capture device-al kapcsolatos dolgok
+A rétegek egyúttal az absztrakciós szinteknek is megfelelnek, továbbá a feldolgozási folyamatot lenntről-felfelé értelmezhetjük.
+\begin{itemize}
+\item \textit{Video}: A program egy felvevőeszközből (amely egyaránt lehet videófájlból vagy kamerából származó képfolyam) megkapja a feldolgozandó képeket, majd azokat összegyűjti és átalakítja olyan formára, hogy az a további feldolgozást egyszerűsítse.
+\item \textit{Aggregators}: Az aggregátorok a videók képeiből információkat nyernek ki. Tulajdonképpen ebben a fázisban történik a jellegvektorok számításának többsége. Itt kerülnek kiszámításra az elmozdulásvektorok, abból a hőtérképek, majd az összefüggő képrészek (\textit{blob}-ok) elhelyezkedése és jellemzőik.
+\item \textit{Recognizers}: Feltételezhetjük, hogy a gesztusok felismeréséhez az aggregátorok által szolgáltatott adatok elegendőek. Minden felismerendő gesztushoz tartozik egy felismerő, amelyek egymástól függetlenül képesek felismerni az aggregált adatokból az adott gesztust és annak paramétereit.
+\item \textit{Handlers}: Az interaktív kialakítás miatt egy eseménykezelő rendszer is szükséges a program működéséhez. A gesztus felismerőkhöz egyedi eseménytípusok tartoznak. Célszerű az alkalmazást eseményvezérelten elkészíteni, hogy a felismerők által kiváltott eseményekhez tetszőleges sok eseményfigyelőt (\textit{handler}-t) lehessen hozzárendelni.
+\item \textit{Widget Manager}: Az események hatását a vezérlőkön (\textit{widget}-eken) keresztül lehet látni, azok azok az elemek, amelyekkel a felhasználó tulajdonképpen interakciót tud megvalósítani. Mivel ezek egyúttal grafikus elemek is, ezért az elrendezésükkel, grafikus megjelenítésükkel ennek a külön rétegnek kell foglalkozni.
+\item \textit{Presenter}: Az alkalmazás megjelenítő (prezentációs) rétege rakja össze olyan formában az eredményt, hogy az a felhasználó számára megfelelő legyen. Ennek kell gondoskodnia az aktuálisan szükséges vezérlők létrehozásáról, inicializálásáról, továbbá a videófolyam képének és a vezérlők megjelenítésének összerakásáról. Feladatai közé tartozik még az egyes prezentációk adatainak kezelése, az azokhoz tartozó konfigurációs fájlok beolvasása.
+\end{itemize}
+Az \texttt{arpt} csomag bemutatása kapcsán az ezen rétegekhez tartozó, az azokat megvalósító programrészek részletezésére kerül sor.
+
+\Section{Videófolyam kezelése}
+
+A videófolyamok kezelését a \texttt{video} modul \texttt{Video} nevű osztálya végzi.
+Az OpenCV függvénykönyvtár szerencsére egy elég kényelmes hozzáférési módot biztosít a felvevőeszközök (\textit{capture device}) kezeléséhez.
+A saját osztály létrehozását az alábbi okok indokolták.
+\begin{itemize}
+\item Ilyen módon megoldhatóvá vált a videófolyamból származó képek felbontásának változtatása, úgy hogy azzal a további feldolgozási lépésekben ne kelljen foglalkozni.
+\item Gyakorlati szempontból hasznos, hogy ha a felhasználó tudja tükrözni a képet, így ezen keresztül az a transzformáció is megvalósítható.
+\item A gesztusok felismerése elsődlegesen szürkeárnyalatos képek feldolgozásához készült, amelyhez a színtér transzformációt az osztály el tudja végezni.
+\end{itemize}
+Mivel nem csak egy kép, hanem képfolyam feldolgozásáról van szó, ezért a \texttt{Video} osztály az előző képet is tárolja.
+
+\Section{Jellegvektorok számítása}
+
+A képfolyam feldolgozása rengeteg adatot jelent, amelyből ki kell tudni nyerni a gesztusok felismeréséhez a lényegeseket.
+Az információk kinyeréséhez az alapvető eszközt az elmozdulásvektorok számítása adja. Ahhoz, hogy ezt meg lehessen tenni, ki kell jelölni bizonyos pontokat a képtérben.
+Célszerűen ez egy négyzetrács pontjait jelenti, amelynek a számításait a \texttt{Grid} osztály végzi el.
+Az elmozdulások számítása ennek a \\ \texttt{calc\_optical\_flow} metódusával hajtható végre, amely az OpenCV \\ \texttt{calcOpticalFlowPyrLK} függvényét használja fel a becsléshez.
+
+Szintén ebben az osztályban kapott helyet az eredővektor számítása is. A \\ \texttt{calc\_global\_resultant\_vector} a rácspontokban becsült elmozdulásvektorok eredőjét adja vissza.
+
+A \texttt{Grid} osztály kezeli még továbbá a gesztusfelismerés teszteléséhez, annak paramétereinek a hangolásához készített megjelenítő alkalmazások számára a rácspontokhoz tartozó vektorokat is.
+
+Az egymás követő képek simítását, majd küszöbölését követően a \\ \texttt{frame\_difference} modul \texttt{FrameDifference} osztálya számítja.
+
+A hőtérképek becslését az \texttt{arpt} csomagon belül a \texttt{HeatMap} osztály oldja meg. Ez az elmozdulásvektorok alapján becsült intenzitásokon túl már az összefüggő képpontok keresését és szűrését is elvégzi, így elérhetővé téve a szükséges adatokat a gesztusok felismeréséhez.
+
+\Section{Gesztusok felismerését végző osztályok}
+
+A gesztusok felismeréséhez a következő osztályok tartoznak.
+\begin{itemize}
+\item \texttt{Blink}: Az \texttt{\_\_init\_\_} metódusában az osztály betölt egy már korábban betanított modellt a \textit{Blink} gesztushoz. A betanításhoz az adatokat a \texttt{create\_data} metódusával tudja gyűjteni, és a \texttt{save\_data} metódusával tudja menteni. Az előrejelzéshez a \texttt{predict} nevű metódusa használható, amely a becslés közben aktualizálja a \textit{Blink} gesztus állapotát. A mozgatható pontokat a \texttt{calc\_drag\_position} metódus számítja.
+\item \texttt{Rotation}: Az elforgatás gesztust számítja a \texttt{calc\_rotation\_points} metódus segítségével. Elérhetővé teszi az elforgatás szögét a \texttt{calc\_angles\_of\_rotation} metódussal.
+\item \texttt{Symbol}: A \textit{Symbol} gesztus felismerése az osztályban a \texttt{Blink} osztályhoz hasonlóan került megvalósításra. Az adatok egy külön lementett modellből kerülnek beolvasásra. Fájlba írásukra a \texttt{save\_data} metódus segítségével van lehetőség. Az osztály a \texttt{draw\_gesture} metódusával ki is tudja rajzolni a szimbólumot egy, a paraméterében kapott vászon objektumra.
+\end{itemize}
+
+\Section{Eseménykezelők}
+
+Az események kezelését, azok vezérlőkhöz rendelését a \texttt{Controller} osztály valósítja meg. Ebben \texttt{\_control} végződéssel ellátott nevű metódusok tartoznak az egyes eseményekhez, mint például a \texttt{blink\_control}, \texttt{rotation\_control} és a \texttt{symbol\_control}.
+
+Az alkalmazás működéséhez tartozó fő üzenethurok is ebben van a \texttt{main\_loop} nevű metódus formájában. Ez oldja meg, hogy minden új képkocka esetén minden gesztufelismerő és vezérlő újra tudja számolni az állapotát.
+
+\Section{Grafikus vezérlők}
+
+A grafikus vezérlők ősosztálya a \texttt{Widget} nevű osztály. Ez tartalmazza a további vezérlők közös tulajdonságait, úgy mint a pozíciójukat, méretüket, a megjelenítésükhöz szükséges képet, illetve azt, hogy mennyire átlátszóak. Ebből került leszármaztatásra a \texttt{Button}, \texttt{Expandable}, \texttt{Grabbable}, \texttt{Rollable}, \texttt{Shiftable} valamint a \texttt{Tuner} vezérlő elemet reprezentáló osztály.
+
+\Section{Prezentáció összeállítása}
+
+Az előzőleg említett elemekből a prezentációt az alábbi osztályok rakják össze a felhasználó számára kezelhető formában.
+\begin{itemize}
+\item \texttt{DataParser}: A prezentációhoz tartozó adatok egy külön jegyzékben kapnak helyet. Ezek betöltését a \texttt{DataParser} osztály végzi el. Az adott prezentáció konfigurációjában felsorolt elemekből ez gyűjti össze, hogy milyen vezérlők példányosítására van szükség, azokhoz milyen további beállítások tartoznak.
+\item \texttt{Composition}: Ennek az osztálynak a feladata, hogy a grafikus vezérlő elemeket a videófolyamra rajzolja (kompozitálja). Erre a \texttt{draw\_widget} metódusa szolgál.
+\item \texttt{Controller}: A prezentációs szoftvernek a \texttt{Controller} osztály egy központi eleme. Ez kezdeményezi a \texttt{DataParser} segítségével az aktuális prezentáció összeállítását, elvégzi az eseménykezelést majd ez fogja a végeredmény kép összerakásához a \texttt{Composition} osztályt használni.
+\end{itemize}
+
+A \texttt{Controller} osztály használatához az inicializálásánál meg kell azt adni a prezentáció elérési útvonalát, illetve azt, hogy demo módban akarja-e futtatni a felhasználó.
+Egy egyszerű használati módja így a következő.
+\begin{python}
+from arpt.controller import Controller
+
+controller = Controller('path/of/the/project', demo=False)
+controller.main_loop()
+\end{python}
+A következő fejezetben prezentáció projektekre láthatunk majd példákat, amelyben részletezésre kerül a prezentáció összeállítási módja, a beállításokat tartalmazó fájlok szerkezete.
