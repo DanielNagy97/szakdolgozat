@@ -81,16 +81,6 @@ class Symbol(object):
             heat_map.motion_points_roots = np.empty((0, 2), dtype=np.uint8)
             self.j += 1
 
-    def add_new_gesture(self, heat_map, canvas, number_of_gest, repeatance):
-        """
-        Chanche for user to add new gestures
-        Each gesture should be done n times before accepting
-        Then it's needs to be verified
-        """
-        # TODO: Saving user gestures to a structure!!!
-        if self.j < repeatance:
-            self.save_data(heat_map, canvas)
-
     def preprocess_gesture(self, canvas, width):
         """
         Preprocessing

@@ -35,8 +35,6 @@ class Shiftable(Widget):
                                                   *self._dimension),
                                                  grid.grid_step)))
 
-        # NOTE: reducing computation time by using the grid's direction vectors
-        # Calculating the local resultant vector for the Widget
         euclidean_vectors = np.reshape(grid.euclidean_vectors,
                                        grid.old_points_3D.shape)
         local_euclidean_vector = \

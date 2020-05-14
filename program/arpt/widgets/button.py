@@ -45,7 +45,6 @@ class Button(Widget):
         :param grid: The grid object
         :param video: The Video object
         """
-        # NOTE: Center of hmap's rects are calc-ed elsewhere too (f.e: in grab)
         if len(heat_map.bounding_rects) == 1 and not self.about_to_push:
             x, y, w, h = heat_map.bounding_rects[0]
             center = np.array((y + h/2, x + w/2),

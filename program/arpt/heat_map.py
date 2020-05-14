@@ -114,9 +114,7 @@ class HeatMap(object):
         """
         self._different_direction = 0.0
         if len(self._motion_points_direction) == 2:
-            # normal_vectors = \
-            # np.multiply(np.flip(self._motion_points_direction,axis=1),
-            #                     [1,-1])
+
             motion_points_sum = np.abs(np.sum(self._motion_points_direction,
                                               axis=0))
             sum_of_a_sum = np.sum(motion_points_sum)

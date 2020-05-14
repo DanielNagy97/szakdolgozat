@@ -17,7 +17,11 @@ def get_normalized_vector(vector):
     :return: np array with two elements, normalized vector
     """
     # WARN: Zero length may cause problems!
-    return np.divide(vector, get_vector_length(vector))
+    vector_lenght = get_vector_length(vector)
+    if vector_lenght != 0:
+        return np.divide(vector, get_vector_length(vector))
+    else:
+        return [0, 0]
 
 
 def get_euclidean_vector(vector):
@@ -26,5 +30,5 @@ def get_euclidean_vector(vector):
     :param vector: np nd.array
     :return: np array with two elements, vector
     """
-    # TODO: Rename the function because it is misleading!
+
     return np.subtract(vector[1], vector[0])

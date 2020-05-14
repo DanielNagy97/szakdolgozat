@@ -15,9 +15,6 @@ from arpt.dataparser import DataParser
 
 import importlib.util
 
-# NOTE: Probably it is enought to import only the arpt package.
-# from arpt import *
-
 
 class Controller(object):
     """
@@ -168,6 +165,7 @@ class Controller(object):
         tuner_widget.update_value(self._rotation)
         tuner_widget.rotate_widget()
 
+        # Actions from project file codes
         getattr(self.actions, tuner_widget.action)(self, tuner_widget)
 
     def rollable_control(self, rollable_widget):

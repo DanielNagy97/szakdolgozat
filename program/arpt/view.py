@@ -20,7 +20,7 @@ class View(object):
         """
         cv2.imshow(win.name, image)
 
-    def show_vector_field(self, grid, swirl, canvas, eps=2):
+    def show_vector_field(self, grid, rotation, canvas, eps=2):
         """
         Show the vector field.
         """
@@ -35,12 +35,10 @@ class View(object):
                                 tuple(grid.new_points[k]),
                                 0,
                                 2)
-        # NOTE: The intersection points here is for testing only!
-        if swirl.points.any():
-            for point in swirl.points:
+        # Visualizing rotation points
+        if rotation.points.any():
+            for point in rotation.points:
                 cv2.circle(canvas.canvas, tuple(point), 10, (0, 0, 255), 5)
-
-        # self.show_canvas(win, canvas)
 
     def show_heat_map(self, win, heat_map):
         """
@@ -187,7 +185,6 @@ class View(object):
                                    2)
 
         # The movements on x axis
-
         cv2.putText(canvas.canvas,
                     'x axis movement',
                     (200, 200),
@@ -242,7 +239,6 @@ class View(object):
                         cv2.LINE_AA)
 
         # The movements on y axis
-
         cv2.putText(canvas.canvas,
                     'y axis movement',
                     (200, 450),
@@ -294,5 +290,3 @@ class View(object):
                         (0, 0, 0),
                         1,
                         cv2.LINE_AA)
-
-        # self.show_canvas(win, canvas)
