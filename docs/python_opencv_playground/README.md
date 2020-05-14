@@ -1,1 +1,0 @@
-# Testing Python and OpenCV
