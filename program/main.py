@@ -5,8 +5,7 @@ import sys
 from arpt.controller import Controller
 
 if __name__ == "__main__":
-    # print(sys.argv)
-    # project_path = "./projects/dolgozat/"
+    # Usage: python3 main.py projects/dolgozat/ 1
     project_path = sys.argv[1]
     mode = sys.argv[2]
     if mode.lower() in ['true', '1', 't', 'y', 'yes', 'igen']:

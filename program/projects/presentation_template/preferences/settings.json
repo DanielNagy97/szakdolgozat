@@ -6,7 +6,7 @@
         "to_flip": true
     },
     "grid":{
-        "gridstep": 16
+        "grid_dimension": [9, 16]
     },
     "heatmap":{
         "sensitivity": 10,
